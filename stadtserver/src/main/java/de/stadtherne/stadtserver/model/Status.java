@@ -1,5 +1,8 @@
 package de.stadtherne.stadtserver.model;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public abstract class Status {
 
     public void trendingSetzen(Aktivitaet a) {

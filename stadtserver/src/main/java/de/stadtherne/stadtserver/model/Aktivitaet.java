@@ -1,8 +1,20 @@
 package de.stadtherne.stadtserver.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Aktivitaet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String titel;
     //termin fehlt noch
+    @ManyToOne
     private Status status;
 
 
