@@ -10,6 +10,22 @@ const profile = () => {
     phone: "+49 (173) 4354233",
     image: require('../../assets/images/icons/profile/profilSemih.png'),
   }
+
+//handler für die buttons siehe unten 
+ const handleFavoriten = () => {
+    router.push('../(profiletabs)/favoriten');
+  };
+  const handleAngemeldeteAktivitaeten = () => {
+    router.push('../(profiletabs)/angemeldeteaktivitaeten');
+  };
+  const handleBesuchteAktivitaeten = () => {
+    router.push('../(profiletabs)/BesuchteAktivitaeten');
+  };
+  const handleSettings = () => {
+    router.push('../(profiletabs)/settings');
+  };
+
+
 //wenn nicht eingeloggt
   if (!user.isAuthenticated) {
    return (
@@ -43,10 +59,10 @@ const profile = () => {
       <Text style={styles.info}>{user.email}</Text>
       <Text style={styles.info}>{user.phone}</Text>
 
-      <TouchableOpacity style={styles.button}><Text style={styles.buttonText}>Favoriten</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.button}><Text style={styles.buttonText}>Angemeldete Aktivitäten</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.button}><Text style={styles.buttonText}>Besuchte Aktivitäten</Text></TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.settingsButton]}><Text style={styles.buttonText}>Einstellungen</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleFavoriten}><Text style={styles.buttonText}>Favoriten</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleAngemeldeteAktivitaeten}><Text style={styles.buttonText}>Angemeldete Aktivitäten</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleBesuchteAktivitaeten}><Text style={styles.buttonText}>Besuchte Aktivitäten</Text></TouchableOpacity>
+      <TouchableOpacity style={[styles.button, styles.settingsButton]} onPress={handleSettings}><Text style={styles.buttonText}>Einstellungen</Text></TouchableOpacity>
     </View>
   );
 }
