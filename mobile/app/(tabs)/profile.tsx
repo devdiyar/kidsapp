@@ -11,12 +11,8 @@ const profile = () => {
     phone: "+49 (173) 4354233",
     image: require('../../assets/images/icons/profile/profilSemih.png'),
   }
-<<<<<<< HEAD
 
 //handler für die buttons siehe unten 
-=======
-  //handler für die buttons siehe unten 
->>>>>>> feature/frontend-auth
  const handleFavoriten = () => {
     router.push('../(profiletabs)/favoriten');
   };
@@ -30,10 +26,6 @@ const profile = () => {
     router.push('../(profiletabs)/settings');
   };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> feature/frontend-auth
 //wenn nicht eingeloggt
 if (!user.isAuthenticated) {
   return (
@@ -65,17 +57,10 @@ if (!user.isAuthenticated) {
       <Text style={styles.info}>{user.email}</Text>
       <Text style={styles.info}>{user.phone}</Text>
 
-<<<<<<< HEAD
-      <TouchableOpacity style={styles.button} onPress={handleFavoriten}><Text style={styles.buttonText}>Favoriten</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleAngemeldeteAktivitaeten}><Text style={styles.buttonText}>Angemeldete Aktivitäten</Text></TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleBesuchteAktivitaeten}><Text style={styles.buttonText}>Besuchte Aktivitäten</Text></TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.settingsButton]} onPress={handleSettings}><Text style={styles.buttonText}>Einstellungen</Text></TouchableOpacity>
-=======
       <AppButton title="Favoriten" onPress={handleFavoriten} variant="orange" />
       <AppButton title="Angemeldete Aktivitäten" onPress={handleAngemeldeteAktivitaeten} variant="orange" />
       <AppButton title="Besuchte Aktivitäten" onPress={handleBesuchteAktivitaeten} variant="orange" />
       <AppButton title="Einstellungen" onPress={handleSettings} variant="black" />
->>>>>>> feature/frontend-auth
     </View>
   );
 }

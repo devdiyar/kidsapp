@@ -1,10 +1,5 @@
-import { useEffect } from "react";
-import { router } from "expo-router";
+import InteractiveMap from "@/components/interactiveMap/InteractiveMap";
 
 export default function Index() {
-  useEffect(() => {
-    router.replace("/(auth)/login");
-  }, []);
-
-  return null;
+  return <InteractiveMap />;
 }
