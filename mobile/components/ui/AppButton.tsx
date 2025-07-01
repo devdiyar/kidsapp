@@ -1,23 +1,17 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, GestureResponderEvent } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 
-type AppButtonProps = {
-  title: string;
-  onPress: (event: GestureResponderEvent) => void;
-  variant?: "orange" | "black";
-};
-
-export default function AppButton({ title, onPress, variant = "orange" }: AppButtonProps) {
+export default function AppButton(props:any) {
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={props.onPress}
       style={[
         styles.button,
-        variant === "orange" ? styles.orange : styles.black,
+        props.variant === "black" ? styles.black : styles.orange,
       ]}
     >
-      <Text style={styles.text}>{title}</Text>
+      <Text style={styles.text}>{props.title}</Text>
     </TouchableOpacity>
   );
 }
