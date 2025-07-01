@@ -10,5 +10,6 @@ import de.stadtherne.stadtserver.model.Nutzer;
  */
 @Repository
 public interface NutzerRepository extends JpaRepository<Nutzer, Long> {
+    // Methoden ergänzen
 
 }

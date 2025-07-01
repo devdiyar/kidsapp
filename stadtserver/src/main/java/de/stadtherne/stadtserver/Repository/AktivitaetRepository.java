@@ -10,5 +10,5 @@ import de.stadtherne.stadtserver.model.Aktivitaet;
  */
 @Repository
 public interface AktivitaetRepository extends JpaRepository<Aktivitaet, Long> {
-
+    // Methoden ergänzen
 }

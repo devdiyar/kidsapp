@@ -10,5 +10,5 @@ import de.stadtherne.stadtserver.model.Beamter;
  */
 @Repository
 public interface BeamterRepository extends JpaRepository<Beamter, Long> {
-
+    // Methoden ergänzen
 }
