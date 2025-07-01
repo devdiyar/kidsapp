@@ -1,6 +1,6 @@
 package de.stadtherne.stadtserver.model;
 
-public class Trending extends Status {
+import jakarta.persistence.Entity;
 
-}
-
+@Entity
+public class Trending extends Status {}

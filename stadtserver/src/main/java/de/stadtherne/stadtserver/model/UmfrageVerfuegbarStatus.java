@@ -1,12 +1,11 @@
 package de.stadtherne.stadtserver.model;
 
-public class UmfrageVerfuegbarStatus extends Status {
+import jakarta.persistence.Entity;
 
+@Entity
+public class UmfrageVerfuegbarStatus extends Status {
     @Override
     public void trendingSetzen(Aktivitaet a) {
-      a.setStatus(new Trending());
+        a.setStatus(new Trending());
     }
-
-    
 }
-

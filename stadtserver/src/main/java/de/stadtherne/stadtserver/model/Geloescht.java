@@ -1,5 +1,6 @@
 package de.stadtherne.stadtserver.model;
 
-public class Geloescht extends Status{
-    
-}
+import jakarta.persistence.Entity;
+
+@Entity
+public class Geloescht extends Status {}
