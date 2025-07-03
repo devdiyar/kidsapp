@@ -6,9 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
-/**
- * Entity representing the taking place status.
- */
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -18,19 +15,10 @@ public class Stattfindend extends Status {
     }
     public Stattfindend() {}
 
-    @Override
-    public void umfrageVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Stattfindend zu UmfrageVerfuegbar wechseln");
-    }
-
-    @Override
-    public void bewertungVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Stattfindend zu BewertungVerfuegbar wechseln");
-    }
 
     @Override
     public void ausstehenSetzen() {
-        throw new IllegalStateException("Kann nicht von Stattfindend zu Ausstehend wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
@@ -41,7 +29,6 @@ public class Stattfindend extends Status {
 
     @Override
     public void stattfindendSetzen() {
-        // Bereits in diesem Status
     }
 
     @Override

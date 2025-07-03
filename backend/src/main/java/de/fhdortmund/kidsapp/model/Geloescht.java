@@ -5,9 +5,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * Konkreter Status für gelöschte Veranstaltung
- */
+
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -22,37 +20,26 @@ public class Geloescht extends Status {
     }
 
     @Override
-    public void umfrageVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Geloescht zu UmfrageVerfuegbar wechseln");
-    }
-
-    @Override
-    public void bewertungVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Geloescht zu BewertungVerfuegbar wechseln");
-    }
-
-    @Override
     public void ausstehenSetzen() {
-        throw new IllegalStateException("Kann nicht von Geloescht zu Ausstehend wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void liveSetzen() {
-        throw new IllegalStateException("Kann nicht von Geloescht zu Live wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void stattfindendSetzen() {
-        throw new IllegalStateException("Kann nicht von Geloescht zu Stattfindend wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        throw new IllegalStateException("Kann nicht von Geloescht zu Abgeschlossen wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void geloeschtSetzen() {
-        // Bereits in diesem Status
     }
 }

@@ -21,21 +21,9 @@ public class Ausstehend extends Status {
 
     }
 
-    @Override
-    public void umfrageVerfuegbarSetzen() {
-        UmfrageVerfuegbar neuerStatus = new UmfrageVerfuegbar();
-        veranstaltung.setStatus(neuerStatus);
-    }
-
-    @Override
-    public void bewertungVerfuegbarSetzen() {
-        BewertungVerfuegbar neuerStatus = new BewertungVerfuegbar();
-        veranstaltung.setStatus(neuerStatus);
-    }
 
     @Override
     public void ausstehenSetzen() {
-        // Bereits in diesem Status
     }
 
     @Override

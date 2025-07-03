@@ -12,46 +12,44 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-/**
- * Entity representing a survey in the system.
- */
+
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Umfrage {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Umfrage extends Fragentyp{
 
     @ManyToOne
-    private RegistrierterNutzer ersteller;
+    private RegistrierterNutzer teilnehmer;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Fragentyp> fragen = new ArrayList<>();
-    
+    /**
+     *Alle Operationen werden auf die Fragentypen angewendet,
+     *und sie werden gelöscht(orphanRemoval = true),
+     *wenn sie nicht mehr referenziert werden.
+     */
+    @OneToMany(mappedBy = "umfrage",cascade = CascadeType.ALL, orphanRemoval = true)    private List<Fragentyp> fragentypen = new ArrayList<>();
+
     @OneToOne(mappedBy = "umfrage")
     private Veranstaltung veranstaltung;
 
 
     public Umfrage() {
-        this.fragen = new ArrayList<>();
+        this.fragentypen = new ArrayList<>();
     }
 
-    public Umfrage( ArrayList<Fragentyp> fragen) {
-        this.fragen = fragen != null ? fragen : new ArrayList<>();
+    public Umfrage( ArrayList<Fragentyp> fragentypen) {
+        this.fragentypen = fragentypen != null ? fragentypen : new ArrayList<>();
     }
 
     public void add(Fragentyp frage) {
-        fragen.add(frage);
+        fragentypen.add(frage);
     }
-
     public void remove(Fragentyp frage) {
-        fragen.remove(frage);
+        fragentypen.remove(frage);
     }
-
-    public Fragentyp getFrage(int n) {
-        return fragen.get(n);
+    public Fragentyp getFragentyp(int n) {
+        return fragentypen.get(n);
     }
 
 }

@@ -19,11 +19,11 @@ public class Bewertung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private int punktzahl;  // Rating score
-    private String kommentar;  // Optional comment
+    private int punktzahl;
+    private String kommentar;
     
     @ManyToOne
-    private RegistrierterNutzer bewerter;  // User who gave the rating
+    private RegistrierterNutzer bewerter;  
     
     @OneToOne(mappedBy = "bewertung", optional = true)
     private Veranstaltung veranstaltung;

@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import de.fhdortmund.kidsapp.model.Veranstaltung;
 
-/**
- * Repository for handling Veranstaltung entities.
- */
+
 @Repository
 public interface VeranstaltungRepository extends JpaRepository<Veranstaltung, Long> {
     List<Veranstaltung> findByTeilnehmerId(Long teilnehmerId);

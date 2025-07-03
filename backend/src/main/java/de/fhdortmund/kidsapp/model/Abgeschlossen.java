@@ -22,33 +22,22 @@ public class Abgeschlossen extends Status {
     }
 
     @Override
-    public void umfrageVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Abgeschlossen zu UmfrageVerfuegbar wechseln");
-    }
-
-    @Override
-    public void bewertungVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Abgeschlossen zu BewertungVerfuegbar wechseln");
-    }
-
-    @Override
     public void ausstehenSetzen() {
-        throw new IllegalStateException("Kann nicht von Abgeschlossen zu Ausstehend wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void liveSetzen() {
-        throw new IllegalStateException("Kann nicht von Abgeschlossen zu Live wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void stattfindendSetzen() {
-        throw new IllegalStateException("Kann nicht von Abgeschlossen zu Stattfindend wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        // Bereits in diesem Status
     }
 
     @Override

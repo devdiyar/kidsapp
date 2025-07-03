@@ -21,23 +21,12 @@ public class Live extends Status {
     }
 
     @Override
-    public void umfrageVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Live zu UmfrageVerfuegbar wechseln");
-    }
-
-    @Override
-    public void bewertungVerfuegbarSetzen() {
-        throw new IllegalStateException("Kann nicht von Live zu BewertungVerfuegbar wechseln");
-    }
-
-    @Override
     public void ausstehenSetzen() {
-        throw new IllegalStateException("Kann nicht von Live zu Ausstehend wechseln");
+        throw new IllegalStateException("...");
     }
 
     @Override
     public void liveSetzen() {
-        // Bereits in diesem Status
     }
 
     @Override

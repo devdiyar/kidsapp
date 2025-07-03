@@ -13,10 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
-/**
- * Entity representing a registered user in the system.
- * Contains personal information and associated activities.
- */
+
 @Entity
 @Data
 public class RegistrierterNutzer implements Nutzer {

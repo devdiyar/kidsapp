@@ -12,9 +12,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.Getter;
 
-/**
- * Entity representing an activity in the system.
- */
+
 @Entity
 @Getter
     @Data

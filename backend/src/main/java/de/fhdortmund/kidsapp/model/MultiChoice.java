@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +16,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MultiChoice extends Fragentyp {
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> antwortoptionen = new ArrayList<>();
 }

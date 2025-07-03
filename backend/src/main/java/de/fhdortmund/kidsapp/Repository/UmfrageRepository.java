@@ -7,11 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import de.fhdortmund.kidsapp.model.Umfrage;
 
-/**
- * Repository for handling Umfrage entities.
- */
+
 @Repository
 public interface UmfrageRepository extends JpaRepository<Umfrage, Long> {
-    List<Umfrage> findByErstellerId(Long erstellerId);
-    List<Umfrage> findByErsteller_Id(Long erstellerId);
 }

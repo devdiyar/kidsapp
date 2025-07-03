@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import de.fhdortmund.kidsapp.Repository.UmfrageRepository;
 import de.fhdortmund.kidsapp.model.Umfrage;
 
-/**
- * Service class for handling survey-related business logic.
- */
+
 @Service
 public class UmfrageService {
     
@@ -26,9 +24,8 @@ public class UmfrageService {
             .orElseThrow(() -> new RuntimeException("Umfrage nicht gefunden"));
     }
     
-    public List<Umfrage> getUmfragenByErsteller(Long erstellerId) {
-        return umfrageRepository.findByErsteller_Id(erstellerId);
-    }
+//    public List<Umfrage> getUmfragenByErsteller(Long erstellerId) {
+//    }
     
     public Umfrage saveUmfrage(Umfrage umfrage) {
         return umfrageRepository.save(umfrage);
