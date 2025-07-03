@@ -1,5 +1,8 @@
 package de.stadtherne.stadtserver.model.fabrik;
 
+import de.stadtherne.stadtserver.model.Bewertung;
+import de.stadtherne.stadtserver.model.Umfrage;
+import de.stadtherne.stadtserver.model.zustand.Status;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
