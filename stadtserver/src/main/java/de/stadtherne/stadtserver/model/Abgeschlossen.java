@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 @Entity
 public class Abgeschlossen extends Status {
     @Override
-    public void bewertungVerfuegbarSetzen(Aktivitaet aktivitaet) {
-        aktivitaet.setStatus(new BewertungVerfuegbar());
+    public void bewertungVerfuegbarSetzen(Veranstaltung veranstaltung) {
+        veranstaltung.setStatus(new BewertungVerfuegbar());
     }
 }

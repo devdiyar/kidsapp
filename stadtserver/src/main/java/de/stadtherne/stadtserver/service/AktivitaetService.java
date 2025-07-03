@@ -1,6 +1,6 @@
 package de.stadtherne.stadtserver.service;
 
-import de.stadtherne.stadtserver.model.Aktivitaet;
+import de.stadtherne.stadtserver.model.Veranstaltung;
 import de.stadtherne.stadtserver.repository.AktivitaetRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +15,16 @@ public class AktivitaetService {
         this.aktivitaetRepository = aktivitaetRepository;
     }
 
-    public List<Aktivitaet> alleAktivitaeten() {
+    public List<Veranstaltung> alleAktivitaeten() {
         return aktivitaetRepository.findAll();
     }
 
-    public Optional<Aktivitaet> aktivitaetByID(Long id) {
+    public Optional<Veranstaltung> aktivitaetByID(Long id) {
         return aktivitaetRepository.findById(id);
     }
 
-    public Aktivitaet speichern(Aktivitaet aktivitaet) {
-        return aktivitaetRepository.save(aktivitaet);
+    public Veranstaltung speichern(Veranstaltung veranstaltung) {
+        return aktivitaetRepository.save(veranstaltung);
     }
 
     public void loeschen(Long id) {

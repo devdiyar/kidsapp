@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 @Entity
 public class BewertungVerfuegbar extends Status {
     @Override
-    public void umfrageVerfuegbarSetzen(Aktivitaet aktivitaet) {
-        aktivitaet.setStatus(new UmfrageVerfuegbarStatus());
+    public void umfrageVerfuegbarSetzen(Veranstaltung veranstaltung) {
+        veranstaltung.setStatus(new UmfrageVerfuegbarStatus());
     }
 }
