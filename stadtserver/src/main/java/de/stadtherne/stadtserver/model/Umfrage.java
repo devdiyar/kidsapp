@@ -13,26 +13,26 @@ public class Umfrage {
     private Long id;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Fragenty> fragentyList = new ArrayList<>();
+    private List<Fragentyp> fragentypList = new ArrayList<>();
 
 
-    public void add(Fragenty fragentyp) {
-        fragentyList.add(fragentyp);
+    public void add(Fragentyp fragentyp) {
+        fragentypList.add(fragentyp);
     }
 
-    public void remove(Fragenty fragentyp) {
-        fragentyList.remove(fragentyp);
+    public void remove(Fragentyp fragentyp) {
+        fragentypList.remove(fragentyp);
     }
 
     public Fragentyp getFragentyp(int n) {
-        if ((n >= 0) && (n < fragentyList.size())) {
-            return fragentyList.get(n);
+        if ((n >= 0) && (n < fragentypList.size())) {
+            return fragentypList.get(n);
         }
         return null;
     }
 
     public List<Fragentyp> getFragentyp() {
-        return fragentyList;
+        return fragentypList;
     }
 
     public Long getId() {
