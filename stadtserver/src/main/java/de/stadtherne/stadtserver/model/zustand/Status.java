@@ -1,4 +1,4 @@
-package de.stadtherne.stadtserver.model;
+package de.stadtherne.stadtserver.model.Zustand;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
