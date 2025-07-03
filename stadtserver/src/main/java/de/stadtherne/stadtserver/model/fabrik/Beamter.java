@@ -1,21 +1,29 @@
-package de.stadtherne.stadtserver.model;
+package de.stadtherne.stadtserver.model.fabrik;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.stadtherne.stadtserver.model.Nutzer;
 
 @Entity
 public class Beamter extends Nutzer {
-    public Veranstaltung aktivitaetErstellen(String titel, String beschreibung, TerminT termin) {
-        return new Veranstaltung();
+
+    @OneToMany(mappedBy = "beamter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Veranstaltung> veranstaltungen = new ArrayList<>();
+
+    public List<Veranstaltung> getVeranstaltungen() {
+        return veranstaltungen;
     }
-    public Umfrage umfrageErstellen(String titel, String beschreibung) {
-        return new Umfrage();
+
+    public void addVeranstaltung(Veranstaltung veranstaltung) {
+        veranstaltungen.add(veranstaltung);
+        veranstaltung.setBeamter(this);
     }
-    public void liveSetzen(Veranstaltung a) { a.liveSetzen(); }
-    public void abgeschlossenSetzen(Veranstaltung a) { a.abgeschlossenSetzen(); }
-    public void ausstehendSetzen(Veranstaltung a) { a.ausstehendSetzen(); }
-    public void geloeschtSetzen(Veranstaltung a) { a.geloeschtSetzen(); }
-    public void stattfindendSetzen(Veranstaltung a) { a.stattfindendSetzen(); }
-    public void bewertungVerfuegbarSetzen(Veranstaltung a) { a.bewertungVerfuegbarSetzen(); }
-    public void umfrageVerfuegbarSetzen(Veranstaltung a) { a.umfrageVerfuegbarSetzen(); }
-    public void trendingSetzen(Veranstaltung a) { a.trendingSetzen(); }
+
+    public void removeVeranstaltung(Veranstaltung veranstaltung) {
+        veranstaltungen.remove(veranstaltung);
+        veranstaltung.setBeamter(null);
+    }
 }

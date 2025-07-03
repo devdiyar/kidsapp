@@ -1,10 +1,7 @@
-package de.stadtherne.stadtserver.model;
+package de.stadtherne.stadtserver.model.fabrik;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,43 +10,48 @@ public class Veranstaltung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String titel;
+    private String beschreibung;
+
+    @ManyToOne
+    @JoinColumn(name = "beamter_id")
+    private Beamter beamter;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bewertung> bewertungen = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Umfrage umfrage;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Status status;
-    private List<Bewertung> bewertungen;
 
 
+    public Long getId() { return id; }
 
-    public Umfrage umfrageErstellen(){
-        return umfrage;
-    }
-    public void umfrageVerfuegbarSetzen(){
+    public String getTitel() { return titel; }
+    public void setTitel(String titel) { this.titel = titel; }
 
-    }
+    public String getBeschreibung() { return beschreibung; }
+    public void setBeschreibung(String beschreibung) { this.beschreibung = beschreibung; }
 
-    public void trendingSetzen(){
+    public Beamter getBeamter() { return beamter; }
+    public void setBeamter(Beamter beamter) { this.beamter = beamter; }
 
-    }
-    public void bewertungVerfuegbarSetzen(){
+    public List<Bewertung> getBewertungen() { return bewertungen; }
+    public void addBewertung(Bewertung bewertung) { bewertungen.add(bewertung); }
+    public void removeBewertung(Bewertung bewertung) { bewertungen.remove(bewertung); }
 
-    }
-    public void abgeschlossenSetzen(){
-
-    }
-    public void liveSetzen(){
-
-    }
-    public void ausstehendSetzen(){
-
-    }
-    public void stattfindendSetzen(){
-
-    }
-    public void geloeschtSetzen(){
-
+    public Umfrage getUmfrage() { return umfrage; }
+    public void setUmfrage(Umfrage umfrage) { this.umfrage = umfrage; }
+    public Umfrage umfrageErstellen() {
+        if (this.umfrage == null) {
+            this.umfrage = new Umfrage();
+        }
+        return this.umfrage;
     }
 
-
-
-
-
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
 }

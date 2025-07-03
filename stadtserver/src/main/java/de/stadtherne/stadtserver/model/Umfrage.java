@@ -1,26 +1,41 @@
 package de.stadtherne.stadtserver.model;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
 @Entity
 public class Umfrage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Fragentyp> fragen = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Fragenty> fragentyList = new ArrayList<>();
 
-    public void add(Fragentyp frage) { fragen.add(frage); }
-    public void remove(Fragentyp frage) { fragen.remove(frage); }
-    public Fragentyp getFragentypt(int n) { return fragen.get(n); }
-    public List<Fragentyp> getFragentypen() { return fragen; }
+    public Umfrage() {}
+
+    public void add(Fragenty fragenty) {
+        fragentyList.add(fragenty);
+    }
+
+    public void remove(Fragenty fragenty) {
+        fragentyList.remove(fragenty);
+    }
+
+    public Fragenty getFragenty(int n) {
+        if ((n >= 0) && (n < fragentyList.size())) {
+            return fragentyList.get(n);
+        }
+        return null;
+    }
+
+    public List<Fragenty> getFragenty() {
+        return fragentyList;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
