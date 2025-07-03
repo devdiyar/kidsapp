@@ -4,6 +4,7 @@ import de.stadtherne.stadtserver.model.Bewertung;
 import de.stadtherne.stadtserver.model.Umfrage;
 import de.stadtherne.stadtserver.model.zustand.Status;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,23 +32,54 @@ public class Veranstaltung {
     private Status status;
 
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getTitel() { return titel; }
-    public void setTitel(String titel) { this.titel = titel; }
+    public String getTitel() {
+        return titel;
+    }
 
-    public String getBeschreibung() { return beschreibung; }
-    public void setBeschreibung(String beschreibung) { this.beschreibung = beschreibung; }
+    public void setTitel(String titel) {
+        this.titel = titel;
+    }
 
-    public Beamter getBeamter() { return beamter; }
-    public void setBeamter(Beamter beamter) { this.beamter = beamter; }
+    public String getBeschreibung() {
+        return beschreibung;
+    }
 
-    public List<Bewertung> getBewertungen() { return bewertungen; }
-    public void addBewertung(Bewertung bewertung) { bewertungen.add(bewertung); }
-    public void removeBewertung(Bewertung bewertung) { bewertungen.remove(bewertung); }
+    public void setBeschreibung(String beschreibung) {
+        this.beschreibung = beschreibung;
+    }
 
-    public Umfrage getUmfrage() { return umfrage; }
-    public void setUmfrage(Umfrage umfrage) { this.umfrage = umfrage; }
+    public Beamter getBeamter() {
+        return beamter;
+    }
+
+    public void setBeamter(Beamter beamter) {
+        this.beamter = beamter;
+    }
+
+    public List<Bewertung> getBewertungen() {
+        return bewertungen;
+    }
+
+    public void addBewertung(Bewertung bewertung) {
+        bewertungen.add(bewertung);
+    }
+
+    public void removeBewertung(Bewertung bewertung) {
+        bewertungen.remove(bewertung);
+    }
+
+    public Umfrage getUmfrage() {
+        return umfrage;
+    }
+
+    public void setUmfrage(Umfrage umfrage) {
+        this.umfrage = umfrage;
+    }
+
     public Umfrage umfrageErstellen() {
         if (this.umfrage == null) {
             this.umfrage = new Umfrage();
@@ -55,6 +87,11 @@ public class Veranstaltung {
         return this.umfrage;
     }
 
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
