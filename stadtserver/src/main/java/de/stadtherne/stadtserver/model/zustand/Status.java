@@ -1,25 +1,24 @@
-package de.stadtherne.stadtserver.model.Zustand;
+package de.stadtherne.stadtserver.model.zustand;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import de.stadtherne.stadtserver.model.fabrik.Veranstaltung;
+import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne
+    protected Veranstaltung veranstaltung;
 
-    public void trendingSetzen(Veranstaltung a) {}
-    public void umfrageVerfuegbarSetzen(Veranstaltung a) {}
-    public void bewertungVerfuegbarSetzen(Veranstaltung a) {}
-    public void abgeschlossenSetzen(Veranstaltung a) {}
-    public void liveSetzen(Veranstaltung a) {}
-    public void ausstehendSetzen(Veranstaltung a) {}
-    public void stattfindendSetzen(Veranstaltung a) {}
-    public void geloeschtSetzen(Veranstaltung a) {}
+    public Status(Veranstaltung v){
+        veranstaltung=v;
+    }
+
+public abstract void abgeschlossenSetzen();
+public abstract void liveSetzen();
+public abstract void ausstehendSetzen();
+public abstract void stattfindendSetzen();
+public abstract void geloeschtSetzen();
+
 }
