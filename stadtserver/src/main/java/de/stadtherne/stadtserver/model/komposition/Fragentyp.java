@@ -1,11 +1,6 @@
-package de.stadtherne.stadtserver.model;
+package de.stadtherne.stadtserver.model.komposition;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -17,13 +12,16 @@ public abstract class Fragentyp {
     protected String titel;
     protected String beschreibung;
 
-    public Fragentyp() {}
-
     public Fragentyp(String titel, String beschreibung) {
         this.titel = titel;
         this.beschreibung = beschreibung;
     }
 
-    public abstract String getTitel();
-    public abstract String getBeschreibung();
+    public String getTitel() {
+        return titel;
+    }
+
+    public String getBeschreibung() {
+        return beschreibung;
+    }
 }
