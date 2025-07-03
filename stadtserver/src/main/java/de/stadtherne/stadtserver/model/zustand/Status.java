@@ -8,17 +8,25 @@ public abstract class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
     protected Veranstaltung veranstaltung;
 
-    public Status(Veranstaltung v){
-        veranstaltung=v;
+    public Status() {
     }
 
-public abstract void abgeschlossenSetzen();
-public abstract void liveSetzen();
-public abstract void ausstehendSetzen();
-public abstract void stattfindendSetzen();
-public abstract void geloeschtSetzen();
+    public Status(Veranstaltung v) {
+        veranstaltung = v;
+    }
+
+    public abstract void abgeschlossenSetzen();
+
+    public abstract void liveSetzen();
+
+    public abstract void ausstehendSetzen();
+
+    public abstract void stattfindendSetzen();
+
+    public abstract void geloeschtSetzen();
 
 }

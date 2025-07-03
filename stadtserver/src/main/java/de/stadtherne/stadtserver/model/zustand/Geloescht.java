@@ -5,35 +5,39 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Geloescht extends Status {
-    public Geloescht(Veranstaltung v){
+    public Geloescht() {
+    }
+
+    public Geloescht(Veranstaltung v) {
         super(v);
     }
+
     @Override
     public void abgeschlossenSetzen() {
-        veranstaltung.setStatus(new Abgeschlossen(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Gelöscht zu Abgeschlossen wechseln");
     }
 
     @Override
     public void liveSetzen() {
-        veranstaltung.setStatus(new Live(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Gelöscht zu Live wechseln");
 
     }
 
     @Override
     public void ausstehendSetzen() {
-        veranstaltung.setStatus(new Ausstehend(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Gelöscht zu Ausstehend wechseln");
 
     }
 
     @Override
     public void stattfindendSetzen() {
-        veranstaltung.setStatus(new Stattfindend(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Gelöscht zu Stattfindend wechseln");
 
     }
 
     @Override
     public void geloeschtSetzen() {
-        veranstaltung.setStatus(new Geloescht(veranstaltung));
+        // befindet sich in diesem Zustand
 
     }
 }

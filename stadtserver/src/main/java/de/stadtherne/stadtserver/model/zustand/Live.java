@@ -6,24 +6,27 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Live extends Status {
-    public Live(Veranstaltung v){
+    public Live() {
+    }
+
+    public Live(Veranstaltung v) {
         super(v);
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        veranstaltung.setStatus(new Abgeschlossen(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Live zu Abgeschlossen wechseln");
     }
 
     @Override
     public void liveSetzen() {
-        veranstaltung.setStatus(new Live(veranstaltung));
+        // befindet sich in diesem Zustand
 
     }
 
     @Override
     public void ausstehendSetzen() {
-        veranstaltung.setStatus(new Ausstehend(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Live zu Ausstehend wechseln");
 
     }
 

@@ -5,13 +5,16 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Ausstehend extends Status {
-    public Ausstehend(Veranstaltung v){
+    public Ausstehend() {
+    }
+
+    public Ausstehend(Veranstaltung v) {
         super(v);
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        veranstaltung.setStatus(new Abgeschlossen(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Ausstehend zu Abgeschlossen wechseln");
     }
 
     @Override
@@ -22,13 +25,13 @@ public class Ausstehend extends Status {
 
     @Override
     public void ausstehendSetzen() {
-        veranstaltung.setStatus(new Ausstehend(veranstaltung));
+        // befindet sich in dem Zustand
 
     }
 
     @Override
     public void stattfindendSetzen() {
-        veranstaltung.setStatus(new Stattfindend(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Ausstehend zu Stattfindend wechseln");
 
     }
 

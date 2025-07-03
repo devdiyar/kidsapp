@@ -5,9 +5,13 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Abgeschlossen extends Status {
-    public Abgeschlossen(Veranstaltung v){
+    public Abgeschlossen() {
+    }
+
+    public Abgeschlossen(Veranstaltung v) {
         super(v);
     }
+
     @Override
     public void abgeschlossenSetzen() {
         veranstaltung.setStatus(new Abgeschlossen(veranstaltung));

@@ -5,7 +5,10 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Stattfindend extends Status {
-    public Stattfindend(Veranstaltung v){
+    public Stattfindend() {
+    }
+
+    public Stattfindend(Veranstaltung v) {
         super(v);
     }
 
