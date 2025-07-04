@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import { useEffect, useState } from 'react';
 import { ACTIVITIES_DATA, Activity } from '../../src/data/activities';
@@ -8,6 +8,7 @@ import { BewertungModal } from '../components/Bewertung';
 
 export default function ActivityDetailScreen() {
   const { id } = useLocalSearchParams();
+  const router = useRouter();
   const [activity, setActivity] = useState<Activity | null>(null);
 //"Anmelden" Button ：useState
   const [isRegistered, setIsRegistered] = useState(false);
@@ -27,6 +28,8 @@ export default function ActivityDetailScreen() {
       </View>
     );
   }
+
+  const showSurveyButton = ['1', '3', '9'].includes(activity.id);
 
   return (
     <View style={{ flex: 1 }}>
@@ -88,12 +91,22 @@ export default function ActivityDetailScreen() {
   <Text>{activity.rating.toFixed(1)} | {activity.ratingCount} Bewertungen</Text>
       
       </ScrollView>
-      <TouchableOpacity
-        style={[styles.button, styles.registerButton, { marginHorizontal: 20, marginBottom: 24 }]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.buttonText}>Bewertung schreiben</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        {showSurveyButton && (
+          <TouchableOpacity
+            style={[styles.button, styles.surveyButton]}
+            onPress={() => router.push({ pathname: '/_survey', params: { id: activity.id, title: activity.title } })}
+          >
+            <Text style={styles.buttonText}>Zur Umfrage</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={[styles.button, styles.registerButton]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.buttonText}>Bewertung schreiben</Text>
+        </TouchableOpacity>
+      </View>
       <BewertungModal visible={modalVisible} onClose={() => setModalVisible(false)} />
     </View>
   );
@@ -147,9 +160,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 16,
+    flex: 1,
   },
   registerButton: {
     backgroundColor: '#f6471c',
+  },
+  surveyButton: {
+    backgroundColor: '#2e88c9',
+    marginRight: 10,
   },
   cancelButton: {
     backgroundColor: '#a81010',
@@ -164,6 +182,13 @@ const styles = StyleSheet.create({
   },
   mehr_weniger_Button_Text: {
     color: '#f6471c',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingBottom: 24,
+    backgroundColor: '#fff',
   },
 
 });
