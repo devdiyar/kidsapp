@@ -12,6 +12,10 @@ public abstract class Fragentyp {
     protected String titel;
     protected String beschreibung;
 
+    protected Fragentyp() {
+        //für JPA
+    }
+
     public Fragentyp(String titel, String beschreibung) {
         this.titel = titel;
         this.beschreibung = beschreibung;
