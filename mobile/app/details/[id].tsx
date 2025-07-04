@@ -5,6 +5,7 @@ import { ACTIVITIES_DATA, Activity } from '../../src/data/activities';
 import Toast from 'react-native-toast-message'; //fuer Bestätigungshinweis anzeigen bei Anmeldung
 import { StarRatingDisplay } from 'react-native-star-rating-widget';//fuer Sternebewertung
 import { BewertungModal } from '../components/Bewertung';
+import { BewertungenView } from '../components/BewertungenView';
 
 export default function ActivityDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -14,6 +15,7 @@ export default function ActivityDetailScreen() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [bewertungenVisible, setBewertungenVisible] = useState(false);
   const placeholderImage = require('../../assets/images/placeholder.png'); //placeholder
 
   useEffect(() => {
@@ -87,8 +89,10 @@ export default function ActivityDetailScreen() {
 
 
   <Text style={styles.sectionTitle}>Bewertungen:</Text>
-  <StarRatingDisplay rating={activity.rating} starSize={20} color="#f1c40f" />
-  <Text>{activity.rating.toFixed(1)} | {activity.ratingCount} Bewertungen</Text>
+  <TouchableOpacity onPress={() => setBewertungenVisible(true)}>
+          <StarRatingDisplay rating={activity.rating} starSize={20} color="#f1c40f" />
+        </TouchableOpacity>
+        <Text>{activity.rating.toFixed(1)} | {activity.ratingCount} Bewertungen</Text>
       
       </ScrollView>
       <View style={styles.buttonContainer}>
@@ -107,6 +111,7 @@ export default function ActivityDetailScreen() {
           <Text style={styles.buttonText}>Bewertung schreiben</Text>
         </TouchableOpacity>
       </View>
+      <BewertungenView visible={bewertungenVisible} onClose={() => setBewertungenVisible(false)} />
       <BewertungModal visible={modalVisible} onClose={() => setModalVisible(false)} />
     </View>
   );
