@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ACTIVITIES_DATA, Activity } from '../../src/data/activities';
 import Toast from 'react-native-toast-message'; //fuer Bestätigungshinweis anzeigen bei Anmeldung
 import { StarRatingDisplay } from 'react-native-star-rating-widget';//fuer Sternebewertung
+import { BewertungModal } from '../components/Bewertung';
 
 export default function ActivityDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -11,6 +12,7 @@ export default function ActivityDetailScreen() {
 //"Anmelden" Button ：useState
   const [isRegistered, setIsRegistered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const placeholderImage = require('../../assets/images/placeholder.png'); //placeholder
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export default function ActivityDetailScreen() {
   }
 
   return (
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container}>
     <Image
     source={activity.imageUrl ? activity.imageUrl : placeholderImage}
@@ -84,7 +87,15 @@ export default function ActivityDetailScreen() {
   <StarRatingDisplay rating={activity.rating} starSize={20} color="#f1c40f" />
   <Text>{activity.rating.toFixed(1)} | {activity.ratingCount} Bewertungen</Text>
       
-  </ScrollView>
+      </ScrollView>
+      <TouchableOpacity
+        style={[styles.button, styles.registerButton, { marginHorizontal: 20, marginBottom: 24 }]}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.buttonText}>Bewertung schreiben</Text>
+      </TouchableOpacity>
+      <BewertungModal visible={modalVisible} onClose={() => setModalVisible(false)} />
+    </View>
   );
 }
 
