@@ -20,15 +20,13 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Umfrage extends Fragentyp{
 
-    @ManyToOne
-    private RegistrierterNutzer teilnehmer;
-
     /**
      *Alle Operationen werden auf die Fragentypen angewendet,
      *und sie werden gelöscht(orphanRemoval = true),
      *wenn sie nicht mehr referenziert werden.
      */
-    @OneToMany(mappedBy = "umfrage",cascade = CascadeType.ALL, orphanRemoval = true)    private List<Fragentyp> fragentypen = new ArrayList<>();
+    @OneToMany(mappedBy = "umfrage",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Fragentyp> fragentypen = new ArrayList<>();
 
     @OneToOne(mappedBy = "umfrage")
     private Veranstaltung veranstaltung;
