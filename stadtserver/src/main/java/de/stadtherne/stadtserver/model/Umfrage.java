@@ -5,43 +5,42 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
-public class Umfrage {
+@Data
+public class Umfrage extends Fragentyp{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    /**
+     *Alle Operationen werden auf die Fragentypen angewendet,
+     *und sie werden gelöscht(orphanRemoval = true),
+     *wenn sie nicht mehr referenziert werden.
+     */
+    @OneToMany(mappedBy = "umfrage",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Fragentyp> fragentypen = new ArrayList<>();
 
-    @OneToMany(mappedBy = "umfrage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Fragentyp> fragentypList = new ArrayList<>();
+    @OneToOne(mappedBy = "umfrage")
+    private Veranstaltung veranstaltung;
 
-
-    public void add(Fragentyp fragentyp) {
-        fragentypList.add(fragentyp);
+    public Umfrage() {
+        this.fragentypen = new ArrayList<>();
     }
 
-    public void remove(Fragentyp fragentyp) {
-        fragentypList.remove(fragentyp);
+    public Umfrage( ArrayList<Fragentyp> fragentypen) {
+        this.fragentypen = fragentypen != null ? fragentypen : new ArrayList<>();
     }
 
+    public void add(Fragentyp frage) {
+        fragentypen.add(frage);
+    }
+    public void remove(Fragentyp frage) {
+        fragentypen.remove(frage);
+    }
     public Fragentyp getFragentyp(int n) {
-        if ((n >= 0) && (n < fragentypList.size())) {
-            return fragentypList.get(n);
-        }
-        return null;
-    }
-
-    public List<Fragentyp> getFragentyp() {
-        return fragentypList;
-    }
-
-    public Long getId() {
-        return id;
+        return fragentypen.get(n);
     }
 }

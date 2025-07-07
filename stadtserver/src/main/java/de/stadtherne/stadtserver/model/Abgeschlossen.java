@@ -1,42 +1,53 @@
 package de.stadtherne.stadtserver.model;
 
 import jakarta.persistence.Entity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+/**
+ * Entity representing the completed status.
+ */
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class Abgeschlossen extends Status {
+
+    public Abgeschlossen(Veranstaltung veranstaltung) {
+        super(veranstaltung);
+    }
+
     public Abgeschlossen() {
-    }
-
-    public Abgeschlossen(Veranstaltung v) {
-        super(v);
-    }
-
-    @Override
-    public void abgeschlossenSetzen() {
-        veranstaltung.setStatus(new Abgeschlossen(veranstaltung));
-    }
-
-    @Override
-    public void liveSetzen() {
-        veranstaltung.setStatus(new Live(veranstaltung));
-
-    }
-
-    @Override
-    public void ausstehendSetzen() {
-        veranstaltung.setStatus(new Ausstehend(veranstaltung));
 
     }
 
     @Override
     public void stattfindendSetzen() {
-        veranstaltung.setStatus(new Stattfindend(veranstaltung));
+        throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits abgeschlossen ist.");
+    }
 
+    @Override
+    public void ausstehendSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits abgeschlossen ist.");
+    }
+
+    @Override
+    public void liveSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits abgeschlossen ist.");
+    }
+
+    @Override
+    public void abgeschlossenSetzen() {
+        System.out.println("Status bereits auf Abgeschlossen gesetzt.");
     }
 
     @Override
     public void geloeschtSetzen() {
-        veranstaltung.setStatus(new Geloescht(veranstaltung));
+        System.out.println("Status wird auf Geloescht gesetzt.");
+        veranstaltung.setAktuellerstatus(new Geloescht(veranstaltung));
+    }
 
+    @Override
+    public String toString() {
+        return "Abgeschlossen";
     }
 }

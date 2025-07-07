@@ -1,42 +1,47 @@
 package de.stadtherne.stadtserver.model;
 
 import jakarta.persistence.Entity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class Stattfindend extends Status {
-    public Stattfindend() {
+    public Stattfindend(Veranstaltung veranstaltung) {
+        super(veranstaltung);
     }
-
-    public Stattfindend(Veranstaltung v) {
-        super(v);
-    }
+    public Stattfindend() {}
 
     @Override
-    public void abgeschlossenSetzen() {
-        veranstaltung.setStatus(new Abgeschlossen(veranstaltung));
-    }
-
-    @Override
-    public void liveSetzen() {
-        throw new IllegalStateException("Kann nicht von Stattfindend zu Live wechseln");
-
+    public void stattfindendSetzen() {
+        System.out.println("Status bereits auf Stattfindend gesetzt.");
     }
 
     @Override
     public void ausstehendSetzen() {
-        throw new IllegalStateException("Kann nicht von Stattfindend zu Ausstehend wechseln");
-
+        System.out.println("Status wird auf Ausstehend gesetzt.");
+        veranstaltung.setAktuellerstatus(new Ausstehend(veranstaltung));
     }
 
     @Override
-    public void stattfindendSetzen() {
-        // befindet sich in diesem Zustand
+    public void liveSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits Stattfindend ist.");
+    }
 
+    @Override
+    public void abgeschlossenSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Abgeschlossen gesetzt werden, da er bereits Stattfindend ist.");
     }
 
     @Override
     public void geloeschtSetzen() {
-        veranstaltung.setStatus(new Geloescht(veranstaltung));
+        System.out.println("Status wird auf Geloescht gesetzt.");
+        veranstaltung.setAktuellerstatus(new Geloescht(veranstaltung));
+    }
 
+    @Override
+    public String toString() {
+        return "Stattfindend";
     }
 }
