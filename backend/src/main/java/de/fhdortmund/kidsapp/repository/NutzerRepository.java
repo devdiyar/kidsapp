@@ -1,4 +1,4 @@
-package de.fhdortmund.kidsapp.Repository;
+package de.fhdortmund.kidsapp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

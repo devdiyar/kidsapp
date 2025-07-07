@@ -11,5 +11,6 @@ import lombok.Data;
 @Data
 public class TerminT {
     private Date datum;
-    private LocalDateTime uhrzeit;
+    private String uhrzeitVon;
+    private String uhrzeitBis;
 }

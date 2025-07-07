@@ -1,24 +1,40 @@
 package de.fhdortmund.kidsapp.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.Data;
+import lombok.Getter;
 
 
 @Entity
 @Getter
 @Data
-public class Veranstaltung {
+public class Veranstaltung { 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    private String titel;
+    private String beschreibung;
+    private double preis;
+    private AnschriftT anschrift;
+
     @ManyToOne
     @JoinColumn(name = "teilnehmer_id")
     private RegistrierterNutzer teilnehmer;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "status_id")
     private Status aktuellerstatus;

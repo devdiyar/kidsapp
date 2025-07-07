@@ -1,12 +1,10 @@
-package de.fhdortmund.kidsapp.Repository;
+package de.fhdortmund.kidsapp.repository;
 
-import java.util.List;
-
+import de.fhdortmund.kidsapp.model.Veranstaltung;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import de.fhdortmund.kidsapp.model.Veranstaltung;
-
+import java.util.List;
 
 @Repository
 public interface VeranstaltungRepository extends JpaRepository<Veranstaltung, Long> {
