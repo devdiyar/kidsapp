@@ -6,12 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
-import jakarta.persistence.OneToOne;
 
 
-/**
- * Entity representing a rating in the system.
- */
 @Entity
 @Data
 public class Bewertung {
@@ -25,6 +21,6 @@ public class Bewertung {
     @ManyToOne
     private RegistrierterNutzer bewerter;  
     
-    @OneToOne(mappedBy = "bewertung", optional = true)
+    @ManyToOne
     private Veranstaltung veranstaltung;
 }
