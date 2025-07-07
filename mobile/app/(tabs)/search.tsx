@@ -1,99 +1,69 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// Beispiel-Daten für Aktivitäten
-const ACTIVITIES_DATA = [
-  {
-    id: '1',
-    title: 'Adventsgrabung',
-    location: 'VK Stadium',
-    date: '28.03 20:00',
-    price: '5€',
-    imageUrl: require('../../assets/images/Adventsgrabung.jpg'),
-    status: null,
-  },
-  {
-    id: '2',
-    title: 'Illusions',
-    location: 'Spielplatz an der Hörde',
-    date: '07.03 14:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/Illusion.jpg'),
-    status: 'Hat begonnen',
-  },
-  {
-    id: '3',
-    title: "Woman's Day",
-    location: 'VK Stadium',
-    date: '03.04 20:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/WomansDay.jpg'),
-    status: null,
-  },
-  {
-  id: '4',
-  title: "Kulturrucksack Party",
-  location: 'Jugendzentrum Herne',
-  date: '26.03 14:00',
-  price: 'Gratis',
-  imageUrl: require('../../assets/images/Kulturrucksack_Party.jpg'),
-  status: null,
-  },
-  {
-    id: '5',
-    title: 'Kinder-Flohmarkt',
-    location: 'Marktplatz Innenstadt',
-    date: '15.06 10:00',
-    price: 'Standgebühr 5€',
-    imageUrl: require('../../assets/images/Flohmarkt.jpg'),
-    status: 'Anmeldung\nerforderlich',
-  },
-  {
-    id: '6',
-    title: 'Waldabenteuer für Kids',
-    location: 'Stadtwald Süd',
-    date: '22.06 15:00',
-    price: '3€',
-    imageUrl: require('../../assets/images/Waldabenteuer.jpg'),
-    status: null,
-  },
-  {
-    id: '7',
-    title: 'Märchenstunde in der Bibliothek',
-    location: 'Stadtbibliothek Zentrum',
-    date: '29.06 11:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/Märchenstunde.jpg'),
-    status: 'Fast\nausgebucht',
-  },
-  {
-    id: '8',
-    title: 'Sportfest der Grundschulen',
-    location: 'Sportanlage West',
-    date: '06.07 09:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/Sportfest.jpg'),
-    status: null,
-  },
-  {
-    id: '9',
-    title: 'Kreativwerkstatt: Töpfern',
-    location: 'Kunstschule "Farbtupfer"',
-    date: '13.07 14:30',
-    price: '10€ Materialkosten',
-    imageUrl: require('../../assets/images/Töpfern.jpg'),
-    status: null,
-  },
-];
+// Backend-URL zentral definieren
+// Für Android-Emulator: 'http://10.0.2.2:8080'
+// Für echtes Gerät: z.B. 'http://192.168.178.10:8080' (deine PC-IP im WLAN)
+const BACKEND_URL = 'http://10.0.2.2:8080';
 
-const FILTERS = [
-  { id: 'date', label: 'Datum' },
-  { id: 'payment', label: 'Zahlung' },
-  { id: 'address', label: 'Adresse' },
-];
+// Hilfsfunktion zum Mapping von Backend-Daten auf das Frontend-Format
+const mapBackendToActivity = (backendItem: any): ActivityItemProps => {
+  // Bildauswahl nach Titel (Fallback-Icon, falls nicht vorhanden)
+  const imageMap: Record<string, any> = {
+    'Kulturrucksack Party': require('../../assets/images/Kulturrucksack_Party.jpg'),
+    'Illusions': require('../../assets/images/Illusion.jpg'),
+    "Woman's Day": require('../../assets/images/WomansDay.jpg'),
+    'Kinder-Flohmarkt': require('../../assets/images/Flohmarkt.jpg'),
+    // ...weitere Zuordnungen nach Bedarf...
+  };
+  const imageUrl = imageMap[backendItem.titel] || require('../../assets/images/appLogo.png');
+
+  // Preis-String
+  let price = 'Gratis';
+  if (backendItem.preis && backendItem.preis > 0) {
+    price = backendItem.preis + '€';
+    if (backendItem.titel && backendItem.titel.toLowerCase().includes('flohmarkt')) {
+      price = 'Standgebühr ' + backendItem.preis + '€';
+    }
+  }
+
+  // Datum und Uhrzeit
+  let date = '';
+  if (backendItem.termin) {
+    const d = new Date(backendItem.termin.datum);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    date = `${day}.${month} ${backendItem.termin.uhrzeitVon}`;
+  }
+
+  // Location
+  let location = '';
+  if (backendItem.anschrift) {
+    location = `${backendItem.anschrift.strasse} ${backendItem.anschrift.hausnummer}, ${backendItem.anschrift.plz} ${backendItem.anschrift.ort}`;
+  }
+
+  // Status (optional, hier Dummy)
+  let status = null;
+  if (backendItem.aktuellerstatus && backendItem.aktuellerstatus.id) {
+    if (backendItem.aktuellerstatus.id === 3) status = 'Hat begonnen';
+    if (backendItem.aktuellerstatus.id === 7) status = 'Fast\nausgebucht';
+    if (backendItem.aktuellerstatus.id === 5) status = 'Anmeldung\nerforderlich';
+  }
+
+  return {
+    id: backendItem.id, // ID übernehmen
+    title: backendItem.titel,
+    location,
+    date,
+    price,
+    imageUrl,
+    status,
+  };
+};
 
 type ActivityItemProps = {
+  id: string | number; // ID hinzufügen
   title: string;
   location: string;
   date: string;
@@ -147,9 +117,37 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ title, location, date, pric
   </View>
 );
 
+const FILTERS = [
+  { id: 'date', label: 'Datum' },
+  { id: 'payment', label: 'Zahlung' },
+  { id: 'address', label: 'Adresse' },
+];
+
 export default function SearchScreen() {
+  const [activities, setActivities] = useState<ActivityItemProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    fetch(`${BACKEND_URL}/api/veranstaltungen`)
+      .then(res => {
+        if (!res.ok) throw new Error('Fehler beim Laden der Veranstaltungen');
+        return res.json();
+      })
+      .then(data => {
+        console.log('Veranstaltungen geladen:', data);
+        setActivities(data.map(mapBackendToActivity));
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
   const handleFilterPress = (filterId: string) => {
     setActiveFilter(prevFilter => (prevFilter === filterId ? null : filterId));
@@ -160,7 +158,7 @@ export default function SearchScreen() {
   };
 
   const displayedActivities = useMemo(() => {
-    let processedActivities = [...ACTIVITIES_DATA];
+    let processedActivities = [...activities];
 
     // Sortierung basierend auf dem activeFilter und sortOrder
     switch (activeFilter) {
@@ -194,7 +192,7 @@ export default function SearchScreen() {
     }
 
     return processedActivities;
-  }, [activeFilter, sortOrder]);
+  }, [activities, activeFilter, sortOrder]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -223,14 +221,19 @@ export default function SearchScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <FlatList
-        data={displayedActivities}
-        renderItem={({ item }) => <ActivityItem {...item} />}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContentContainer}
-        ListEmptyComponent={<Text style={styles.emptyListText}>Keine Aktivitäten gefunden.</Text>}
-      />
+      {loading ? (
+        <Text style={{ textAlign: 'center', marginTop: 40 }}>Lade Veranstaltungen ...</Text>
+      ) : error ? (
+        <Text style={{ textAlign: 'center', marginTop: 40, color: 'red' }}>{error}</Text>
+      ) : (
+        <FlatList
+          data={displayedActivities}
+          renderItem={({ item }) => <ActivityItem {...item} />}
+          keyExtractor={item => String(item.id)}
+          contentContainerStyle={styles.listContentContainer}
+          ListEmptyComponent={<Text style={styles.emptyListText}>Keine Aktivitäten gefunden.</Text>}
+        />
+      )}
     </SafeAreaView>
   );
 }

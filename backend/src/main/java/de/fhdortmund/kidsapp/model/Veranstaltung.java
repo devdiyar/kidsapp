@@ -3,6 +3,7 @@ package de.fhdortmund.kidsapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -35,17 +36,19 @@ public class Veranstaltung {
     @JoinColumn(name = "teilnehmer_id")
     private RegistrierterNutzer teilnehmer;
 
+    @OneToMany(mappedBy = "veranstaltung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Bewertung> bewertungen = new ArrayList<>();
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "status_id")
+    @JsonManagedReference
     private Status aktuellerstatus;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "umfrage_id")
+    @JsonManagedReference
     private Umfrage umfrage;
-    
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "bewertung_id")
-    private List<Bewertung> bewertungen;
     
     @Embedded
     private TerminT termin;

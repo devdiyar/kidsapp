@@ -3,6 +3,7 @@ package de.fhdortmund.kidsapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,8 +29,9 @@ public class Umfrage extends Fragentyp{
     @OneToMany(mappedBy = "umfrage",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fragentyp> fragentypen = new ArrayList<>();
 
-    @OneToOne(mappedBy = "umfrage")
-    private Veranstaltung veranstaltung;
+        @OneToOne(mappedBy = "umfrage")
+        @JsonBackReference
+        private Veranstaltung veranstaltung;
 
 
     public Umfrage() {

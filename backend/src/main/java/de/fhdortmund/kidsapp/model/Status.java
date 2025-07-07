@@ -1,5 +1,6 @@
 package de.fhdortmund.kidsapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,7 +13,8 @@ public abstract class Status {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy = "aktuellerstatus")
+    @JsonBackReference
     protected Veranstaltung veranstaltung;
 
 
