@@ -1,7 +1,6 @@
 package de.fhdortmund.kidsapp.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,27 +21,33 @@ public class Abgeschlossen extends Status {
     }
 
     @Override
-    public void ausstehenSetzen() {
-        throw new IllegalStateException("...");
+    public void stattfindendSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits abgeschlossen ist.");
+    }
+
+    @Override
+    public void ausstehendSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits abgeschlossen ist.");
     }
 
     @Override
     public void liveSetzen() {
-        throw new IllegalStateException("...");
-    }
-
-    @Override
-    public void stattfindendSetzen() {
-        throw new IllegalStateException("...");
+        throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits abgeschlossen ist.");
     }
 
     @Override
     public void abgeschlossenSetzen() {
+        System.out.println("Status bereits auf Abgeschlossen gesetzt.");
     }
 
     @Override
     public void geloeschtSetzen() {
-        Geloescht neuerStatus = new Geloescht();
-        veranstaltung.setStatus(neuerStatus);
+        System.out.println("Status wird auf Geloescht gesetzt.");
+        veranstaltung.setAktuellerstatus(new Geloescht(veranstaltung));
+    }
+
+    @Override
+    public String toString() {
+        return "Abgeschlossen";
     }
 }

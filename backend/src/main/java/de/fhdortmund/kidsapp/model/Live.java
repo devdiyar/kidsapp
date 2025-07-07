@@ -21,26 +21,35 @@ public class Live extends Status {
     }
 
     @Override
-    public void ausstehenSetzen() {
-        throw new IllegalStateException("...");
+    public void stattfindendSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits Live ist.");
+    }
+
+    @Override
+    public void ausstehendSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Live ist.");
     }
 
     @Override
     public void liveSetzen() {
-    }
+        System.out.println("Status bereits auf Live gesetzt.");
 
-    @Override
-    public void stattfindendSetzen() {
-        veranstaltung.setStatus(new Stattfindend());
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        veranstaltung.setStatus(new Abgeschlossen());
+        System.out.println("Status wird auf Abgeschlossen gesetzt.");
+        veranstaltung.setAktuellerstatus(new Abgeschlossen(veranstaltung));
     }
 
     @Override
     public void geloeschtSetzen() {
-        veranstaltung.setStatus(new Geloescht());
+        System.out.println("Status wird auf Geloescht gesetzt.");
+        veranstaltung.setAktuellerstatus(new Geloescht(veranstaltung));
+    }
+
+    @Override
+    public String toString() {
+        return "Live";
     }
 }

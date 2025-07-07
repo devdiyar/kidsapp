@@ -8,23 +8,24 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 public abstract class Status {
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @OneToOne
     protected Veranstaltung veranstaltung;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
 
     public Status(Veranstaltung veranstaltung) {
         this.veranstaltung = veranstaltung;
     }
 
-    public Status() {
+    public Status() {}
 
-    }
-
-    public abstract void ausstehenSetzen();
-    public abstract void liveSetzen();
     public abstract void stattfindendSetzen();
+    public abstract void ausstehendSetzen();
+    public abstract void liveSetzen();
     public abstract void abgeschlossenSetzen();
     public abstract void geloeschtSetzen();
+
 }

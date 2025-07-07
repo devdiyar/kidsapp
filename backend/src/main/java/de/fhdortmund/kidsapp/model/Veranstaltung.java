@@ -38,20 +38,30 @@ public class Veranstaltung {
     private Bewertung bewertung;
     
     @Embedded
-    private TerminT termin;    
+    private TerminT termin;
 
     public Veranstaltung() {
-        initializeStatus();
+        setAktuellerstatus(new Ausstehend(this));
     }
 
-    private void initializeStatus() {
-        Status status = new Ausstehend();
-        status.setVeranstaltung(this);
-        this.aktuellerstatus = status;
+    public void setAktuellerstatus(Status aktuellerstatus) {
+        this.aktuellerstatus = aktuellerstatus;
+        System.out.println("Status gesetzt: " + aktuellerstatus);
     }
 
-    public void setStatus(Status neuerStatus) {
-        neuerStatus.setVeranstaltung(this);
-        this.aktuellerstatus = neuerStatus;
+    public void ausstehendSetzen() {
+        aktuellerstatus.ausstehendSetzen();
+    }
+    public void stattfindendSetzen() {
+        aktuellerstatus.stattfindendSetzen();
+    }
+    public void liveSetzen(Bewertung bewertung) {
+        aktuellerstatus.liveSetzen();
+    }
+    public void abgeschlossenSetzen() {
+        aktuellerstatus.abgeschlossenSetzen();
+    }
+    public void geloeschtSetzen() {
+        aktuellerstatus.geloeschtSetzen();
     }
 }

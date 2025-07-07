@@ -15,31 +15,35 @@ public class Stattfindend extends Status {
     }
     public Stattfindend() {}
 
+    @Override
+    public void stattfindendSetzen() {
+        System.out.println("Status bereits auf Stattfindend gesetzt.");
+    }
 
     @Override
-    public void ausstehenSetzen() {
-        throw new IllegalStateException("...");
+    public void ausstehendSetzen() {
+        System.out.println("Status wird auf Ausstehend gesetzt.");
+        veranstaltung.setAktuellerstatus(new Ausstehend(veranstaltung));
     }
 
     @Override
     public void liveSetzen() {
-        Live neuerStatus = new Live();
-        veranstaltung.setStatus(neuerStatus);
-    }
-
-    @Override
-    public void stattfindendSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits Stattfindend ist.");
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        Abgeschlossen neuerStatus = new Abgeschlossen();
-        veranstaltung.setStatus(neuerStatus);
+        throw new IllegalStateException("Status kann nicht auf Abgeschlossen gesetzt werden, da er bereits Stattfindend ist.");
     }
 
     @Override
     public void geloeschtSetzen() {
-        Geloescht neuerStatus = new Geloescht();
-        veranstaltung.setStatus(neuerStatus);
+        System.out.println("Status wird auf Geloescht gesetzt.");
+        veranstaltung.setAktuellerstatus(new Geloescht(veranstaltung));
+    }
+
+    @Override
+    public String toString() {
+        return "Stattfindend";
     }
 }
