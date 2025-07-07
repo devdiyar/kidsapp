@@ -17,11 +17,11 @@ public abstract class Nutzer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    private String vorname;
-    private String name;
+    protected String vorname;
+    protected String name;
 
     @Embedded
-    private AnschriftT anschrift;
+    protected AnschriftT anschrift;
 
     public Nutzer() {
     }
