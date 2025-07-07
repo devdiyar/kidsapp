@@ -19,7 +19,7 @@ public class Bewertung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private int punktzahl;
+    private int steranzahl;
     private String kommentar;
     
     @ManyToOne

@@ -1,21 +1,15 @@
 package de.fhdortmund.kidsapp.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 @Getter
-    @Data
+@Data
 public class Veranstaltung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,15 +27,26 @@ public class Veranstaltung {
     @JoinColumn(name = "umfrage_id")
     private Umfrage umfrage;
     
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "bewertung_id")
-    private Bewertung bewertung;
+    private List<Bewertung> bewertungen;
     
     @Embedded
     private TerminT termin;
 
     public Veranstaltung() {
+        bewertungen = new ArrayList<>();
         setAktuellerstatus(new Ausstehend(this));
+    }
+
+    public Bewertung bewertungErstellen(int steranzahl, String kommentar, RegistrierterNutzer bewerter) {
+        Bewertung bewertung = new Bewertung();
+        bewertung.setSteranzahl(steranzahl);
+        bewertung.setKommentar(kommentar);
+        bewertung.setBewerter(bewerter);
+        bewertung.setVeranstaltung(this);
+        this.bewertungen.add(bewertung);
+        return bewertung;
     }
 
     public void setAktuellerstatus(Status aktuellerstatus) {
