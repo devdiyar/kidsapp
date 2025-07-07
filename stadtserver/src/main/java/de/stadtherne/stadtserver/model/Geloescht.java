@@ -1,6 +1,5 @@
-package de.stadtherne.stadtserver.model.zustand;
+package de.stadtherne.stadtserver.model;
 
-import de.stadtherne.stadtserver.model.fabrik.Veranstaltung;
 import jakarta.persistence.Entity;
 
 @Entity

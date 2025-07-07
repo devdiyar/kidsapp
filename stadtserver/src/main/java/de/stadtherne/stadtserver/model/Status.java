@@ -1,7 +1,10 @@
-package de.stadtherne.stadtserver.model.zustand;
+package de.stadtherne.stadtserver.model;
 
-import de.stadtherne.stadtserver.model.fabrik.Veranstaltung;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public abstract class Status {

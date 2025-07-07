@@ -1,12 +1,11 @@
-package de.stadtherne.stadtserver.model.fabrik;
 
-import de.stadtherne.stadtserver.model.AnschriftT;
+package de.stadtherne.stadtserver.model;
+
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.stadtherne.stadtserver.model.Nutzer;
 
 @Entity
 public class Beamter extends Nutzer {

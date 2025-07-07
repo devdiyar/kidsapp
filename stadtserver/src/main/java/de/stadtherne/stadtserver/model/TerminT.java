@@ -3,7 +3,7 @@ package de.stadtherne.stadtserver.model;
 import java.sql.Time;
 import java.util.Date;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.Data;
 
 @Embeddable

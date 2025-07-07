@@ -1,11 +1,12 @@
 package de.stadtherne.stadtserver.service;
 
-import de.stadtherne.stadtserver.model.Umfrage;
-import de.stadtherne.stadtserver.repository.UmfrageRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import de.stadtherne.stadtserver.model.Umfrage;
+import de.stadtherne.stadtserver.repository.UmfrageRepository;
 
 @Service
 public class UmfrageService {

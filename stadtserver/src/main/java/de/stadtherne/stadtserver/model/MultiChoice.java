@@ -1,4 +1,4 @@
-package de.stadtherne.stadtserver.model.komposition;
+package de.stadtherne.stadtserver.model;
 
 import jakarta.persistence.Entity;
 

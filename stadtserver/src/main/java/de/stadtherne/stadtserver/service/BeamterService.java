@@ -1,12 +1,12 @@
 package de.stadtherne.stadtserver.service;
 
-import de.stadtherne.stadtserver.model.Veranstaltung;
-import de.stadtherne.stadtserver.model.Beamter;
-import de.stadtherne.stadtserver.repository.BeamterRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import de.stadtherne.stadtserver.model.Beamter;
+import de.stadtherne.stadtserver.repository.BeamterRepository;
 
 @Service
 public class BeamterService {
@@ -24,8 +24,8 @@ public class BeamterService {
         return beamterRepository.findById(id);
     }
 
-    public Veranstaltung speichern(Veranstaltung veranstaltung) {
-        return beamterRepository.save(veranstaltung);
+    public Beamter speichern(Beamter beamter) {
+        return beamterRepository.save(beamter);
     }
 
     public void loeschen(Long id) {

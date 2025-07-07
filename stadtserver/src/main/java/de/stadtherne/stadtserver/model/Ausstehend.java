@@ -1,20 +1,19 @@
-package de.stadtherne.stadtserver.model.zustand;
+package de.stadtherne.stadtserver.model;
 
-import de.stadtherne.stadtserver.model.fabrik.Veranstaltung;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Abgeschlossen extends Status {
-    public Abgeschlossen() {
+public class Ausstehend extends Status {
+    public Ausstehend() {
     }
 
-    public Abgeschlossen(Veranstaltung v) {
+    public Ausstehend(Veranstaltung v) {
         super(v);
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        veranstaltung.setStatus(new Abgeschlossen(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Ausstehend zu Abgeschlossen wechseln");
     }
 
     @Override
@@ -25,13 +24,13 @@ public class Abgeschlossen extends Status {
 
     @Override
     public void ausstehendSetzen() {
-        veranstaltung.setStatus(new Ausstehend(veranstaltung));
+        // befindet sich in dem Zustand
 
     }
 
     @Override
     public void stattfindendSetzen() {
-        veranstaltung.setStatus(new Stattfindend(veranstaltung));
+        throw new IllegalStateException("Kann nicht von Ausstehend zu Stattfindend wechseln");
 
     }
 

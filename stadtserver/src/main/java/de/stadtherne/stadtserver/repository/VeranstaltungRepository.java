@@ -9,6 +9,6 @@ import de.stadtherne.stadtserver.model.Veranstaltung;
  * Repository for handling Aktivitaet entities.
  */
 @Repository
-public interface AktivitaetRepository extends JpaRepository<Veranstaltung, Long> {
+public interface VeranstaltungRepository extends JpaRepository<Veranstaltung, Long> {
     // Methoden ergänzen
 }
