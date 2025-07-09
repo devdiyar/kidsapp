@@ -6,6 +6,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/constants/Colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
 
@@ -101,3 +102,4 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
