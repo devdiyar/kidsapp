@@ -22,7 +22,7 @@ export const ACTIVITIES_DATA: Activity[] = [
       price: '5€',
       imageUrl: require('../../assets/images/Adventsgrabung.jpg'),
       status: null,
-      description: 'test 111111111111111111111111111111111111111111111111111111111111111111111111111111111111 ',
+      description: 'Ein winterliches Abenteuer für Kinder, bei dem kleine Überraschungen im Schnee ausgegraben werden.',
       rating: 4.5,
       ratingCount: 128,
     },
