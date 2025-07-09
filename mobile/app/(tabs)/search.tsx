@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useRouter } from 'expo-router';
@@ -156,6 +156,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ title, location, date, pric
 export default function SearchScreen() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [searchText, setSearchText] = useState<string>('');
 
   const router = useRouter();
 
@@ -168,7 +169,10 @@ export default function SearchScreen() {
   };
 
   const displayedActivities = useMemo(() => {
-    let processedActivities = [...ACTIVITIES_DATA];
+    // Zuerst nach Suchtext filtern
+    let processedActivities = [...ACTIVITIES_DATA].filter(activity => 
+      activity.title.toLowerCase().includes(searchText.toLowerCase())
+    );
 
     // Sortierung basierend auf dem activeFilter und sortOrder
     switch (activeFilter) {
@@ -202,10 +206,20 @@ export default function SearchScreen() {
     }
 
     return processedActivities;
-  }, [activeFilter, sortOrder]);
+  }, [activeFilter, sortOrder, searchText]);
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Nach Aktivitäten suchen..."
+          value={searchText}
+          onChangeText={setSearchText}
+          clearButtonMode="while-editing"
+        />
+      </View>
+
       <View style={styles.filterBarContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScrollView}>
           {FILTERS.map(filter => (
@@ -362,5 +376,21 @@ const styles = StyleSheet.create({
     marginTop: 50,
     fontSize: 16,
     color: '#777',
-  }
+  },
+  searchContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  searchInput: {
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 20,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
 });
