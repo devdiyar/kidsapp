@@ -64,9 +64,3 @@ app-example
 backend/.gitignore
 mobile/.gitignore
 stadtserver/.gitignore
-
-
-expo-env.d.ts
-
-android/
-ios/
