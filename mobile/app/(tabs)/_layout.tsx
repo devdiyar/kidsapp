@@ -93,6 +93,12 @@ export default function TabLayout() {
             ),
         }}
       />
+      <Tabs.Screen
+        name="_survey"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

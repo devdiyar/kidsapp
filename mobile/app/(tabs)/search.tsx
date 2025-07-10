@@ -1,6 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
 
 // Beispiel-Daten für Aktivitäten
 const ACTIVITIES_DATA = [
@@ -100,6 +103,7 @@ type ActivityItemProps = {
   price: string;
   imageUrl: ImageSourcePropType;
   status?: string | null;
+  onPress?: () => void;
 };
 
 // Hilfsfunktion zum Parsen des Datumsstrings
@@ -130,26 +134,31 @@ const parsePriceString = (priceStr: string): number => {
 };
 
 
-const ActivityItem: React.FC<ActivityItemProps> = ({ title, location, date, price, imageUrl, status }) => (
-  <View style={styles.itemContainer}>
-    <Image source={imageUrl} style={styles.image} />
-    <View style={styles.infoContainer}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.location}>{location}</Text>
-      <Text style={styles.date}>{date}</Text>
-      <Text style={styles.price}>{price}</Text>
-    </View>
-    {status && (
-      <View style={styles.statusBadge}>
-        <Text style={styles.statusText}>{status}</Text>
+const ActivityItem: React.FC<ActivityItemProps> = ({ title, location, date, price, imageUrl, status, onPress }) => (
+  <Pressable onPress={onPress}>
+    <View style={styles.itemContainer}>
+      <Image source={imageUrl} style={styles.image} />
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.location}>{location}</Text>
+        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.price}>{price}</Text>
       </View>
-    )}
-  </View>
+      {status && (
+        <View style={styles.statusBadge}>
+          <Text style={styles.statusText}>{status}</Text>
+        </View>
+      )}
+    </View>
+  </Pressable>
 );
 
 export default function SearchScreen() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [searchText, setSearchText] = useState<string>('');
+
+  const router = useRouter();
 
   const handleFilterPress = (filterId: string) => {
     setActiveFilter(prevFilter => (prevFilter === filterId ? null : filterId));
@@ -160,7 +169,10 @@ export default function SearchScreen() {
   };
 
   const displayedActivities = useMemo(() => {
-    let processedActivities = [...ACTIVITIES_DATA];
+    // Zuerst nach Suchtext filtern
+    let processedActivities = [...ACTIVITIES_DATA].filter(activity => 
+      activity.title.toLowerCase().includes(searchText.toLowerCase())
+    );
 
     // Sortierung basierend auf dem activeFilter und sortOrder
     switch (activeFilter) {
@@ -194,10 +206,20 @@ export default function SearchScreen() {
     }
 
     return processedActivities;
-  }, [activeFilter, sortOrder]);
+  }, [activeFilter, sortOrder, searchText]);
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Nach Aktivitäten suchen..."
+          value={searchText}
+          onChangeText={setSearchText}
+          clearButtonMode="while-editing"
+        />
+      </View>
+
       <View style={styles.filterBarContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScrollView}>
           {FILTERS.map(filter => (
@@ -226,7 +248,9 @@ export default function SearchScreen() {
 
       <FlatList
         data={displayedActivities}
-        renderItem={({ item }) => <ActivityItem {...item} />}
+        renderItem={({ item }) => <ActivityItem {...item} 
+        onPress={() => router.push({ pathname: '/details/[id]', params: { id: item.id } })}
+        />}
         keyExtractor={item => item.id}
         contentContainerStyle={styles.listContentContainer}
         ListEmptyComponent={<Text style={styles.emptyListText}>Keine Aktivitäten gefunden.</Text>}
@@ -352,5 +376,21 @@ const styles = StyleSheet.create({
     marginTop: 50,
     fontSize: 16,
     color: '#777',
-  }
+  },
+  searchContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  searchInput: {
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 20,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
 });
