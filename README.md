@@ -1,83 +1,83 @@
-# Repository for the Software Engineering lecture
+# Repository für die Software-Engineering-Vorlesung
 
-## Description of the Project
+## Beschreibung des Projekts
 
-This project aims to create an application for children and young people in the city of Herne.
-With the help of an interactive map, this application makes it possible for them to access offers in their area.
-They will also be able to filter activities, save their preferences, rate the offers, and search for them.
+Ziel dieses Projektes ist die Erstellung einer Anwendung für Kinder und Jugendliche in der Stadt Herne.
+Mit Hilfe einer interaktiven Karte ermöglicht diese Anwendung ihnen den Zugang zu Angeboten in ihrer Umgebung.
+Außerdem können sie Aktivitäten filtern, ihre Präferenzen speichern, die Angebote bewerten und nach ihnen suchen.
 
 ## Team
 
-Team Leader: Diyar Hasan
+Teamleiter: Diyar Hasan
 
-Members: Valentin Stein, Niklas Prinz, Abdul Balhas, Baturalp Kalabalik, Shengliang Wang
+Mitglieder: Valentin Stein, Niklas Prinz, Abdul Balhas, Baturalp Kalabalik, Shengliang Wang
 
 
-## Quickstart
+## Schnellstart
 
-This section outlines the steps required to get your project up and running quickly:
+In diesem Abschnitt werden die Schritte beschrieben, die erforderlich sind, um Ihr Projekt schnell zum Laufen zu bringen:
 
 ```bash,ignore
-# Example: Start a PostgreSQL database using Docker
+## Beispiel: Starten einer PostgreSQL-Datenbank mit Docker
 $ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 
-# Example: Start the project (e.g., using Spring Boot)
+# Beispiel: Starten Sie das Projekt (z. B. mit Spring Boot)
 $ ./mvnw spring-boot:ru
 ```
 
-## Prerequisites
+## Voraussetzungen
 
-Detail all the necessary prerequisites for running your project, such as:
+Geben Sie alle notwendigen Voraussetzungen für die Ausführung Ihres Projekts an, wie z. B:
 
-Operating System: (e.g., Linux, macOS, Windows)
+Betriebssystem: (z.B. Linux, macOS, Windows)
 
 Software: Docker, Java, Maven
 
-Ports: (e.g., port 8080, if applicable)
+Ports: (z. B. Port 8080, falls zutreffend)
 
-## Installation and Setup
+## Installation und Einrichtung
 
-Provide step-by-step instructions on how to clone the repository, install the project, and configure it:
+Geben Sie eine Schritt-für-Schritt-Anleitung, wie Sie das Repository klonen, das Projekt installieren und konfigurieren:
 
-1. Clone the repository:
+1. Klonen Sie das Repository:
 ```bash,ignore
 $ git clone https://github.com/devdiyar/kidsapp.git
 ```
 
-2. Navigate to the project directory:
+2. Navigieren Sie in das Projektverzeichnis:
 ```bash,ignore
 $ cd kidsapp
 ```
 
-3. Adjust configuration files:
+3. Passen Sie die Konfigurationsdateien an:
 
-Modify configuration files (e.g., `.env`, `application.properties`) as required.
+Ändern Sie die Konfigurationsdateien (z.B. `.env`, `application.properties`) wie erforderlich.
 
 
-## Running the Project
+## Ausführen des Projekts
 
-Explain in detail how to run the project, including:
+Erläutern Sie im Detail, wie das Projekt ausgeführt wird, einschließlich:
 
-Starting the database
+Starten der Datenbank
 
-Initializing data (if needed, via scripts)
+Initialisierung der Daten (falls erforderlich, über Skripte)
 
-Starting the server
+Starten des Servers
 
 ```bash,ignore
-# Example: Initialize the database
+# Beispiel: Initialisieren der Datenbank
 $ ./init-db.sh
 
-# Start the project
+# Das Projekt starten
 $ ./mvnw spring-boot:run
 ```
 
-## Project structure
-Provide an overview of the directory structure to help contributors navigate the project:
-```bash,ignore
-ProjectName/
-├── project_one/        # Description of this subproject
-├── docs/               # Documentation
-├── tests/              # Test cases
-└── README.md           # This file
+## Projektstruktur
+Geben Sie einen Überblick über die Verzeichnisstruktur, um Mitwirkenden das Navigieren im Projekt zu erleichtern:
+````bash,ignore
+Projektname/
+├── project_one/ # Beschreibung dieses Teilprojekts
+├─── docs/ # Dokumentation
+├── tests/ # Testfälle
+└── README.md # Diese Datei
 ```

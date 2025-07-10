@@ -1,45 +1,105 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Tabs } from "expo-router";
+import React from "react";
+import { Platform, View } from "react-native";
+import Feather from "react-native-vector-icons/Feather";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { Colors } from "@/constants/Colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          height: 100 + insets.bottom,
+          paddingTop: 30,
+          paddingBottom: insets.bottom,
+          position: "absolute",
+        },
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="search"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <View
+                style={{
+                  backgroundColor: Colors.tabIconSelectedBg,
+                  borderRadius: 50,
+                  width: 60,
+                  height: 60,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Feather
+                  name="search"
+                  size={30}
+                  color={Colors.tabIconSelected}
+                />
+              </View>
+            ) : (
+              <Feather name="search" size={30} color={Colors.tabIconDefault} />
+            ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="index"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <View
+                style={{
+                  backgroundColor: Colors.tabIconSelectedBg,
+                  borderRadius: 50,
+                  width: 60,
+                  height: 60,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Feather name="map" size={30} color={Colors.tabIconSelected} />
+              </View>
+            ) : (
+              <Feather name="map" size={30} color={Colors.tabIconDefault} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <View
+                style={{
+                  backgroundColor: Colors.tabIconSelectedBg,
+                  borderRadius: 50,
+                  width: 60,
+                  height: 60,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Feather name="user" size={30} color={Colors.tabIconSelected} />
+              </View>
+            ) : (
+              <Feather name="user" size={30} color={Colors.tabIconDefault} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="_survey"
+        options={{
+          href: null,
         }}
       />
     </Tabs>
   );
 }
+
