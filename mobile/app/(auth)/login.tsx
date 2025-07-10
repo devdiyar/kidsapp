@@ -23,21 +23,30 @@ export default function LoginScreen() {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <AppButton
-        title="Anmelden"
-        variant="orange"
-      />
-      <AppButton
-        title="Ein Konto erstellen"
-        onPress={() => router.push("/(auth)/register")}
-        variant="black"
-      />
-      <Text style={styles.orText}>Oder</Text>
-      <AppButton
-        title="Ohne Anmeldung fortfahren"
-        onPress={() => router.push("../(tabs)/search")}
-        variant="black"
-      />
+      
+      <View style={styles.buttonContainer}>
+        <AppButton
+          title="Anmelden"
+          variant="orange"
+          onPress={() => {
+            // hier loginlogik implementieren
+            console.log('Login attempt:', { username, password });
+            // nach erfolgreichem Login zur Hauptseite navigieren
+            router.push("/(tabs)");
+          }}
+        />
+        <AppButton
+          title="Ein Konto erstellen"
+          onPress={() => router.push("/(auth)/register")}
+          variant="black"
+        />
+        <Text style={styles.orText}>Oder</Text>
+        <AppButton
+          title="Ohne Anmeldung fortfahren"
+          onPress={() => router.push("../(tabs)/search")}
+          variant="black"
+        />
+      </View>
     </View>
   );
 }
@@ -58,5 +67,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 8,
     fontSize: 15,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    marginTop: 16,
   },
 });

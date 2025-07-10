@@ -5,39 +5,77 @@ import AppTextInput from "@/components/ui/AppTextInput";
 import { router } from "expo-router";
 
 export default function RegisterScreen() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+      <Text style={styles.title}>Registrierung</Text>
+      
       <AppTextInput
-        placeholder="Benutzername/Email"
+        placeholder="Vorname"
+        value={firstName}
+        onChangeText={setFirstName}
+      />
+      
+      <AppTextInput
+        placeholder="Nachname"
+        value={lastName}
+        onChangeText={setLastName}
+      />
+      
+      <AppTextInput
+        placeholder="Geburtsdatum"
+        value={birthDate}
+        onChangeText={setBirthDate}
+      />
+      
+      <AppTextInput
+        placeholder="E-mail"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+        keyboardType="email-address"
+      />
+      
+      <AppTextInput
+        placeholder="Benutzername"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
       />
+      
       <AppTextInput
-        placeholder="Passwort"
+        placeholder="Neues Passwort"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <AppButton
-        title="Anmelden"
-        variant="orange"
+      
+      <AppTextInput
+        placeholder="Passwort Bestätigen"
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        secureTextEntry
       />
-      <AppButton
-        title="Ein Konto erstellen"
-        onPress={() => router.push("/(auth)/register")}
-        variant="black"
-      />
-      <Text style={styles.orText}>Oder</Text>
-      <AppButton
-        title="Ohne Anmeldung fortfahren"
-        onPress={() => router.push("../(tabs)/search")}
-        variant="black"
-      />
+      
+      <View style={styles.buttonContainer}>
+        <AppButton
+          title="Registrieren"
+          variant="orange"
+        />
+        
+        <AppButton
+          title="Habe bereits ein Konto"
+          onPress={() => router.push("/(auth)/login")}
+          variant="black"
+        />
+      </View>
     </View>
   );
 }
@@ -54,9 +92,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 32,
   },
-  orText: {
-    textAlign: "center",
-    marginVertical: 8,
-    fontSize: 15,
+  buttonContainer: {
+    alignItems: "center",
+    marginTop: 16,
   },
 });
