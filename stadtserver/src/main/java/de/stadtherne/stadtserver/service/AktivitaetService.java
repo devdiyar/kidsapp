@@ -1,7 +1,7 @@
 package de.stadtherne.stadtserver.service;
 
 import de.stadtherne.stadtserver.model.Aktivitaet;
-import de.stadtherne.stadtserver.repository.AktivitaetRepository;
+import de.stadtherne.stadtserver.Repository.AktivitaetRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

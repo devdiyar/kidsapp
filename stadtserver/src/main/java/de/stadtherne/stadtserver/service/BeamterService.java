@@ -1,33 +1,34 @@
 package de.stadtherne.stadtserver.service;
 
-import de.stadtherne.stadtserver.model.Aktivitaet;
-import de.stadtherne.stadtserver.repository.BeamterRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import de.stadtherne.stadtserver.Repository.BeamterRepository;
+import de.stadtherne.stadtserver.model.Beamter;
 
 @Service
 public class BeamterService {
     private final BeamterRepository beamterRepository;
 
-    public AktivitaetService(BeamterRepository beamterRepository) {
+    public BeamterService(BeamterRepository beamterRepository) {
         this.beamterRepository = beamterRepository;
     }
 
-    public List<Aktivitaet> alleBeamten() {
+    public List<Beamter> alleBeamten() {
         return beamterRepository.findAll();
     }
 
-    public Optional<Aktivitaet> BeamterByID(Long id) {
+    public Optional<Beamter> beamterById(Long id) {
         return beamterRepository.findById(id);
     }
 
-    public Aktivitaet speichern(Aktivitaet aktivitaet) {
-        return beamterRepository.save(aktivitaet);
+    public Beamter speichern(Beamter beamter) {
+        return beamterRepository.save(beamter);
     }
 
-    public void loeschen(Long id) {
+    public void löschen(Long id) {
         beamterRepository.deleteById(id);
     }
 }

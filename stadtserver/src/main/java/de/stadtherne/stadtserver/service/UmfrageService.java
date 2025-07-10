@@ -1,7 +1,7 @@
 package de.stadtherne.stadtserver.service;
 
 import de.stadtherne.stadtserver.model.Umfrage;
-import de.stadtherne.stadtserver.repository.UmfrageRepository;
+import de.stadtherne.stadtserver.Repository.UmfrageRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
