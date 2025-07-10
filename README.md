@@ -1,6 +1,6 @@
 # Repository für die Software-Engineering-Vorlesung
 
-## Beschreibung des Projekts
+## Beschreibung des ProjektsBeschreibung des Projekts
 
 Ziel dieses Projektes ist die Erstellung einer Anwendung für Kinder und Jugendliche in der Stadt Herne.
 Mit Hilfe einer interaktiven Karte ermöglicht diese Anwendung ihnen den Zugang zu Angeboten in ihrer Umgebung.
@@ -15,69 +15,88 @@ Mitglieder: Valentin Stein, Niklas Prinz, Abdul Balhas, Baturalp Kalabalik, Shen
 
 ## Schnellstart
 
-In diesem Abschnitt werden die Schritte beschrieben, die erforderlich sind, um Ihr Projekt schnell zum Laufen zu bringen:
+Der einfachste Weg, die gesamte Anwendung zu starten, ist mit Docker Compose. Stellen Sie sicher, dass Docker auf Ihrem System installiert ist.
 
-```bash,ignore
-## Beispiel: Starten einer PostgreSQL-Datenbank mit Docker
-$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-
-# Beispiel: Starten Sie das Projekt (z. B. mit Spring Boot)
-$ ./mvnw spring-boot:ru
+```bash
+# Startet alle Dienste (Frontend, Backend, Stadtserver) im Hintergrund
+$ docker-compose up -d
 ```
 
 ## Voraussetzungen
 
-Geben Sie alle notwendigen Voraussetzungen für die Ausführung Ihres Projekts an, wie z. B:
+Stellen Sie sicher, dass die folgende Software auf Ihrem System installiert ist:
 
-Betriebssystem: (z.B. Linux, macOS, Windows)
-
-Software: Docker, Java, Maven
-
-Ports: (z. B. Port 8080, falls zutreffend)
+*   **Betriebssystem:** Linux, macOS oder Windows
+*   **Software:**
+    *   Docker & Docker Compose
+    *   Java 17+
+    *   Maven
+    *   Node.js & npm (für die Frontend-Entwicklung)
+    *   Um die Dienste manuell zu starten, benötigen sie Oracle XE. Oracle XE ist leider nur für Windows und Linux verfügbar.
 
 ## Installation und Einrichtung
 
 Geben Sie eine Schritt-für-Schritt-Anleitung, wie Sie das Repository klonen, das Projekt installieren und konfigurieren:
 
-1. Klonen Sie das Repository:
-```bash,ignore
-$ git clone https://github.com/devdiyar/kidsapp.git
-```
+1.  Klonen Sie das Repository:
+    ```bash
+    $ git clone https://github.com/devdiyar/kidsapp.git
+    ```
 
-2. Navigieren Sie in das Projektverzeichnis:
-```bash,ignore
-$ cd kidsapp
-```
+2.  Navigieren Sie in das Projektverzeichnis:
+    ```bash
+    $ cd kidsapp
+    ```
 
-3. Passen Sie die Konfigurationsdateien an:
+3.  Konfiguration (optional):
 
-Ändern Sie die Konfigurationsdateien (z.B. `.env`, `application.properties`) wie erforderlich.
-
+    Die Standardkonfigurationen für die Entwicklung sind in den jeweiligen `application.properties` der Backend-Dienste (`backend`, `stadtserver`) und in der `docker-compose.yml` hinterlegt. Passen Sie diese bei Bedarf an.
 
 ## Ausführen des Projekts
 
-Erläutern Sie im Detail, wie das Projekt ausgeführt wird, einschließlich:
+Sie können das Projekt mit Docker Compose (empfohlen) oder die Dienste manuell starten.
 
-Starten der Datenbank
+### Mit Docker Compose (Empfohlen)
 
-Initialisierung der Daten (falls erforderlich, über Skripte)
+```bash
+# Startet alle Dienste im Vordergrund, um Logs zu sehen
+$ docker-compose up
 
-Starten des Servers
-
-```bash,ignore
-# Beispiel: Initialisieren der Datenbank
-$ ./init-db.sh
-
-# Das Projekt starten
-$ ./mvnw spring-boot:run
+# Stoppt und entfernt die Container
+$ docker-compose down
 ```
 
+### Manuelles Starten der Dienste
+
+Falls Sie die Dienste einzeln ohne Docker ausführen möchten:
+
+1.  **Stadtserver starten:**
+    ```bash
+    $ cd stadtserver
+    $ ./mvnw spring-boot:run
+    ```
+
+2.  **Backend starten:**
+    ```bash
+    $ cd backend
+    $ ./mvnw spring-boot:run
+    ```
+
+3.  **Mobile App (Frontend) starten:**
+    ```bash
+    $ cd mobile
+    $ npm install
+    $ npm start
+    ```
+
 ## Projektstruktur
-Geben Sie einen Überblick über die Verzeichnisstruktur, um Mitwirkenden das Navigieren im Projekt zu erleichtern:
-````bash,ignore
-Projektname/
-├── project_one/ # Beschreibung dieses Teilprojekts
-├─── docs/ # Dokumentation
-├── tests/ # Testfälle
-└── README.md # Diese Datei
+Das Repository ist in drei Hauptkomponenten unterteilt:
+
+```
+kidsapp/
+├── backend/         # Haupt-Backend-Service (Spring Boot)
+├── mobile/          # Mobile Anwendung (React Native / Expo)
+├── stadtserver/     # Stadtserver Backend-Service (Spring Boot)
+├── docker-compose.yml # Definiert und konfiguriert alle Dienste für Docker
+└── README.md        # Diese Datei
 ```
