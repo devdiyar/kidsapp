@@ -20,6 +20,7 @@
     "@react-navigation/native": "^7.1.7",
     "@types/react-native-vector-icons": "^6.4.18",
     "axios": "^1.9.0",
+    "@react-native-community/slider": "^4.5.7",
     "expo": "~53.0.0",
     "expo-blur": "~14.1.4",
     "expo-checkbox": "^4.1.4",
