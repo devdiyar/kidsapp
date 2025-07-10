@@ -16,6 +16,11 @@ public class Stattfindend extends Status {
     public Stattfindend() {}
 
     @Override
+    public void erstelltSetzen() {
+
+    }
+
+    @Override
     public void stattfindendSetzen() {
         System.out.println("Status bereits auf Stattfindend gesetzt.");
     }
@@ -27,13 +32,38 @@ public class Stattfindend extends Status {
     }
 
     @Override
-    public void liveSetzen() {
+    public void trendingSetzen(int anzahlTeilnehmer) {
+        throw new IllegalStateException("Status kann nicht auf Trending gesetzt werden, da er bereits Stattfindend ist.");
+    }
+
+    @Override
+    public void inVorbereitungSetzen() {
+        throw new IllegalStateException("Status kann nicht auf InVorbereitung gesetzt werden, da er bereits Stattfindend ist.");
+    }
+
+    @Override
+    public void stroniertSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Stroniert gesetzt werden, da er bereits Stattfindend ist.");
+    }
+
+    @Override
+    public void liveSetzen(int teilnehmerAnzahl) {
         throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits Stattfindend ist.");
     }
 
     @Override
     public void abgeschlossenSetzen() {
         throw new IllegalStateException("Status kann nicht auf Abgeschlossen gesetzt werden, da er bereits Stattfindend ist.");
+    }
+
+    @Override
+    public void bewertungVerfuegbarSetzen() {
+        throw new IllegalStateException("Status kann nicht auf BewertungVerfuegbar gesetzt werden, da er bereits Stattfindend ist.");
+    }
+
+    @Override
+    public void umfrageVerfuegbarSetzen() {
+        throw new IllegalStateException("Status kann nicht auf UmfrageVerfuegbar gesetzt werden, da er bereits Stattfindend ist.");
     }
 
     @Override

@@ -21,6 +21,11 @@ public class Live extends Status {
     }
 
     @Override
+    public void erstelltSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Erstellt gesetzt werden, da er bereits Live ist.");
+    }
+
+    @Override
     public void stattfindendSetzen() {
         throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits Live ist.");
     }
@@ -31,7 +36,22 @@ public class Live extends Status {
     }
 
     @Override
-    public void liveSetzen() {
+    public void trendingSetzen(int anzahlTeilnehmer) {
+        throw new IllegalStateException("Status kann nicht auf Trending gesetzt werden, da er bereits Live ist.");
+    }
+
+    @Override
+    public void inVorbereitungSetzen() {
+        throw new IllegalStateException("Status kann nicht auf InVorbereitung gesetzt werden, da er bereits Live ist.");
+    }
+
+    @Override
+    public void stroniertSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Stroniert gesetzt werden, da er bereits Live ist.");
+    }
+
+    @Override
+    public void liveSetzen(int teilnehmerAnzahl) {
         System.out.println("Status bereits auf Live gesetzt.");
 
     }
@@ -40,6 +60,16 @@ public class Live extends Status {
     public void abgeschlossenSetzen() {
         System.out.println("Status wird auf Abgeschlossen gesetzt.");
         veranstaltung.setAktuellerstatus(new Abgeschlossen(veranstaltung));
+    }
+
+    @Override
+    public void bewertungVerfuegbarSetzen() {
+        throw new IllegalStateException("Status kann nicht auf BewertungVerfuegbar gesetzt werden, da er bereits Live ist.");
+    }
+
+    @Override
+    public void umfrageVerfuegbarSetzen() {
+        throw new IllegalStateException("Status kann nicht auf UmfrageVerfuegbar gesetzt werden, da er bereits Live ist.");
     }
 
     @Override

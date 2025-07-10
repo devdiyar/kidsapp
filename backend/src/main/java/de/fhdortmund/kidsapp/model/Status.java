@@ -24,10 +24,16 @@ public abstract class Status {
 
     public Status() {}
 
+    public abstract void erstelltSetzen();
     public abstract void stattfindendSetzen();
     public abstract void ausstehendSetzen();
-    public abstract void liveSetzen();
+    public abstract void trendingSetzen(int teilnehmenranzahl);
+    public abstract void inVorbereitungSetzen();
+    public abstract void stroniertSetzen();
+    public abstract void liveSetzen(int teilnehmerAnzahl);
     public abstract void abgeschlossenSetzen();
+    public abstract void bewertungVerfuegbarSetzen();
+    public abstract void umfrageVerfuegbarSetzen();
     public abstract void geloeschtSetzen();
 
 }

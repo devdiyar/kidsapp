@@ -21,23 +21,54 @@ public class Abgeschlossen extends Status {
     }
 
     @Override
+    public void erstelltSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Erstellt gesetzt werden, da er bereits Abgeschlossen ist.");
+    }
+
+    @Override
     public void stattfindendSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits abgeschlossen ist.");
+        throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits Abgeschlossen ist.");
     }
 
     @Override
     public void ausstehendSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits abgeschlossen ist.");
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Abgeschlossen ist.");
     }
 
     @Override
-    public void liveSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits abgeschlossen ist.");
+    public void trendingSetzen(int anzahlTeilnehmer) {
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Abgeschlossen ist.");
+    }
+
+    @Override
+    public void inVorbereitungSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Abgeschlossen ist.");
+    }
+
+    @Override
+    public void stroniertSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Abgeschlossen ist.");
+    }
+
+    @Override
+    public void liveSetzen(int teilnehmerAnzahl) {
+        throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits Abgeschlossen ist.");
     }
 
     @Override
     public void abgeschlossenSetzen() {
         System.out.println("Status bereits auf Abgeschlossen gesetzt.");
+    }
+
+    @Override
+    public void bewertungVerfuegbarSetzen() {
+        System.out.println("Status wird auf BewertungVerfuegbar gesetzt.");
+        veranstaltung.setAktuellerstatus(new BewertungVerfuegbar(veranstaltung));
+    }
+
+    @Override
+    public void umfrageVerfuegbarSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Abgeschlossen ist.");
     }
 
     @Override

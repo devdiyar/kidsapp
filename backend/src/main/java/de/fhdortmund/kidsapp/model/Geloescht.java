@@ -20,6 +20,11 @@ public class Geloescht extends Status {
     }
 
     @Override
+    public void erstelltSetzen() {
+
+    }
+
+    @Override
     public void stattfindendSetzen() {
         throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits Geloescht ist.");
     }
@@ -30,13 +35,38 @@ public class Geloescht extends Status {
     }
 
     @Override
-    public void liveSetzen() {
+    public void trendingSetzen(int anzahlTeilnehmer) {
+
+    }
+
+    @Override
+    public void inVorbereitungSetzen() {
+
+    }
+
+    @Override
+    public void stroniertSetzen() {
+
+    }
+
+    @Override
+    public void liveSetzen(int teilnehmerAnzahl) {
         throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits Geloescht ist.");
     }
 
     @Override
     public void abgeschlossenSetzen() {
         throw new IllegalStateException("Status kann nicht auf Abgeschlossen gesetzt werden, da er bereits Geloescht ist.");
+    }
+
+    @Override
+    public void bewertungVerfuegbarSetzen() {
+
+    }
+
+    @Override
+    public void umfrageVerfuegbarSetzen() {
+
     }
 
     @Override

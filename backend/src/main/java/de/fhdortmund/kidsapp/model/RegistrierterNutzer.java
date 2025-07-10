@@ -3,14 +3,7 @@ package de.fhdortmund.kidsapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 
@@ -26,12 +19,16 @@ public class RegistrierterNutzer implements Nutzer {
     
     @Embedded
     private AnschriftT anschrift;
-    
-    @OneToMany(
-        mappedBy = "teilnehmer",
-        cascade = CascadeType.ALL,
-        fetch = FetchType.LAZY,
-        orphanRemoval = true
+
+
+
+    @ManyToMany
+    @JoinTable(
+        name = "registrierter_nutzer_veranstaltung",
+        joinColumns = @JoinColumn(name = "registrierter_nutzer_id"),
+        inverseJoinColumns = @JoinColumn(name = "veranstaltung_id")
     )
-    private List<Veranstaltung> aktivitaeten = new ArrayList<>();
+    private List<Veranstaltung> angemeldeteVeranstaltungen = new ArrayList<>();
+
+
 }

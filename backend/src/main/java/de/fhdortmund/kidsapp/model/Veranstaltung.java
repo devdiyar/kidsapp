@@ -4,17 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 
@@ -32,9 +22,13 @@ public class Veranstaltung {
     private double preis;
     private AnschriftT anschrift;
 
-    @ManyToOne
-    @JoinColumn(name = "teilnehmer_id")
-    private RegistrierterNutzer teilnehmer;
+    @ManyToMany
+    @JoinTable(
+        name = "registrierter_nutzer_veranstaltung",
+        joinColumns = @JoinColumn(name = "veranstaltung_id"),
+        inverseJoinColumns = @JoinColumn(name = "registrierter_nutzer_id")
+    )
+    private List<RegistrierterNutzer> teilnehmer;
 
     @OneToMany(mappedBy = "veranstaltung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -73,17 +67,40 @@ public class Veranstaltung {
         System.out.println("Status gesetzt: " + aktuellerstatus);
     }
 
-    public void ausstehendSetzen() {
-        aktuellerstatus.ausstehendSetzen();
+    public void erstelltSetzen() {
+        aktuellerstatus.erstelltSetzen();
     }
     public void stattfindendSetzen() {
         aktuellerstatus.stattfindendSetzen();
+    }
+    public void ausstehendSetzen() {
+        aktuellerstatus.ausstehendSetzen();
+    }
+    public void trendingSetzen() {
+        aktuellerstatus.trendingSetzen(this.getTeilnehmeranzahl());
+    }
+
+    private int getTeilnehmeranzahl() {
+        return teilnehmer.size();
+    }
+
+    public void inVorbereitungSetzen() {
+        aktuellerstatus.inVorbereitungSetzen();
+    }
+    public void stroniertSetzen() {
+        aktuellerstatus.stroniertSetzen();
     }
     public void liveSetzen(Bewertung bewertung) {
         aktuellerstatus.liveSetzen();
     }
     public void abgeschlossenSetzen() {
         aktuellerstatus.abgeschlossenSetzen();
+    }
+    public void bewertungVerfuegbarSetzen() {
+        aktuellerstatus.bewertungVerfuegbarSetzen();
+    }
+    public void umfrageVerfuegbarSetzen() {
+        aktuellerstatus.umfrageVerfuegbarSetzen();
     }
     public void geloeschtSetzen() {
         aktuellerstatus.geloeschtSetzen();
