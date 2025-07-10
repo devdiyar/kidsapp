@@ -1,6 +1,7 @@
-package de.fhdortmund.kidsapp.model;
+package de.fhdortmund.kidsapp.model.Zustaende;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import de.fhdortmund.kidsapp.model.Veranstaltung;
 import jakarta.persistence.*;
 import lombok.Data;
 

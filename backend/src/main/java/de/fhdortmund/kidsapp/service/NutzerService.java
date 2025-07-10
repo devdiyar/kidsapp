@@ -1,6 +1,6 @@
 package de.fhdortmund.kidsapp.service;
 
-import de.fhdortmund.kidsapp.model.RegistrierterNutzer;
+import de.fhdortmund.kidsapp.model.Fabrik.RegistrierterNutzer;
 import de.fhdortmund.kidsapp.repository.NutzerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -3,7 +3,7 @@ package de.fhdortmund.kidsapp.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import de.fhdortmund.kidsapp.model.RegistrierterNutzer;
+import de.fhdortmund.kidsapp.model.Fabrik.RegistrierterNutzer;
 
 
 @Repository

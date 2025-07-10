@@ -1,11 +1,10 @@
 package de.fhdortmund.kidsapp.controller;
 
-import de.fhdortmund.kidsapp.model.RegistrierterNutzer;
+import de.fhdortmund.kidsapp.model.Fabrik.RegistrierterNutzer;
 import de.fhdortmund.kidsapp.service.NutzerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 /**
  * REST Controller for user-related endpoints.

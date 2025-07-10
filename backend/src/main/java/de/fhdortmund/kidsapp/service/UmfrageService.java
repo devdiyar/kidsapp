@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.fhdortmund.kidsapp.repository.UmfrageRepository;
-import de.fhdortmund.kidsapp.model.Umfrage;
+import de.fhdortmund.kidsapp.model.Kompositum.Umfrage;
 
 
 @Service

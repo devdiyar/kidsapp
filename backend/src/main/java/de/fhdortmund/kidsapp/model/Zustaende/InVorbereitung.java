@@ -1,5 +1,6 @@
-package de.fhdortmund.kidsapp.model;
+package de.fhdortmund.kidsapp.model.Zustaende;
 
+import de.fhdortmund.kidsapp.model.Veranstaltung;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

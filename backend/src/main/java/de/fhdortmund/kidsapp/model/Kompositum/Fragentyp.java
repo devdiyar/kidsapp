@@ -1,7 +1,6 @@
-package de.fhdortmund.kidsapp.model;
+package de.fhdortmund.kidsapp.model.Kompositum;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;

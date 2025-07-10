@@ -1,4 +1,4 @@
-package de.fhdortmund.kidsapp.model;
+package de.fhdortmund.kidsapp.model.Kompositum;
 
 import jakarta.persistence.Entity;
 import lombok.Data;

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import de.fhdortmund.kidsapp.model.Fabrik.Bewertung;
+import de.fhdortmund.kidsapp.model.Fabrik.RegistrierterNutzer;
+import de.fhdortmund.kidsapp.model.Kompositum.Umfrage;
+import de.fhdortmund.kidsapp.model.Zustaende.Ausstehend;
+import de.fhdortmund.kidsapp.model.Zustaende.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
