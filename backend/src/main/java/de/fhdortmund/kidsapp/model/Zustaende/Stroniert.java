@@ -46,7 +46,7 @@ public class Stroniert extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
+    public void storniertSetzen() {
         System.out.println("Status bereits auf Stroniert gesetzt.");
     }
 

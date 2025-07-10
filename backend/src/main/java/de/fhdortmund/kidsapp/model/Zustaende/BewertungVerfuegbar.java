@@ -46,8 +46,8 @@ public class BewertungVerfuegbar extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Stroniert gesetzt werden, da er bereits BewertungVerfuegbar ist.");
+    public void storniertSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Storniert gesetzt werden, da er bereits BewertungVerfuegbar ist.");
     }
 
     @Override

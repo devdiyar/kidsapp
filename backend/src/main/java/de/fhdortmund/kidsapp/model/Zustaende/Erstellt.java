@@ -47,8 +47,8 @@ public class Erstellt extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Stroniert gesetzt werden, da er bereits Erstellt ist.");
+    public void storniertSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Storniert gesetzt werden, da er bereits Erstellt ist.");
     }
 
     @Override

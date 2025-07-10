@@ -47,8 +47,8 @@ public class Trending extends Status {
         veranstaltung.setAktuellerstatus(new InVorbereitung(veranstaltung));    }
 
     @Override
-    public void stroniertSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Stroniert gesetzt werden, da er bereits Trending ist.");
+    public void storniertSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Storniert gesetzt werden, da er bereits Trending ist.");
     }
 
     @Override

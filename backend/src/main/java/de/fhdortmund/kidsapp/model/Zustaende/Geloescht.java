@@ -45,7 +45,7 @@ public class Geloescht extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
+    public void storniertSetzen() {
 
     }
 

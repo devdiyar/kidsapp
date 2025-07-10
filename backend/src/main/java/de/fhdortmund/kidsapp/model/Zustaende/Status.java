@@ -1,8 +1,14 @@
 package de.fhdortmund.kidsapp.model.Zustaende;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import de.fhdortmund.kidsapp.model.Veranstaltung;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 
@@ -30,7 +36,7 @@ public abstract class Status {
     public abstract void ausstehendSetzen();
     public abstract void trendingSetzen(int teilnehmenranzahl);
     public abstract void inVorbereitungSetzen();
-    public abstract void stroniertSetzen();
+    public abstract void storniertSetzen();
     public abstract void liveSetzen(int teilnehmerAnzahl);
     public abstract void abgeschlossenSetzen();
     public abstract void bewertungVerfuegbarSetzen();

@@ -46,7 +46,7 @@ public class InVorbereitung extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
+    public void storniertSetzen() {
         System.out.println("Status wird auf Stroniert gesetzt.");
         veranstaltung.setAktuellerstatus(new Stroniert(veranstaltung));    }
 

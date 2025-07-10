@@ -46,8 +46,8 @@ public class Live extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Stroniert gesetzt werden, da er bereits Live ist.");
+    public void storniertSetzen() {
+        throw new IllegalStateException("Status kann nicht auf Storniert gesetzt werden, da er bereits Live ist.");
     }
 
     @Override

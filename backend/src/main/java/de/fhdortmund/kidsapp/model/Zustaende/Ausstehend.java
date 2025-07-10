@@ -53,7 +53,7 @@ public class Ausstehend extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
+    public void storniertSetzen() {
         throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits ausstehend ist.");
 
     }

@@ -47,7 +47,7 @@ public class Abgeschlossen extends Status {
     }
 
     @Override
-    public void stroniertSetzen() {
+    public void storniertSetzen() {
         throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Abgeschlossen ist.");
     }
 
