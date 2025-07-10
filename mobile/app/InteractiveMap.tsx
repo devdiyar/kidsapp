@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import FilterButton from "../(filter)/FilterButton";
-import Filter from "../(filter)/Filter";
+import FilterButton from "./(filter)/FilterButton";
+import Filter from "./(filter)/Filter";
 
 const InteractiveMap = () => {
   const [region, setRegion] = useState({
