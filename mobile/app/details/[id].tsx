@@ -5,6 +5,8 @@ import { ACTIVITIES_DATA, Activity } from '../../src/data/activities';
 import { REVIEWS_DATA } from '../../src/data/reviews';
 import Toast from 'react-native-toast-message'; //fuer Bestätigungshinweis anzeigen bei Anmeldung
 import { StarRatingDisplay } from 'react-native-star-rating-widget';//fuer Sternebewertung
+import { Ionicons } from '@expo/vector-icons'; //fuer Icons zu favorisieren
+import { Share } from 'react-native';// Share-Funktionalität
 import { BewertungModal } from '../components/Bewertung';
 import { BewertungenView } from '../components/BewertungenView';
 
@@ -17,8 +19,33 @@ export default function ActivityDetailScreen() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [bewertungenVisible, setBewertungenVisible] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const placeholderImage = require('../../assets/images/placeholder.png'); //placeholder
 
+
+  
+const handleShare = async () => {
+  try {
+    const result = await Share.share({
+      message: `Schau dir dieses Event an:!`,
+    });
+
+    if (result.action === Share.sharedAction) {
+      console.log('Shared');
+    } else if (result.action === Share.dismissedAction) {
+      console.log('Dismissed');
+    }
+  } 
+  catch (error) {
+    console.error('Error sharing:', error);
+    Toast.show({
+      type: 'error',
+      text1: 'Fehler beim Teilen',
+      text2: 'Bitte versuche es später erneut.',
+      position: 'top',
+    });
+  }
+}
   useEffect(() => {
     const found = ACTIVITIES_DATA.find(item => item.id === String(id));
     setActivity(found || null);
@@ -37,6 +64,36 @@ export default function ActivityDetailScreen() {
   const reviewsForActivity = REVIEWS_DATA.filter(r => r.activityId === String(id));
 
   return (
+< View style={{ flex: 1 }}>
+  <View style={styles.header}>
+  <TouchableOpacity 
+    onPress={() => {
+      const newFavoriteState = !isFavorite;
+      setIsFavorite(newFavoriteState);
+      Toast.show({
+        type: newFavoriteState ? 'success' : 'info',
+        text1: newFavoriteState 
+          ? 'Zur Favoritenliste hinzugefügt'
+          : 'Von Favoriten entfernt',
+        position: 'top'
+      });
+    }}
+  >
+    <Ionicons
+      name={isFavorite ? 'star' : 'star-outline'}
+      size={24}
+      color={isFavorite ? 'red' : 'black'}
+    />
+  </TouchableOpacity>
+
+  <TouchableOpacity onPress={handleShare} style={{ marginLeft: 16 }}>
+    <Ionicons
+      name="share-social-outline"
+      size={24}
+      color="black"
+    />
+  </TouchableOpacity>
+  </View>
   <ScrollView contentContainerStyle={styles.container}>
     <Image
       source={activity.imageUrl ? activity.imageUrl : placeholderImage}
@@ -159,6 +216,7 @@ export default function ActivityDetailScreen() {
     <BewertungenView visible={bewertungenVisible} onClose={() => setBewertungenVisible(false)} />
     <BewertungModal visible={modalVisible} onClose={() => setModalVisible(false)} />
   </ScrollView>
+   </View>
   );
 }
 
@@ -336,5 +394,13 @@ relatedDate: {
 relatedPrice: {
   fontSize: 12,
   color: '#27ae60',
+},
+header: {
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  paddingHorizontal: 20,
+  paddingTop: 20,
+  marginBottom: 8,
 },
 });
