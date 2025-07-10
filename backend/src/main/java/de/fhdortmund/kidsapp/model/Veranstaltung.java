@@ -91,7 +91,7 @@ public class Veranstaltung {
         aktuellerstatus.stroniertSetzen();
     }
     public void liveSetzen(Bewertung bewertung) {
-        aktuellerstatus.liveSetzen();
+        aktuellerstatus.liveSetzen(getTeilnehmeranzahl());
     }
     public void abgeschlossenSetzen() {
         aktuellerstatus.abgeschlossenSetzen();
