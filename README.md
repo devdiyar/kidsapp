@@ -1,6 +1,6 @@
 # Repository für die Software-Engineering-Vorlesung
 
-## Beschreibung des ProjektsBeschreibung des Projekts
+## Beschreibung des Projekts
 
 Ziel dieses Projektes ist die Erstellung einer Anwendung für Kinder und Jugendliche in der Stadt Herne.
 Mit Hilfe einer interaktiven Karte ermöglicht diese Anwendung ihnen den Zugang zu Angeboten in ihrer Umgebung.
