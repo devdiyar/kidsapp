@@ -1,15 +1,5 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-/**
- * Entity representing the pending status.
- */
-@Entity
-@Data
-@EqualsAndHashCode(callSuper = true)
 public class Ausstehend extends Status {
 
     public Ausstehend(Veranstaltung veranstaltung) {

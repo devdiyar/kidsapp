@@ -1,16 +1,12 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * Entity representing the live status.
- */
-@Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class Live extends Status {
+
     public Live(Veranstaltung veranstaltung) {
         super(veranstaltung);
     }

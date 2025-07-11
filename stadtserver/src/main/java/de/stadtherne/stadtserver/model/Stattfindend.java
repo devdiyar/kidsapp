@@ -1,17 +1,18 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class Stattfindend extends Status {
+
     public Stattfindend(Veranstaltung veranstaltung) {
         super(veranstaltung);
     }
-    public Stattfindend() {}
+
+    public Stattfindend() {
+    }
 
     @Override
     public void stattfindendSetzen() {
