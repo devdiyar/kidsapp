@@ -213,7 +213,7 @@ export default function SearchScreen() {
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Nach Aktivitäten suchen..."
+          placeholder="Nach Veranstaltungen suchen..."
           value={searchText}
           onChangeText={setSearchText}
           clearButtonMode="while-editing"
