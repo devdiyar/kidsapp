@@ -5,25 +5,36 @@ import { ACTIVITIES_DATA, Activity } from '../../src/data/activities';
 import { REVIEWS_DATA } from '../../src/data/reviews';
 import Toast from 'react-native-toast-message'; //fuer Bestätigungshinweis anzeigen bei Anmeldung
 import { StarRatingDisplay } from 'react-native-star-rating-widget';//fuer Sternebewertung
+import { Ionicons } from '@expo/vector-icons'; //fuer Icons zu favorisieren
+import { Share } from 'react-native';// Share-Funktionalität
 import { BewertungModal } from '../components/Bewertung';
 import { BewertungenView } from '../components/BewertungenView';
+import { useActivity } from '../../src/context/ActivityContext';
 
 export default function ActivityDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { setCurrentActivityId } = useActivity();
   const [activity, setActivity] = useState<Activity | null>(null);
-//"Anmelden" Button ：useState
+  //"Anmelden" Button ：useState
   const [isRegistered, setIsRegistered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [bewertungenVisible, setBewertungenVisible] = useState(false);
   const placeholderImage = require('../../assets/images/placeholder.png'); //placeholder
 
+  
+
   useEffect(() => {
     const found = ACTIVITIES_DATA.find(item => item.id === String(id));
     setActivity(found || null);
+    setCurrentActivityId(String(id));
+
+    return () => {
+      setCurrentActivityId(null);
+    };
   }, [id]);
-  
+
   if (!activity) {
     return (
       <View style={styles.container}>
@@ -32,133 +43,123 @@ export default function ActivityDetailScreen() {
     );
   }
 
-  const showSurveyButton = ['1', '3', '9'].includes(activity.id);
 
   const reviewsForActivity = REVIEWS_DATA.filter(r => r.activityId === String(id));
 
   return (
-  <ScrollView contentContainerStyle={styles.container}>
-    <Image
-      source={activity.imageUrl ? activity.imageUrl : placeholderImage}
-      style={styles.image}
-    />
-    <Text style={styles.title}>{activity.title}</Text>
-    <Text style={styles.text}>📍 {activity.location}</Text>
-    <Text style={styles.text}>🕒 {activity.date}</Text>
-    <Text style={styles.text}>💶 {activity.price}</Text>
-
-    {/* "Anmelden" Button */}
-    <TouchableOpacity
-      style={[styles.anmelde_button, isRegistered ? styles.cancelButton : styles.registerButton]}
-      onPress={() => {
-        const newState = !isRegistered;
-        setIsRegistered(newState);
-
-        Toast.show({
-          type: newState ? 'success' : 'info',
-          text1: newState
-            ? 'Erfolgreich angemeldet!'
-            : 'Erfolgreich storniert!',
-          text2: newState
-            ? `Wir freuen uns, dich beim Event '${activity.title}' am ${activity.date} begrüßen zu dürfen. Viel Spaß beim Event!`
-            : `Deine Anmeldung zum Event '${activity.title}' am ${activity.date} wurde storniert. Wir hoffen, dich bald bei einem anderen Event wiederzusehen!`,
-          position: 'top',
-        });
-      }}
-    >
-      <Text style={styles.buttonText}>
-        {isRegistered ? 'Stornieren' : 'Anmelden'}
-      </Text>
-    </TouchableOpacity>
-
-    <Text style={styles.description}>
-      {isExpanded
-        ? activity.description ?? 'Keine Beschreibung verfügbar.'
-        : (activity.description?.slice(0, 50) ?? 'Keine Beschreibung verfügbar.') +
-          (activity.description && activity.description.length > 10 ? '...' : '')}
-    </Text>
-    {activity.description && activity.description.length > 10 && (
-      <TouchableOpacity
-        style={styles.mehr_weniger_Button}
-        onPress={() => setIsExpanded(prev => !prev)}
-      >
-        <Text style={styles.mehr_weniger_Button_Text}>
-          {isExpanded ? 'Weniger' : 'Mehr >'}
-        </Text>
-      </TouchableOpacity>
-    )}
-
-    <Text style={styles.sectionTitle}>Veranstalter:</Text>
-
-    <Text style={styles.sectionTitle}>Bewertungen:</Text>
-    <View style={styles.ratingRow}>
-      <StarRatingDisplay rating={activity.rating} starSize={20} color="#f1c40f" />
-      <Text style={styles.ratingText}>
-        {activity.rating.toFixed(1)} | {activity.ratingCount} Bewertungen
-      </Text>
-    </View>
-
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {reviewsForActivity.slice(0, 3).map((review) => (
-        <View key={review.id} style={styles.reviewCard}>
-          <View style={styles.reviewHeader}>
-            <Text style={styles.reviewName}>{review.name}</Text>
-            <StarRatingDisplay rating={review.rating} starSize={14} color="#f1c40f" />
-          </View>
-          <Text style={styles.reviewText}>{review.comment}</Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Image
+          source={activity.imageUrl ? activity.imageUrl : placeholderImage}
+          style={styles.image}
+        />
+        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Text style={styles.title}>{activity.title}</Text>
+            <Text style={styles.text} >📍 {activity.location}</Text>
+             <Text style={styles.text}>🕒 {activity.date}</Text>
+            <Text style={styles.text}>💶 {activity.price}</Text>
         </View>
-      ))}
-    </ScrollView>
 
-    <TouchableOpacity style={styles.allReviewsButton}>
-      <Text style={styles.allReviewsText}>Alle Bewertungen →</Text>
-    </TouchableOpacity>
-
-    <Text style={styles.sectionTitle}>Weitere Veranstaltungen:</Text>
-
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-    {ACTIVITIES_DATA.filter(item => item.id !== activity.id).map(item => (
-    <TouchableOpacity
-      key={item.id}
-      style={styles.relatedCard}
-      onPress={() => router.push(`/details/${item.id}`)}
-    >
-      <Image
-        source={item.imageUrl ? item.imageUrl : placeholderImage}
-        style={styles.relatedImage}
-      />
-      <Text style={styles.relatedTitle}>{item.title}</Text>
-      <View style={styles.relatedInfoRow}>
-      <Text style={styles.relatedDate}>{item.date}</Text>
-      <Text style={styles.relatedPrice}>{item.price}</Text>
-
-      </View>
-    </TouchableOpacity>
-     ))}
-    </ScrollView>
-
-    <View style={styles.buttonContainer}>
-      {showSurveyButton && (
+        {/* "Anmelden" Button */}
         <TouchableOpacity
-          style={[styles.button, styles.surveyButton]}
-          onPress={() =>
-            router.push({ pathname: '/_survey', params: { id: activity.id, title: activity.title } })
-          }
+          style={[styles.anmelde_button, isRegistered ? styles.cancelButton : styles.registerButton]}
+          onPress={() => {
+            const newState = !isRegistered;
+            setIsRegistered(newState);
+
+            Toast.show({
+              type: newState ? 'success' : 'info',
+              text1: newState
+                ? 'Erfolgreich angemeldet!'
+                : 'Erfolgreich storniert!',
+              text2: newState
+                ? `Wir freuen uns, dich beim Event '${activity.title}' am ${activity.date} begrüßen zu dürfen. Viel Spaß beim Event!`
+                : `Deine Anmeldung zum Event '${activity.title}' am ${activity.date} wurde storniert. Wir hoffen, dich bald bei einem anderen Event wiederzusehen!`,
+              position: 'top',
+            });
+          }}
         >
-          <Text style={styles.buttonText}>Zur Umfrage</Text>
+          <Text style={styles.buttonText}>
+            {isRegistered ? 'Stornieren' : 'Anmelden'}
+          </Text>
         </TouchableOpacity>
-      )}
-      <TouchableOpacity
-        style={[styles.button, styles.registerButton]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.buttonText}>Bewertung schreiben</Text>
-      </TouchableOpacity>
+
+        <Text style={styles.description}>
+          {isExpanded
+            ? activity.description ?? 'Keine Beschreibung verfügbar.'
+            : (activity.description?.slice(0, 50) ?? 'Keine Beschreibung verfügbar.') +
+              (activity.description && activity.description.length > 10 ? '...' : '')}
+        </Text>
+        {activity.description && activity.description.length > 10 && (
+          <TouchableOpacity
+            style={styles.mehr_weniger_Button}
+            onPress={() => setIsExpanded(prev => !prev)}
+          >
+            <Text style={styles.mehr_weniger_Button_Text}>
+              {isExpanded ? 'Weniger' : 'Mehr >'}
+            </Text>
+          </TouchableOpacity>
+        )}
+    <View style={{ marginTop: 16, marginBottom: 16}}>
+        <Text style={styles.sectionTitle}>Veranstalter:</Text>
+        <View>
+               <Text style={styles.description}>
+                  {isExpanded
+                    ? activity.description ?? 'Keine Beschreibung verfügbar.'
+                    : (activity.description?.slice(0, 50) ?? 'Keine Beschreibung verfügbar.') +
+                      (activity.description && activity.description.length > 10 ? '...' : '')}
+                </Text>
+        </View>
     </View>
 
-    <BewertungenView visible={bewertungenVisible} onClose={() => setBewertungenVisible(false)} />
-    <BewertungModal visible={modalVisible} onClose={() => setModalVisible(false)} />
-  </ScrollView>
+        <Text style={styles.sectionTitle}>Bewertungen:</Text>
+        <View style={styles.ratingRow}>
+          <StarRatingDisplay rating={activity.rating} starSize={20} color="#f1c40f" />
+          <Text style={styles.ratingText}>
+            {activity.rating.toFixed(1)} | {activity.ratingCount} Bewertungen
+          </Text>
+        </View>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {reviewsForActivity.slice(0, 3).map((review) => (
+            <View key={review.id} style={styles.reviewCard}>
+              <View style={styles.reviewHeader}>
+                <Text style={styles.reviewName}>{review.name}</Text>
+                <StarRatingDisplay rating={review.rating} starSize={14} color="#f1c40f" />
+              </View>
+              <Text style={styles.reviewText}>{review.comment}</Text>
+            </View>
+          ))}
+        </ScrollView>
+
+        <TouchableOpacity style={styles.allReviewsButton}>
+          <Text style={styles.allReviewsText}>Alle Bewertungen →</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.sectionTitle}>Weitere Veranstaltungen:</Text>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {ACTIVITIES_DATA.filter(item => item.id !== activity.id).map(item => (
+        <TouchableOpacity
+          key={item.id}
+          style={styles.relatedCard}
+          onPress={() => router.push(`/details/${item.id}`)}
+        >
+          <Image
+            source={item.imageUrl ? item.imageUrl : placeholderImage}
+            style={styles.relatedImage}
+          />
+          <Text style={styles.relatedTitle}>{item.title}</Text>
+          <View style={styles.relatedInfoRow}>
+          <Text style={styles.relatedDate}>{item.date}</Text>
+          <Text style={styles.relatedPrice}>{item.price}</Text>
+
+          </View>
+        </TouchableOpacity>
+         ))}
+        </ScrollView>
+      </ScrollView>
+       </View>
   );
 }
 
@@ -173,12 +174,12 @@ const styles = StyleSheet.create({
     height: 200,
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 8,
   },
   sectionTitle: {
-  fontSize: 20,
+  fontSize: 24,
   fontWeight: 'bold',
   marginTop: 24,
   marginBottom: 8,
@@ -255,6 +256,7 @@ ratingText: {
 
 reviewCard: {
   width: 250,
+  height: 115,
   backgroundColor: '#fff',
   borderRadius: 10,
   padding: 12,
@@ -336,5 +338,13 @@ relatedDate: {
 relatedPrice: {
   fontSize: 12,
   color: '#27ae60',
+},
+header: {
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  paddingHorizontal: 20,
+  paddingTop: 20,
+  marginBottom: 8,
 },
 });

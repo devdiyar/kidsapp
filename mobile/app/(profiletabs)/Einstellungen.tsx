@@ -17,10 +17,6 @@ export default function SettingsScreen() {
           text: 'Abmelden',
           style: 'destructive',
           onPress: () => {
-          
-            console.log('Benutzer abgemeldet');
-            
-            // Navigation zum Auth Bereich
             router.replace('/(auth)/login');
           },
         },
@@ -30,11 +26,7 @@ export default function SettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Einstellungen</Text>
-      
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Konto</Text>
-        
         <AppButton
           title="Abmelden"
           onPress={handleLogout}

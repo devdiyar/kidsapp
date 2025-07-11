@@ -31,8 +31,8 @@ export default function LoginScreen() {
           onPress={() => {
             // hier loginlogik implementieren
             console.log('Login attempt:', { username, password });
-            // nach erfolgreichem Login zur Hauptseite navigieren
-            router.push("/(tabs)");
+            // nach erfolgreichem Login zur Index-Seite navigieren
+            router.replace("/(tabs)");
           }}
         />
         <AppButton
@@ -43,7 +43,7 @@ export default function LoginScreen() {
         <Text style={styles.orText}>Oder</Text>
         <AppButton
           title="Ohne Anmeldung fortfahren"
-          onPress={() => router.push("../(tabs)/search")}
+          onPress={() => router.replace("/(tabs)")}
           variant="black"
         />
       </View>
@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: "#fff",
-    justifyContent: "center",
+    paddingTop: "35%",
+    justifyContent: "flex-start",
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
     marginBottom: 32,
   },
   orText: {

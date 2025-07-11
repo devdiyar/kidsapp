@@ -245,6 +245,7 @@ export default function RegisterScreen() {
           variant="orange"
           onPress={() => {
             // hier Registrierungslogik implementieren
+
             console.log('Registration attempt:', { firstName, lastName, tag, monat, jahr, email, username, password });
             // nach erfolgreicher Registrierung zur Hauptseite navigieren
             router.push("/(tabs)");
@@ -270,7 +271,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
     marginBottom: 32,
   },
   buttonContainer: {

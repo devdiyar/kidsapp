@@ -1,7 +1,7 @@
 package de.stadtherne.stadtserver.service;
 
 import de.stadtherne.stadtserver.model.Nutzer;
-import de.stadtherne.stadtserver.repository.NutzerRepository;
+import de.stadtherne.stadtserver.Repository.NutzerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

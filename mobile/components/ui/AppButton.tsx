@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: "center",
     marginVertical: 6,
-    width: "90%"
+    width: "100%"
   },
   orange: {
     backgroundColor: Colors.tabIconSelectedBg,
