@@ -24,13 +24,16 @@ function NavigationContent() {
   
   return (
     <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(profiletabs)" options={{ headerShown: false }} />
       <Stack.Screen name="details/[id]" 
-        options={() => ({
+        options={{
           headerShown: true,
           title: '',
+          headerStyle: {
+            backgroundColor: '#fff'
+          },
           headerRight: () => (
             <View style={{ flexDirection: 'row', marginRight: 10 }}>
               <TouchableOpacity
@@ -52,9 +55,9 @@ function NavigationContent() {
               </TouchableOpacity>
             </View>
           ),
-        })}
+        }}
       />
-      <Stack.Screen name="+not-found" />
+      <Stack.Screen name="+not-found" options={{ headerShown: false }} />
     </Stack>
   );
 }

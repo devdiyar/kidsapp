@@ -68,6 +68,20 @@ export default function RegisterScreen() {
         <AppButton
           title="Registrieren"
           variant="orange"
+          onPress={() => {
+            // hier Registrierungslogik implementieren
+            console.log('Register attempt:', {
+              firstName,
+              lastName,
+              birthDate,
+              email,
+              username,
+              password,
+              confirmPassword
+            });
+            // nach erfolgreicher Registrierung zur Index-Seite navigieren
+            router.replace("/(tabs)");
+          }}
         />
         
         <AppButton
@@ -89,7 +103,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
     marginBottom: 32,
   },
   buttonContainer: {

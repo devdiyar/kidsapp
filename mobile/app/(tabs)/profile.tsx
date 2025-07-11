@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 120,
+    paddingTop: 150,
+    paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
   avatar: {
