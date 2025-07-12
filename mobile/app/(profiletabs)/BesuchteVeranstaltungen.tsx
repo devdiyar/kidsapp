@@ -14,7 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ReviewButton from '@/components/ui/ReviewButton';
 import SurveyButton from '@/components/ui/SurveyButton';
-
+import { BewertungModal } from '../bewertung/Bewertungzuschreiben';
 
 type BesuchteVeranstaltung = {
   id: string;
@@ -134,8 +134,9 @@ function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: 
   const router = useRouter();
 
   // passiert wenn jemand eine Bewertung abgibt
+  const [modalVisible, setModalVisible] = useState(false);
   const bewertungAbgeben = () => {
-    Alert.alert('Bewertung', `Bewertung für "${veranstaltung.titel}" abgeben`);
+    setModalVisible(true);
   };
 
   // passiert wenn jemand eine Umfrage ausfüllt
@@ -144,6 +145,7 @@ function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: 
   };
 
   return (
+     <>
     <TouchableOpacity 
       style={styles.veranstaltungKarte}
       onPress={() => onKarteAntippen(veranstaltung.id)}
@@ -184,6 +186,12 @@ function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: 
         </View>
       )}
     </TouchableOpacity>
+    {/* Modal muss auf gleicher Ebene sein */}
+    <BewertungModal
+      visible={modalVisible}
+      onClose={() => setModalVisible(false)}
+    />
+  </>
   );
 }
 

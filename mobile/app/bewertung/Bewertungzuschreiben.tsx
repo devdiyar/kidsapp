@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
 import StarRating from 'react-native-star-rating-widget';
 import Toast from 'react-native-toast-message';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 
 export function BewertungModal({ visible, onClose }: { visible: boolean, onClose: () => void }) {
   const [bewertungText, setBewertungText] = useState('');
