@@ -21,6 +21,7 @@ export default function AppButton({ title, onPress, variant = "orange", disabled
       disabled={disabled}
     >
       <Text style={[styles.text, disabled && styles.disabledText]}>{title}</Text>
+
     </TouchableOpacity>
   );
 }
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
     opacity: 0.6,
   },
+
   text: {
     color: "#fff",
     fontSize: 17,
@@ -50,4 +52,5 @@ const styles = StyleSheet.create({
   disabledText: {
     color: "#888",
   },
+
 });

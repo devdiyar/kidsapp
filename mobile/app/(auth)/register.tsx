@@ -23,6 +23,7 @@ export default function RegisterScreen() {
   const [monat, setMonat] = useState(0);
   const [jahr, setJahr] = useState(0);
 
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -191,6 +192,7 @@ export default function RegisterScreen() {
     );
   }
 
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registrierung</Text>
@@ -214,7 +216,7 @@ export default function RegisterScreen() {
         onDateChange={handleDateChange}
         isDateValid={istDatumOk()}
       />
-      
+
       <AppTextInput
         placeholder="E-mail"
         value={email}
@@ -257,6 +259,7 @@ export default function RegisterScreen() {
           onPress={() => router.push("/(auth)/login")}
           variant="black"
           disabled={state.isLoading}
+
         />
       </View>
     </View>

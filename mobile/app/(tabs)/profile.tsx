@@ -24,6 +24,7 @@ const profile = () => {
 
   // Wenn nicht eingeloggt
   if (!state.isAuthenticated) {
+
     return (
       <View style={styles.container}>
         <Image
@@ -55,7 +56,6 @@ const profile = () => {
       <Text style={styles.name}>Angemeldeter Benutzer</Text>
       <Text style={styles.info}>Benutzer@beispiel.de</Text>
       <Text style={[styles.info, styles.lastInfo]}>Telefonnummer nicht verfügbar</Text>
-      
       <AppButton title="Favoriten" onPress={handleFavoriten} variant="orange" />
       <AppButton title="Angemeldete Aktivitäten" onPress={handleAngemeldeteAktivitaeten} variant="orange" />
       <AppButton title="Besuchte Veranstaltungen" onPress={handleBesuchteVeranstaltungen} variant="orange" />

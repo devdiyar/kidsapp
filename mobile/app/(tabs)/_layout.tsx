@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAuth } from "../../src/context/authContext";
 
 
+
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const { state } = useAuth();
