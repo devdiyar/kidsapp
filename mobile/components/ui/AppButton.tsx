@@ -2,16 +2,26 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 
-export default function AppButton(props:any) {
+interface AppButtonProps {
+  title: string;
+  onPress: () => void;
+  variant?: "orange" | "black";
+  disabled?: boolean;
+}
+
+export default function AppButton({ title, onPress, variant = "orange", disabled = false }: AppButtonProps) {
   return (
     <TouchableOpacity
-      onPress={props.onPress}
+      onPress={disabled ? undefined : onPress}
       style={[
         styles.button,
-        props.variant === "black" ? styles.black : styles.orange,
+        variant === "black" ? styles.black : styles.orange,
+        disabled && styles.disabled
       ]}
+      disabled={disabled}
     >
-      <Text style={styles.text}>{props.title}</Text>
+      <Text style={[styles.text, disabled && styles.disabledText]}>{title}</Text>
+
     </TouchableOpacity>
   );
 }
@@ -30,8 +40,17 @@ const styles = StyleSheet.create({
   black: {
     backgroundColor: Colors.button,
   },
+  disabled: {
+    backgroundColor: "#ccc",
+    opacity: 0.6,
+  },
+
   text: {
     color: "#fff",
     fontSize: 17,
   },
+  disabledText: {
+    color: "#888",
+  },
+
 });

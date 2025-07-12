@@ -19,6 +19,7 @@ target/
 *.iws
 *.iml
 *.ipr
+application.properties
 
 
 ### VS Code ###

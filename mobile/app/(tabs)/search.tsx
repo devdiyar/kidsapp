@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 
-// Beispiel-Daten für Aktivitäten
 const ACTIVITIES_DATA = [
   {
     id: '1',
@@ -15,79 +14,7 @@ const ACTIVITIES_DATA = [
     price: '5€',
     imageUrl: require('../../assets/images/Adventsgrabung.jpg'),
     status: null,
-  },
-  {
-    id: '2',
-    title: 'Illusions',
-    location: 'Spielplatz an der Hörde',
-    date: '07.03 14:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/Illusion.jpg'),
-    status: 'Hat begonnen',
-  },
-  {
-    id: '3',
-    title: "Woman's Day",
-    location: 'VK Stadium',
-    date: '03.04 20:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/WomansDay.jpg'),
-    status: null,
-  },
-  {
-  id: '4',
-  title: "Kulturrucksack Party",
-  location: 'Jugendzentrum Herne',
-  date: '26.03 14:00',
-  price: 'Gratis',
-  imageUrl: require('../../assets/images/Kulturrucksack_Party.jpg'),
-  status: null,
-  },
-  {
-    id: '5',
-    title: 'Kinder-Flohmarkt',
-    location: 'Marktplatz Innenstadt',
-    date: '15.06 10:00',
-    price: 'Standgebühr 5€',
-    imageUrl: require('../../assets/images/Flohmarkt.jpg'),
-    status: 'Anmeldung\nerforderlich',
-  },
-  {
-    id: '6',
-    title: 'Waldabenteuer für Kids',
-    location: 'Stadtwald Süd',
-    date: '22.06 15:00',
-    price: '3€',
-    imageUrl: require('../../assets/images/Waldabenteuer.jpg'),
-    status: null,
-  },
-  {
-    id: '7',
-    title: 'Märchenstunde in der Bibliothek',
-    location: 'Stadtbibliothek Zentrum',
-    date: '29.06 11:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/Märchenstunde.jpg'),
-    status: 'Fast\nausgebucht',
-  },
-  {
-    id: '8',
-    title: 'Sportfest der Grundschulen',
-    location: 'Sportanlage West',
-    date: '06.07 09:00',
-    price: 'Gratis',
-    imageUrl: require('../../assets/images/Sportfest.jpg'),
-    status: null,
-  },
-  {
-    id: '9',
-    title: 'Kreativwerkstatt: Töpfern',
-    location: 'Kunstschule "Farbtupfer"',
-    date: '13.07 14:30',
-    price: '10€ Materialkosten',
-    imageUrl: require('../../assets/images/Töpfern.jpg'),
-    status: null,
-  },
+  }
 ];
 
 const FILTERS = [

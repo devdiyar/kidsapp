@@ -2,8 +2,10 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import React from 'react';
 import AppButton from '@/components/ui/AppButton';
 import { router } from 'expo-router';
+import { useAuth } from '../../src/context/authContext';
 
 export default function SettingsScreen() {
+  const { logout } = useAuth();
   const handleLogout = () => {
     Alert.alert(
       'Abmelden',
@@ -16,8 +18,18 @@ export default function SettingsScreen() {
         {
           text: 'Abmelden',
           style: 'destructive',
-          onPress: () => {
-            router.replace('/(auth)/login');
+          onPress: async () => {
+            try {
+              await logout();
+              // Direkte Navigation zur Login-Seite mit Reset der Navigation
+              router.dismissAll();
+              router.replace('/(auth)/login');
+            } catch (error) {
+              console.error('Logout error:', error);
+              // Fallback: trotzdem zur Login-Seite weiterleiten
+              router.dismissAll();
+              router.replace('/(auth)/login');
+            }
           },
         },
       ]

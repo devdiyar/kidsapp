@@ -1,16 +1,12 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert } from 'react-native';
 import React from 'react';
 import { router } from 'expo-router';
 import AppButton from "@/components/ui/AppButton";
+import { useAuth } from "../../src/context/authContext";
+import Toast from 'react-native-toast-message';
 
 const profile = () => {
-  const user = {
-    isAuthenticated: true,
-    name: "Kevin Mayer",
-    email: "Kevin_Mayer@gmail.com",
-    phone: "+49 (173) 4354233",
-    image: require('../../assets/images/icons/profile/profilSemih.png'),
-  };
+  const { state, logout } = useAuth();
 
   // Handler für die Buttons
   const handleFavoriten = () => {
@@ -27,7 +23,8 @@ const profile = () => {
   };
 
   // Wenn nicht eingeloggt
-  if (!user.isAuthenticated) {
+  if (!state.isAuthenticated) {
+
     return (
       <View style={styles.container}>
         <Image
@@ -52,11 +49,13 @@ const profile = () => {
   // Wenn eingeloggt
   return (
     <View style={styles.container}>
-      <Image source={user.image} style={styles.avatar} />
-      <Text style={styles.name}>{user.name}</Text>
-      <Text style={styles.info}>{user.email}</Text>
-      <Text style={[styles.info, styles.lastInfo]}>{user.phone}</Text>
-      
+      <Image 
+        source={require('../../assets/images/icons/profile/profilSemih.png')} 
+        style={styles.avatar} 
+      />
+      <Text style={styles.name}>Angemeldeter Benutzer</Text>
+      <Text style={styles.info}>Benutzer@beispiel.de</Text>
+      <Text style={[styles.info, styles.lastInfo]}>Telefonnummer nicht verfügbar</Text>
       <AppButton title="Favoriten" onPress={handleFavoriten} variant="orange" />
       <AppButton title="Angemeldete Aktivitäten" onPress={handleAngemeldeteAktivitaeten} variant="orange" />
       <AppButton title="Besuchte Veranstaltungen" onPress={handleBesuchteVeranstaltungen} variant="orange" />

@@ -13,6 +13,7 @@ import "react-native-reanimated";
 import { View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ActivityProvider, useActivity } from "../src/context/ActivityContext";
+import { AuthProvider } from "../src/context/authContext";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -80,11 +81,13 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={DefaultTheme}>
-      <ActivityProvider>
-        <NavigationContent />
-        <StatusBar style="auto"/>
-        <Toast />
-      </ActivityProvider>
+      <AuthProvider>
+        <ActivityProvider>
+          <NavigationContent />
+          <StatusBar style="auto"/>
+          <Toast />
+        </ActivityProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
