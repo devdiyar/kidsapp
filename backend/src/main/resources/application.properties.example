@@ -10,8 +10,8 @@ springdoc.swagger-ui.use-root-path=true
 
 # Datenbank-Konfiguration (Oracle XE)
 spring.datasource.url=jdbc:oracle:thin:@localhost:1521:XE
-spring.datasource.username=system
-spring.datasource.password=1218
+spring.datasource.username=${DB_USERNAME:system}
+spring.datasource.password=${DB_PASSWORD:your-password-here}
 spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
 
 # Hibernate / JPA
@@ -21,8 +21,7 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.OracleDialect
 
-# JWT Configuration - Feste Werte direkt in Properties
-# Sicherer 512-Bit Base64-kodierter Secret für HS512
-jwt.secret=dGhpc2lzYXZlcnlsb25nc2VjcmV0a2V5Zm9yanNvbndlYnRva2Vuc2VjdXJlZm9yand0c2lnbmluZ2FuZHNob3VsZGJlc2VjdXJlZW5vdWdoZm9yaHM1MTJhbGdvcml0aG0=
-jwt.expiration=86400000
-jwt.refreshExpiration=604800000
+# JWT Configuration
+jwt.secret=${JWT_SECRET}
+jwt.expiration=${JWT_EXPIRATION}
+jwt.refreshExpiration=${JWT_REFRESH_EXPIRATION}
