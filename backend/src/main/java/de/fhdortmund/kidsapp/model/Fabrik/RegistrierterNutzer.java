@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Data
@@ -41,9 +42,6 @@ public class RegistrierterNutzer {
 
     @Column(nullable = true)
     private Interessen interessen;
-
-    @Embedded
-    private AnschriftT anschrift;
 
     @ManyToMany
     @JoinTable(

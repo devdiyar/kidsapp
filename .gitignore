@@ -71,3 +71,10 @@ expo-env.d.ts
 
 android/
 ios/
+expo-env.d.ts
+mobile/src/config/api.ts
+
+
+expo-env.d.ts
+
+backend/src/main/resources/application.properties

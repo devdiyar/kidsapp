@@ -3,17 +3,65 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import Toast from 'react-native-toast-message';
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { View, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { ActivityProvider, useActivity } from "../src/context/ActivityContext";
+import { AuthProvider } from "../src/context/authContext";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+function NavigationContent() {
+  const { isFavorite, toggleFavorite, handleShare } = useActivity();
+  
+  return (
+    <Stack>
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(profiletabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="details/[id]" 
+        options={{
+          headerShown: true,
+          title: '',
+          headerStyle: {
+            backgroundColor: '#fff'
+          },
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', marginRight: 10 }}>
+              <TouchableOpacity
+                onPress={toggleFavorite}
+                style={{ marginRight: 15 }}
+              >
+                <Ionicons
+                  name={isFavorite ? "star" : "star-outline"}
+                  size={24}
+                  color={isFavorite ? "red" : "black"}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleShare}>
+                <Ionicons
+                  name="share-social-outline"
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -32,13 +80,14 @@ export default function RootLayout() {
   }
 
   return (
-    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <ThemeProvider value={DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <AuthProvider>
+        <ActivityProvider>
+          <NavigationContent />
+          <StatusBar style="auto"/>
+          <Toast />
+        </ActivityProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

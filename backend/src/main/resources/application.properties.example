@@ -21,7 +21,7 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.OracleDialect
 
-# JWT Configuration
+# JWT Konfiguration
 jwt.secret=${JWT_SECRET}
 jwt.expiration=${JWT_EXPIRATION}
 jwt.refreshExpiration=${JWT_REFRESH_EXPIRATION}

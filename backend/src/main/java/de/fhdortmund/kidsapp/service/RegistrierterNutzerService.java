@@ -36,32 +36,6 @@ public class RegistrierterNutzerService {
                 .orElseThrow(() -> new RuntimeException("Nutzer nicht gefunden"));
     }
 
-    public RegistrierterNutzer updateNutzer(Long id, RegistrierterNutzer nutzer) {
-        RegistrierterNutzer existingNutzer = getNutzerById(id);
-
-        if (!existingNutzer.getEmail().equals(nutzer.getEmail())
-                && registrierterNutzerRepository.existsByEmail(nutzer.getEmail())) {
-            throw new RuntimeException("Email bereits registriert");
-        }
-        if (!existingNutzer.getBenutzername().equals(nutzer.getBenutzername())
-                && registrierterNutzerRepository.existsByBenutzername(nutzer.getBenutzername())) {
-            throw new RuntimeException("Benutzername bereits vergeben");
-        }
-
-        nutzer.setId(id);
-        if (nutzer.getPasswort() != null && !nutzer.getPasswort().equals(existingNutzer.getPasswort())) {
-            nutzer.setPasswort(passwordEncoder.encode(nutzer.getPasswort()));
-        } else {
-            nutzer.setPasswort(existingNutzer.getPasswort());
-        }
-
-        return registrierterNutzerRepository.save(nutzer);
-    }
-
-    public void deleteNutzer(Long id) {
-        registrierterNutzerRepository.deleteById(id);
-    }
-
     public void anmeldenZuVeranstaltung(Long nutzerId, Long veranstaltungId) {
         RegistrierterNutzer nutzer = getNutzerById(nutzerId);
         Veranstaltung veranstaltung = veranstaltungRepository.findById(veranstaltungId)
@@ -101,19 +75,6 @@ public class RegistrierterNutzerService {
         nutzer.setGeburtsdatum(request.getGeburtsdatum());
 
         return registrierterNutzerRepository.save(nutzer);
-    }
-
-    public RegistrierterNutzer registrieren(String email, String benutzername, String passwort,
-            String vorname, String nachname, LocalDate geburtsdatum) {
-        RegistrierungsRequest request = new RegistrierungsRequest();
-        request.setEmail(email);
-        request.setBenutzername(benutzername);
-        request.setPasswort(passwort);
-        request.setVorname(vorname);
-        request.setNachname(nachname);
-        request.setGeburtsdatum(geburtsdatum);
-
-        return registrieren(request);
     }
 
     public RegistrierterNutzer authenticate(String usernameOrEmail, String password) {

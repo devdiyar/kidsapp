@@ -1,75 +1,36 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// Backend-URL zentral definieren
-// Für Android-Emulator: 'http://10.0.2.2:8080'
-// Für echtes Gerät: z.B. 'http://192.168.178.10:8080' (deine PC-IP im WLAN)
-const BACKEND_URL = 'http://10.0.2.2:8080';
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
 
-// Hilfsfunktion zum Mapping von Backend-Daten auf das Frontend-Format
-const mapBackendToActivity = (backendItem: any): ActivityItemProps => {
-  // Bildauswahl nach Titel (Fallback-Icon, falls nicht vorhanden)
-  const imageMap: Record<string, any> = {
-    'Kulturrucksack Party': require('../../assets/images/Kulturrucksack_Party.jpg'),
-    'Illusions': require('../../assets/images/Illusion.jpg'),
-    "Woman's Day": require('../../assets/images/WomansDay.jpg'),
-    'Kinder-Flohmarkt': require('../../assets/images/Flohmarkt.jpg'),
-    // ...weitere Zuordnungen nach Bedarf...
-  };
-  const imageUrl = imageMap[backendItem.titel] || require('../../assets/images/appLogo.png');
-
-  // Preis-String
-  let price = 'Gratis';
-  if (backendItem.preis && backendItem.preis > 0) {
-    price = backendItem.preis + '€';
-    if (backendItem.titel && backendItem.titel.toLowerCase().includes('flohmarkt')) {
-      price = 'Standgebühr ' + backendItem.preis + '€';
-    }
+const ACTIVITIES_DATA = [
+  {
+    id: '1',
+    title: 'Adventsgrabung',
+    location: 'VK Stadium',
+    date: '28.03 20:00',
+    price: '5€',
+    imageUrl: require('../../assets/images/Adventsgrabung.jpg'),
+    status: null,
   }
+];
 
-  // Datum und Uhrzeit
-  let date = '';
-  if (backendItem.termin) {
-    const d = new Date(backendItem.termin.datum);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    date = `${day}.${month} ${backendItem.termin.uhrzeitVon}`;
-  }
-
-  // Location
-  let location = '';
-  if (backendItem.anschrift) {
-    location = `${backendItem.anschrift.strasse} ${backendItem.anschrift.hausnummer}, ${backendItem.anschrift.plz} ${backendItem.anschrift.ort}`;
-  }
-
-  // Status (optional, hier Dummy)
-  let status = null;
-  if (backendItem.aktuellerstatus && backendItem.aktuellerstatus.id) {
-    if (backendItem.aktuellerstatus.id === 3) status = 'Hat begonnen';
-    if (backendItem.aktuellerstatus.id === 7) status = 'Fast\nausgebucht';
-    if (backendItem.aktuellerstatus.id === 5) status = 'Anmeldung\nerforderlich';
-  }
-
-  return {
-    id: backendItem.id, // ID übernehmen
-    title: backendItem.titel,
-    location,
-    date,
-    price,
-    imageUrl,
-    status,
-  };
-};
+const FILTERS = [
+  { id: 'date', label: 'Datum' },
+  { id: 'payment', label: 'Zahlung' },
+  { id: 'address', label: 'Adresse' },
+];
 
 type ActivityItemProps = {
-  id: string | number; // ID hinzufügen
   title: string;
   location: string;
   date: string;
   price: string;
   imageUrl: ImageSourcePropType;
   status?: string | null;
+  onPress?: () => void;
 };
 
 // Hilfsfunktion zum Parsen des Datumsstrings
@@ -100,54 +61,31 @@ const parsePriceString = (priceStr: string): number => {
 };
 
 
-const ActivityItem: React.FC<ActivityItemProps> = ({ title, location, date, price, imageUrl, status }) => (
-  <View style={styles.itemContainer}>
-    <Image source={imageUrl} style={styles.image} />
-    <View style={styles.infoContainer}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.location}>{location}</Text>
-      <Text style={styles.date}>{date}</Text>
-      <Text style={styles.price}>{price}</Text>
-    </View>
-    {status && (
-      <View style={styles.statusBadge}>
-        <Text style={styles.statusText}>{status}</Text>
+const ActivityItem: React.FC<ActivityItemProps> = ({ title, location, date, price, imageUrl, status, onPress }) => (
+  <Pressable onPress={onPress}>
+    <View style={styles.itemContainer}>
+      <Image source={imageUrl} style={styles.image} />
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.location}>{location}</Text>
+        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.price}>{price}</Text>
       </View>
-    )}
-  </View>
+      {status && (
+        <View style={styles.statusBadge}>
+          <Text style={styles.statusText}>{status}</Text>
+        </View>
+      )}
+    </View>
+  </Pressable>
 );
 
-const FILTERS = [
-  { id: 'date', label: 'Datum' },
-  { id: 'payment', label: 'Zahlung' },
-  { id: 'address', label: 'Adresse' },
-];
-
 export default function SearchScreen() {
-  const [activities, setActivities] = useState<ActivityItemProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [searchText, setSearchText] = useState<string>('');
 
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    fetch(`${BACKEND_URL}/api/veranstaltungen`)
-      .then(res => {
-        if (!res.ok) throw new Error('Fehler beim Laden der Veranstaltungen');
-        return res.json();
-      })
-      .then(data => {
-        console.log('Veranstaltungen geladen:', data);
-        setActivities(data.map(mapBackendToActivity));
-        setLoading(false);
-      })
-      .catch(err => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
+  const router = useRouter();
 
   const handleFilterPress = (filterId: string) => {
     setActiveFilter(prevFilter => (prevFilter === filterId ? null : filterId));
@@ -158,7 +96,10 @@ export default function SearchScreen() {
   };
 
   const displayedActivities = useMemo(() => {
-    let processedActivities = [...activities];
+    // Zuerst nach Suchtext filtern
+    let processedActivities = [...ACTIVITIES_DATA].filter(activity => 
+      activity.title.toLowerCase().includes(searchText.toLowerCase())
+    );
 
     // Sortierung basierend auf dem activeFilter und sortOrder
     switch (activeFilter) {
@@ -192,10 +133,20 @@ export default function SearchScreen() {
     }
 
     return processedActivities;
-  }, [activities, activeFilter, sortOrder]);
+  }, [activeFilter, sortOrder, searchText]);
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Nach Veranstaltungen suchen..."
+          value={searchText}
+          onChangeText={setSearchText}
+          clearButtonMode="while-editing"
+        />
+      </View>
+
       <View style={styles.filterBarContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScrollView}>
           {FILTERS.map(filter => (
@@ -221,19 +172,16 @@ export default function SearchScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-      {loading ? (
-        <Text style={{ textAlign: 'center', marginTop: 40 }}>Lade Veranstaltungen ...</Text>
-      ) : error ? (
-        <Text style={{ textAlign: 'center', marginTop: 40, color: 'red' }}>{error}</Text>
-      ) : (
-        <FlatList
-          data={displayedActivities}
-          renderItem={({ item }) => <ActivityItem {...item} />}
-          keyExtractor={item => String(item.id)}
-          contentContainerStyle={styles.listContentContainer}
-          ListEmptyComponent={<Text style={styles.emptyListText}>Keine Aktivitäten gefunden.</Text>}
-        />
-      )}
+
+      <FlatList
+        data={displayedActivities}
+        renderItem={({ item }) => <ActivityItem {...item} 
+        onPress={() => router.push({ pathname: '/details/[id]', params: { id: item.id } })}
+        />}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.listContentContainer}
+        ListEmptyComponent={<Text style={styles.emptyListText}>Keine Aktivitäten gefunden.</Text>}
+      />
     </SafeAreaView>
   );
 }
@@ -355,5 +303,21 @@ const styles = StyleSheet.create({
     marginTop: 50,
     fontSize: 16,
     color: '#777',
-  }
+  },
+  searchContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  searchInput: {
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 20,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
 });
