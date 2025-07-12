@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ReviewButton from '@/components/ui/ReviewButton';
 import SurveyButton from '@/components/ui/SurveyButton';
+import { BewertungModal } from '../components/Bewertung';
 
 
 type BesuchteVeranstaltung = {
@@ -132,10 +133,11 @@ function holePreisAlsZahl(preisText: string) {
 function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: VeranstaltungKarteProps) {
   
   const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
 
   // passiert wenn jemand eine Bewertung abgibt
   const bewertungAbgeben = () => {
-    Alert.alert('Bewertung', `Bewertung für "${veranstaltung.titel}" abgeben`);
+    setModalVisible(true);
   };
 
   // passiert wenn jemand eine Umfrage ausfüllt
@@ -144,46 +146,49 @@ function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: 
   };
 
   return (
-    <TouchableOpacity 
-      style={styles.veranstaltungKarte}
-      onPress={() => onKarteAntippen(veranstaltung.id)}
-      activeOpacity={0.7}
-    >
-      {/* Hauptinformationen */}
-      <View style={styles.hauptInformationen}>
-        <Image source={veranstaltung.bildUrl} style={styles.veranstaltungsBild} />
-        <View style={styles.textInformationen}>
-          <Text style={styles.veranstaltungsTitel}>{veranstaltung.titel}</Text>
-          <Text style={styles.veranstaltungsOrt}>{veranstaltung.ort}</Text>
-          <Text style={styles.veranstaltungsDatum}>{veranstaltung.datum}</Text>
-          <Text style={styles.veranstaltungsPreis}>{veranstaltung.preis}</Text>
-        </View>
-      </View>
-      
-      {/* Aufklappbare Aktionen */}
-      {istAufgeklappt && (
-        <View style={styles.aktionsBereich}>
-          <Text style={styles.aktionsUeberschrift}>Aktionen</Text>
-          <View style={styles.buttonContainer}>
-            {veranstaltung.kannBewerten && (
-              <ReviewButton 
-                onPress={bewertungAbgeben} 
-              />
-            )}
-            {veranstaltung.kannUmfrage && (
-              <SurveyButton 
-                onPress={umfrageAusfuellen} 
-              />
-            )}
-            {!veranstaltung.kannBewerten && !veranstaltung.kannUmfrage && (
-              <Text style={styles.keineAktionenText}>
-                Keine Aktionen verfügbar
-              </Text>
-            )}
+    <>
+      <TouchableOpacity 
+        style={styles.veranstaltungKarte}
+        onPress={() => onKarteAntippen(veranstaltung.id)}
+        activeOpacity={0.7}
+      >
+        {/* Hauptinformationen */}
+        <View style={styles.hauptInformationen}>
+          <Image source={veranstaltung.bildUrl} style={styles.veranstaltungsBild} />
+          <View style={styles.textInformationen}>
+            <Text style={styles.veranstaltungsTitel}>{veranstaltung.titel}</Text>
+            <Text style={styles.veranstaltungsOrt}>{veranstaltung.ort}</Text>
+            <Text style={styles.veranstaltungsDatum}>{veranstaltung.datum}</Text>
+            <Text style={styles.veranstaltungsPreis}>{veranstaltung.preis}</Text>
           </View>
         </View>
-      )}
-    </TouchableOpacity>
+        
+        {/* Aufklappbare Aktionen */}
+        {istAufgeklappt && (
+          <View style={styles.aktionsBereich}>
+            <Text style={styles.aktionsUeberschrift}>Aktionen</Text>
+            <View style={styles.buttonContainer}>
+              {veranstaltung.kannBewerten && (
+                <ReviewButton 
+                  onPress={bewertungAbgeben} 
+                />
+              )}
+              {veranstaltung.kannUmfrage && (
+                <SurveyButton 
+                  onPress={umfrageAusfuellen} 
+                />
+              )}
+              {!veranstaltung.kannBewerten && !veranstaltung.kannUmfrage && (
+                <Text style={styles.keineAktionenText}>
+                  Keine Aktionen verfügbar
+                </Text>
+              )}
+            </View>
+          </View>
+        )}
+      </TouchableOpacity>
+      <BewertungModal visible={modalVisible} onClose={() => setModalVisible(false)} />
+    </>
   );
 }
 
