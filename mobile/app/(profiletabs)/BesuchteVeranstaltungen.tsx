@@ -14,7 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ReviewButton from '@/components/ui/ReviewButton';
 import SurveyButton from '@/components/ui/SurveyButton';
-import { BewertungModal } from '../components/Bewertung';
+import { BewertungModal } from '../bewertung/Bewertung';
 
 
 type BesuchteVeranstaltung = {

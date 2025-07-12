@@ -7,8 +7,8 @@ import Toast from 'react-native-toast-message'; //fuer Bestätigungshinweis anze
 import { StarRatingDisplay } from 'react-native-star-rating-widget';//fuer Sternebewertung
 import { Ionicons } from '@expo/vector-icons'; //fuer Icons zu favorisieren
 import { Share } from 'react-native';// Share-Funktionalität
-import { BewertungModal } from '../components/Bewertung';
-import { BewertungenView } from '../components/BewertungenView';
+import { BewertungModal } from '../bewertung/Bewertung';
+import { BewertungenView } from '../bewertung/BewertungenView';
 import { useActivity } from '../../src/context/ActivityContext';
 
 export default function ActivityDetailScreen() {
