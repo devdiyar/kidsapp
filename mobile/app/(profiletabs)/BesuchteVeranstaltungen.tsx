@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useRouter } from 'expo-router';
 import { 
   View, 
   Text, 
@@ -130,6 +131,8 @@ function holePreisAlsZahl(preisText: string) {
 
 function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: VeranstaltungKarteProps) {
   
+  const router = useRouter();
+
   // passiert wenn jemand eine Bewertung abgibt
   const bewertungAbgeben = () => {
     Alert.alert('Bewertung', `Bewertung für "${veranstaltung.titel}" abgeben`);
@@ -137,7 +140,7 @@ function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: 
 
   // passiert wenn jemand eine Umfrage ausfüllt
   const umfrageAusfuellen = () => {
-    Alert.alert('Umfrage', `Umfrage für "${veranstaltung.titel}" ausfüllen`);
+    router.push(`/umfrage/survey?id=${veranstaltung.id}&title=${encodeURIComponent(veranstaltung.titel)}`);
   };
 
   return (
