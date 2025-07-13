@@ -17,6 +17,7 @@ import de.fhdortmund.kidsapp.model.Kompositum.Umfrage;
 import de.fhdortmund.kidsapp.model.TerminT;
 import de.fhdortmund.kidsapp.model.Veranstaltung;
 import de.fhdortmund.kidsapp.model.Veranstaltung.Zahlungsmoeglichkeiten;
+import de.fhdortmund.kidsapp.service.UmfrageService;
 import de.fhdortmund.kidsapp.service.VeranstaltungService;
 
 public class MqttSubscriber {
@@ -24,14 +25,16 @@ public class MqttSubscriber {
     private final IMqttClient client;
     private final ObjectMapper objectMapper;
     private final VeranstaltungService veranstaltungService;
+    private final UmfrageService umfrageService;
 
-    public MqttSubscriber(String clientId, VeranstaltungService veranstaltungService) throws MqttException {
+    public MqttSubscriber(String clientId, VeranstaltungService veranstaltungService, UmfrageService umfrageService) throws MqttException {
         client = new MqttClient(brokerUrl, clientId);
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
         // Diese Zeile verhindert, dass Jackson versucht, Zeitstempel als Zahlen zu interpretieren
         this.objectMapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
         this.veranstaltungService = veranstaltungService;
+        this.umfrageService = umfrageService;
         client.connect();
     }
 
@@ -66,8 +69,8 @@ public class MqttSubscriber {
                     termin.setUhrzeitVon(Time.valueOf(veranstaltungBean.uhrzeit));
                     veranstaltung.setTermin(termin);
 
-                    veranstaltungService.saveVeranstaltung(veranstaltung);
-                    System.out.println("Veranstaltung erfolgreich empfangen und in der DB gespeichert: " + veranstaltung.getId());
+                    Veranstaltung gespeicherteVeranstaltung = veranstaltungService.saveVeranstaltung(veranstaltung);
+                    System.out.println("Veranstaltung erfolgreich empfangen und in der DB gespeichert: " + gespeicherteVeranstaltung.getId());
 
                 } catch (JsonProcessingException e) {
                     System.err.println("Fehler beim Deserialisieren der VeranstaltungsBean: " + e.getMessage());
@@ -77,14 +80,17 @@ public class MqttSubscriber {
                     UmfrageBean umfrageBean = objectMapper.readValue(payload, UmfrageBean.class);
 
                     Umfrage umfrage = new Umfrage();
-                    umfrage.setId(umfrageBean.id);
+                    // Die ID aus dem Bean ist die Veranstaltungs-ID
+                    umfrage.setId(umfrageBean.id); 
                     umfrage.setTitel(umfrageBean.titel);
                     umfrage.setBeschreibung(umfrageBean.beschreibung);
 
-                    System.out.println("Umfrage erfolgreich empfangen und erstellt:" +umfrage.getId());
+                    Umfrage gespeicherteUmfrage = umfrageService.saveUmfrageForVeranstaltung(umfrage);
+
+                    System.out.println("Umfrage erfolgreich empfangen und gespeichert mit ID: " + gespeicherteUmfrage.getId());
                 }
-                catch (JsonProcessingException e) {
-                   System.err.println("Fehler beim Deserialisieren der VeranstaltungsBean: " + e.getMessage()); 
+                catch (Exception e) {
+                   System.err.println("Fehler beim Verarbeiten der Umfrage: " + e.getMessage()); 
                 }
             } 
         });

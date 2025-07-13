@@ -33,7 +33,7 @@ public class MqttDemoMain {
             while (running) {
                 System.out.println("\nWählen Sie eine Aktion:");
                 System.out.println("1: VeranstaltungsBean senden");
-                System.out.println("2: Testdaten für Umfrage senden");
+                System.out.println("2: UmfrageBean senden");
                 System.out.println("3: Programm beenden");
                 System.out.print("Ihre Wahl: ");
                 
@@ -72,14 +72,20 @@ public class MqttDemoMain {
                     }
                     case "2" -> {
                         Umfrage umfrage = new Umfrage();
-                        System.out.print("Geben Sie die ID ein: ");
-                        String idString = scanner.nextLine();
-                        umfrage.setId(Long.parseLong(idString));
                         
-                        System.out.print("Geben Sie den Titel ein: ");
+                        System.out.print("Geben Sie die ID der Veranstaltung ein, zu der die Umfrage gehört: ");
+                        String idString = scanner.nextLine();
+                        try {
+                            umfrage.setId(Long.parseLong(idString));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Ungültige ID. Bitte geben Sie eine Zahl ein.");
+                            continue;
+                        }
+                        
+                        System.out.print("Geben Sie den Titel der Umfrage ein: ");
                         umfrage.setTitel(scanner.nextLine());
                         
-                        System.out.print("Geben Sie die Beschreibung ein: ");
+                        System.out.print("Geben Sie die Beschreibung der Umfrage ein: ");
                         umfrage.setBeschreibung(scanner.nextLine());
 
                         UmfrageBean umfrageBean = new UmfrageBean(umfrage);
