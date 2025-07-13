@@ -1,10 +1,14 @@
 package de.fhdortmund.kidsapp.service.Mqtt;
 
+import java.sql.Date;
+import java.sql.Time;
+
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -14,6 +18,7 @@ import de.fhdortmund.kidsapp.model.TerminT;
 import de.fhdortmund.kidsapp.model.Veranstaltung;
 import de.fhdortmund.kidsapp.model.Veranstaltung.Zahlungsmoeglichkeiten;
 import de.fhdortmund.kidsapp.service.VeranstaltungService;
+
 public class MqttSubscriber {
     private final String brokerUrl = "tcp://localhost:1883";
     private final IMqttClient client;
@@ -24,6 +29,8 @@ public class MqttSubscriber {
         client = new MqttClient(brokerUrl, clientId);
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
+        // Diese Zeile verhindert, dass Jackson versucht, Zeitstempel als Zahlen zu interpretieren
+        this.objectMapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
         this.veranstaltungService = veranstaltungService;
         client.connect();
     }
@@ -36,7 +43,6 @@ public class MqttSubscriber {
                     VeranstaltungBean veranstaltungBean = objectMapper.readValue(payload, VeranstaltungBean.class);
                     
                     Veranstaltung veranstaltung = new Veranstaltung();
-                    veranstaltung.setId(veranstaltungBean.id);
                     veranstaltung.setTitel(veranstaltungBean.titel);
                     veranstaltung.setBeschreibung(veranstaltungBean.beschreibung);
                     
@@ -56,11 +62,11 @@ public class MqttSubscriber {
                     veranstaltung.setVeranstalterTelefon("0123456789");
 
                     TerminT termin = new TerminT();
-                    termin.setDatum(veranstaltungBean.datum);
-                    termin.setUhrzeitVon(veranstaltungBean.uhrzeit);
+                    termin.setDatum(Date.valueOf(veranstaltungBean.datum));
+                    termin.setUhrzeitVon(Time.valueOf(veranstaltungBean.uhrzeit));
                     veranstaltung.setTermin(termin);
 
-                    // veranstaltungService.saveVeranstaltung(veranstaltung);
+                    veranstaltungService.saveVeranstaltung(veranstaltung);
                     System.out.println("Veranstaltung erfolgreich empfangen und in der DB gespeichert: " + veranstaltung.getId());
 
                 } catch (JsonProcessingException e) {

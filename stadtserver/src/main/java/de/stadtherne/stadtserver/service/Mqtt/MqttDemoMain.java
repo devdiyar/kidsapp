@@ -1,7 +1,8 @@
 package de.stadtherne.stadtserver.service.Mqtt;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import de.stadtherne.stadtserver.model.Umfrage;
@@ -42,9 +43,6 @@ public class MqttDemoMain {
                     case "1" -> {
                         VeranstaltungBean veranstaltung = new VeranstaltungBean();
                         
-                        System.out.print("Geben Sie die ID ein: ");
-                        veranstaltung.id = Long.parseLong(scanner.nextLine());
-                        
                         System.out.print("Geben Sie den Titel ein: ");
                         veranstaltung.titel = scanner.nextLine();
                         
@@ -54,20 +52,18 @@ public class MqttDemoMain {
                         System.out.print("Geben Sie das Datum ein (yyyy-MM-dd): ");
                         String datumString = scanner.nextLine();
                         try {
-                            veranstaltung.datum = new SimpleDateFormat("yyyy-MM-dd").parse(datumString);
-                        } catch (ParseException e) {
+                            veranstaltung.datum = LocalDate.parse(datumString);
+                        } catch (DateTimeParseException e) {
                             System.out.println("Ungültiges Datumsformat. Bitte yyyy-MM-dd verwenden.");
                             continue;
                         }
                         
-                        System.out.print("Geben Sie die Uhrzeit ein (HH:mm): ");
+                        System.out.print("Geben Sie die Uhrzeit ein (HH:mm:ss): ");
                         String uhrzeitString = scanner.nextLine();
                         try {
-                            String dateTimeString = datumString + " " + uhrzeitString;
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                            veranstaltung.uhrzeit = sdf.parse(dateTimeString);
-                        } catch (ParseException e) {
-                            System.out.println("Ungültiges Uhrzeitformat. Bitte HH:mm verwenden.");
+                            veranstaltung.uhrzeit = LocalTime.parse(uhrzeitString);
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Ungültiges Uhrzeitformat. Bitte HH:mm:ss verwenden.");
                             continue;
                         }
 
