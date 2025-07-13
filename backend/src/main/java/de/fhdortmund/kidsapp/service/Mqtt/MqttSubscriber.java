@@ -8,18 +8,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import de.fhdortmund.kidsapp.model.AnschriftT;
 import de.fhdortmund.kidsapp.model.Kompositum.Umfrage;
 import de.fhdortmund.kidsapp.model.TerminT;
 import de.fhdortmund.kidsapp.model.Veranstaltung;
+import de.fhdortmund.kidsapp.model.Veranstaltung.Zahlungsmoeglichkeiten;
+import de.fhdortmund.kidsapp.service.VeranstaltungService;
 public class MqttSubscriber {
     private final String brokerUrl = "tcp://localhost:1883";
     private final IMqttClient client;
     private final ObjectMapper objectMapper;
+    private final VeranstaltungService veranstaltungService;
 
-    public MqttSubscriber(String clientId) throws MqttException {
+    public MqttSubscriber(String clientId, VeranstaltungService veranstaltungService) throws MqttException {
         client = new MqttClient(brokerUrl, clientId);
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
+        this.veranstaltungService = veranstaltungService;
         client.connect();
     }
 
@@ -32,15 +37,31 @@ public class MqttSubscriber {
                     
                     Veranstaltung veranstaltung = new Veranstaltung();
                     veranstaltung.setId(veranstaltungBean.id);
-                    // veranstaltung.setTitel(veranstaltungBean.titel);
-                    // veranstaltung.setBeschreibung(veranstaltungBean.beschreibung);
+                    veranstaltung.setTitel(veranstaltungBean.titel);
+                    veranstaltung.setBeschreibung(veranstaltungBean.beschreibung);
                     
+                    // Testdaten für die restlichen "nullable = false" Felder
+                    veranstaltung.setPreis(10.0);
+                    AnschriftT anschrift = new AnschriftT();
+                    anschrift.setStrasse("Teststraße");
+                    anschrift.setHausnummer(1);
+                    anschrift.setPlz(12345);
+                    anschrift.setOrt("Teststadt");
+                    veranstaltung.setAnschrift(anschrift);
+                    veranstaltung.setKategorie("Testkategorie");
+                    veranstaltung.setBildUrl("http://example.com/bild.jpg");
+                    veranstaltung.setZahlungsmoeglichkeit(Zahlungsmoeglichkeiten.PAYPAL);
+                    veranstaltung.setVeranstalter("Testveranstalter");
+                    veranstaltung.setVeranstalterEmail("test@example.com");
+                    veranstaltung.setVeranstalterTelefon("0123456789");
+
                     TerminT termin = new TerminT();
                     termin.setDatum(veranstaltungBean.datum);
                     termin.setUhrzeitVon(veranstaltungBean.uhrzeit);
                     veranstaltung.setTermin(termin);
 
-                    System.out.println("Veranstaltung erfolgreich empfangen und erstellt: " + veranstaltung.getId());
+                    // veranstaltungService.saveVeranstaltung(veranstaltung);
+                    System.out.println("Veranstaltung erfolgreich empfangen und in der DB gespeichert: " + veranstaltung.getId());
 
                 } catch (JsonProcessingException e) {
                     System.err.println("Fehler beim Deserialisieren der VeranstaltungsBean: " + e.getMessage());
