@@ -1,13 +1,12 @@
 package de.stadtherne.stadtserver.service.Mqtt;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import de.stadtherne.stadtserver.model.Veranstaltung;
 
 public class VeranstaltungBean {
     public String titel;
-    public LocalDateTime uhrzeit;
+    public Date uhrzeit;
     public String beschreibung;
     public Long id;
     public Date datum;
@@ -19,7 +18,7 @@ public class VeranstaltungBean {
     public VeranstaltungBean(Veranstaltung veranstaltung){
        // titel = veranstaltung.getTitel();
        datum = veranstaltung.getTermin().getDatum();
-       uhrzeit = veranstaltung.getTermin().getUhrzeit();
+       uhrzeit = veranstaltung.getTermin().getUhrzeitVon();
        // beschreibung = veranstaltung.getBeschreibung();
        id = veranstaltung.getId();
     }

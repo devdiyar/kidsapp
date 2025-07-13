@@ -1,6 +1,5 @@
 package de.stadtherne.stadtserver.model;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Data;
@@ -9,5 +8,6 @@ import lombok.Data;
 public class TerminT {
 
     private Date datum;
-    private LocalDateTime uhrzeit;
+    private Date uhrzeitVon;
+    private Date uhrzeitBis;
 }

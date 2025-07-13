@@ -2,10 +2,8 @@ package de.stadtherne.stadtserver.service.Mqtt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+
 import de.stadtherne.stadtserver.model.Umfrage;
 
 public class MqttDemoMain {
@@ -65,8 +63,10 @@ public class MqttDemoMain {
                         System.out.print("Geben Sie die Uhrzeit ein (HH:mm): ");
                         String uhrzeitString = scanner.nextLine();
                         try {
-                            veranstaltung.uhrzeit = LocalDateTime.parse(datumString + "T" + uhrzeitString + ":00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                        } catch (DateTimeParseException e) {
+                            String dateTimeString = datumString + " " + uhrzeitString;
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            veranstaltung.uhrzeit = sdf.parse(dateTimeString);
+                        } catch (ParseException e) {
                             System.out.println("Ungültiges Uhrzeitformat. Bitte HH:mm verwenden.");
                             continue;
                         }
