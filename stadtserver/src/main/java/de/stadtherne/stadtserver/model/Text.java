@@ -1,15 +1,9 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Entity
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class Text extends Fragentyp {
-    public Text() {}
-    public Text(String titel, String beschreibung) {
-        super(titel, beschreibung);
-    }
-    @Override
-    public String getTitel() { return this.titel; }
-    @Override
-    public String getBeschreibung() { return this.beschreibung; }
 }

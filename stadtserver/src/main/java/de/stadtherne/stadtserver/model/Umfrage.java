@@ -3,24 +3,34 @@ package de.stadtherne.stadtserver.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Entity
-public class Umfrage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class Umfrage extends Fragentyp {
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Fragentyp> fragen = new ArrayList<>();
+    private List<Fragentyp> fragentypen = new ArrayList<>();
 
-    public void add(Fragentyp frage) { fragen.add(frage); }
-    public void remove(Fragentyp frage) { fragen.remove(frage); }
-    public Fragentyp getFragentypt(int n) { return fragen.get(n); }
-    public List<Fragentyp> getFragentypen() { return fragen; }
+    private Veranstaltung veranstaltung;
+
+    public Umfrage() {
+        this.fragentypen = new ArrayList<>();
+    }
+
+    public Umfrage(ArrayList<Fragentyp> fragentypen) {
+        this.fragentypen = fragentypen != null ? fragentypen : new ArrayList<>();
+    }
+
+    public void add(Fragentyp frage) {
+        fragentypen.add(frage);
+    }
+
+    public void remove(Fragentyp frage) {
+        fragentypen.remove(frage);
+    }
+
+    public Fragentyp getFragentyp(int n) {
+        return fragentypen.get(n);
+    }
 }

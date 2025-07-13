@@ -5,36 +5,34 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Live extends Status {
+public class Stattfindend extends Status {
 
-    public Live(Veranstaltung veranstaltung) {
+    public Stattfindend(Veranstaltung veranstaltung) {
         super(veranstaltung);
     }
 
-    public Live() {
-
+    public Stattfindend() {
     }
 
     @Override
     public void stattfindendSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Stattfindend gesetzt werden, da er bereits Live ist.");
+        System.out.println("Status bereits auf Stattfindend gesetzt.");
     }
 
     @Override
     public void ausstehendSetzen() {
-        throw new IllegalStateException("Status kann nicht auf Ausstehend gesetzt werden, da er bereits Live ist.");
+        System.out.println("Status wird auf Ausstehend gesetzt.");
+        veranstaltung.setAktuellerstatus(new Ausstehend(veranstaltung));
     }
 
     @Override
     public void liveSetzen() {
-        System.out.println("Status bereits auf Live gesetzt.");
-
+        throw new IllegalStateException("Status kann nicht auf Live gesetzt werden, da er bereits Stattfindend ist.");
     }
 
     @Override
     public void abgeschlossenSetzen() {
-        System.out.println("Status wird auf Abgeschlossen gesetzt.");
-        veranstaltung.setAktuellerstatus(new Abgeschlossen(veranstaltung));
+        throw new IllegalStateException("Status kann nicht auf Abgeschlossen gesetzt werden, da er bereits Stattfindend ist.");
     }
 
     @Override
@@ -45,6 +43,6 @@ public class Live extends Status {
 
     @Override
     public String toString() {
-        return "Live";
+        return "Stattfindend";
     }
 }

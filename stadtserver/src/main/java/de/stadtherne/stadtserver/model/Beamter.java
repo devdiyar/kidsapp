@@ -1,21 +1,36 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class Beamter extends Nutzer {
-    public Aktivitaet aktivitaetErstellen(String titel, String beschreibung, TerminT termin) {
-        return new Aktivitaet();
+
+    private String position;
+
+    public Beamter(String vn, String n, AnschriftT a, String pos) {
+        super(vn, n, a);
+        this.position = pos;
+        this.veranstaltungen = new ArrayList<>();
     }
-    public Umfrage umfrageErstellen(String titel, String beschreibung) {
-        return new Umfrage();
+
+    private List<Veranstaltung> veranstaltungen = new ArrayList<>();
+
+    public void addVeranstaltung(Veranstaltung veranstaltung) {
+        if (veranstaltung != null) {
+            veranstaltungen.add(veranstaltung);
+            veranstaltung.setBeamter(this);
+        }
     }
-    public void liveSetzen(Aktivitaet a) { a.liveSetzen(); }
-    public void abgeschlossenSetzen(Aktivitaet a) { a.abgeschlossenSetzen(); }
-    public void ausstehendSetzen(Aktivitaet a) { a.ausstehendSetzen(); }
-    public void geloeschtSetzen(Aktivitaet a) { a.geloeschtSetzen(); }
-    public void stattfindendSetzen(Aktivitaet a) { a.stattfindendSetzen(); }
-    public void bewertungVerfuegbarSetzen(Aktivitaet a) { a.bewertungVerfuegbarSetzen(); }
-    public void umfrageVerfuegbarSetzen(Aktivitaet a) { a.umfrageVerfuegbarSetzen(); }
-    public void trendingSetzen(Aktivitaet a) { a.trendingSetzen(); }
+
+    public void removeVeranstaltung(Veranstaltung veranstaltung) {
+        if (veranstaltung != null) {
+            veranstaltungen.remove(veranstaltung);
+            veranstaltung.setBeamter(null);
+        }
+    }
 }

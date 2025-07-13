@@ -1,13 +1,16 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.Data;
 
-@Entity
+@Data
 public class Bewertung {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
+
+    private int steranzahl;
+    private String kommentar;
+
+    private RegistrierterNutzer bewerter;
+
+    private Veranstaltung veranstaltung;
 }

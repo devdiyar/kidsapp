@@ -1,25 +1,28 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import lombok.Data;
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Data
 public abstract class Status {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
-    public void trendingSetzen(Aktivitaet a) {}
-    public void umfrageVerfuegbarSetzen(Aktivitaet a) {}
-    public void bewertungVerfuegbarSetzen(Aktivitaet a) {}
-    public void abgeschlossenSetzen(Aktivitaet a) {}
-    public void liveSetzen(Aktivitaet a) {}
-    public void ausstehendSetzen(Aktivitaet a) {}
-    public void stattfindendSetzen(Aktivitaet a) {}
-    public void geloeschtSetzen(Aktivitaet a) {}
+    protected Veranstaltung veranstaltung;
+
+    public Status(Veranstaltung veranstaltung) {
+        this.veranstaltung = veranstaltung;
+    }
+
+    public Status() {
+    }
+
+    public abstract void stattfindendSetzen();
+
+    public abstract void ausstehendSetzen();
+
+    public abstract void liveSetzen();
+
+    public abstract void abgeschlossenSetzen();
+
+    public abstract void geloeschtSetzen();
 }

@@ -1,6 +1,5 @@
 package de.stadtherne.stadtserver.model;
 
-import jakarta.persistence.Entity;
+public class RegistrierterNutzer extends Nutzer {
 
-@Entity
-public class RegistrierterNutzer extends Nutzer {}
+}
