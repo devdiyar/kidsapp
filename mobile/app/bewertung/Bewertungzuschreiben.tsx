@@ -9,6 +9,14 @@ export function BewertungModal({ visible, onClose }: { visible: boolean, onClose
   const [bewertungStars, setBewertungStars] = useState(0);
 
   const handleBewertungAbsenden = () => {
+    if (bewertungStars === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Bitte Sterne vergeben!',
+        position: 'top',
+      });
+      return;
+    }
     onClose();
     setBewertungText('');
     setBewertungStars(0);
