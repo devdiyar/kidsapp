@@ -1,0 +1,106 @@
+package de.stadtherne.stadtserver.service.Mqtt;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
+import de.stadtherne.stadtserver.model.Umfrage;
+
+public class MqttDemoMain {
+    public static void main(String[] args) throws Exception {
+
+        //Topic und Nachrichten von Backend zum empfangen
+        String topicBackendVeranstaltung = "backend/veranstaltung";
+        String topicBackendUmfrage = "backend/umfrage";
+
+        //Topic und Nachrichten von Stadtserver zum senden
+        String topicStadtserverVeranstaltung = "stadtserver/veranstaltung";
+        String topicStadtserverUmfrage = "stadtserver/umfrage";
+        String nachrichtStadtserverUmfrage = "Testdaten für Umfrage";
+
+        // Subscriber starten und Topic setzen
+        MqttSubscriber subscriberStadtserver = new MqttSubscriber("subscriberClientStadtserver");
+        subscriberStadtserver.subscribe(topicBackendVeranstaltung);
+        subscriberStadtserver.subscribe(topicBackendUmfrage);
+
+        // Publisher starten
+        MqttPublisher publisherStadtserver = new MqttPublisher("publisherClientStadtserver");
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            boolean running = true;
+            
+            while (running) {
+                System.out.println("\nWählen Sie eine Aktion:");
+                System.out.println("1: VeranstaltungsBean senden");
+                System.out.println("2: Testdaten für Umfrage senden");
+                System.out.println("3: Programm beenden");
+                System.out.print("Ihre Wahl: ");
+                
+                String choice = scanner.nextLine();
+                
+                switch (choice) {
+                    case "1" -> {
+                        VeranstaltungBean veranstaltung = new VeranstaltungBean();
+                        
+                        System.out.print("Geben Sie die ID ein: ");
+                        veranstaltung.id = Long.parseLong(scanner.nextLine());
+                        
+                        System.out.print("Geben Sie den Titel ein: ");
+                        veranstaltung.titel = scanner.nextLine();
+                        
+                        System.out.print("Geben Sie die Beschreibung ein: ");
+                        veranstaltung.beschreibung = scanner.nextLine();
+                        
+                        System.out.print("Geben Sie das Datum ein (yyyy-MM-dd): ");
+                        String datumString = scanner.nextLine();
+                        try {
+                            veranstaltung.datum = new SimpleDateFormat("yyyy-MM-dd").parse(datumString);
+                        } catch (ParseException e) {
+                            System.out.println("Ungültiges Datumsformat. Bitte yyyy-MM-dd verwenden.");
+                            continue;
+                        }
+                        
+                        System.out.print("Geben Sie die Uhrzeit ein (HH:mm): ");
+                        String uhrzeitString = scanner.nextLine();
+                        try {
+                            veranstaltung.uhrzeit = LocalDateTime.parse(datumString + "T" + uhrzeitString + ":00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Ungültiges Uhrzeitformat. Bitte HH:mm verwenden.");
+                            continue;
+                        }
+
+                        publisherStadtserver.publishVeranstaltung(topicStadtserverVeranstaltung, veranstaltung);
+                        System.out.println("VeranstaltungsBean gesendet.");
+                    }
+                    case "2" -> {
+                        Umfrage umfrage = new Umfrage();
+                        System.out.print("Geben Sie die ID ein: ");
+                        String idString = scanner.nextLine();
+                        umfrage.setId(Long.parseLong(idString));
+                        
+                        System.out.print("Geben Sie den Titel ein: ");
+                        umfrage.setTitel(scanner.nextLine());
+                        
+                        System.out.print("Geben Sie die Beschreibung ein: ");
+                        umfrage.setBeschreibung(scanner.nextLine());
+
+                        UmfrageBean umfrageBean = new UmfrageBean(umfrage);
+
+                        publisherStadtserver.publishUmfrage(topicStadtserverUmfrage, umfrageBean);
+                        System.out.println("UmfrageBean gesendet.");
+                    }
+                    case "3" -> {
+                        running = false;
+                        System.out.println("Programm wird beendet.");
+                    }
+                    default -> System.out.println("Ungültige Eingabe. Bitte versuchen Sie es erneut.");
+                }
+            }
+        }
+        publisherStadtserver.disconnect();
+        subscriberStadtserver.disconnect();
+        System.exit(0);
+    }
+}
