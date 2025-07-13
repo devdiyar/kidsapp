@@ -7,7 +7,7 @@ import java.util.Scanner;
 import de.stadtherne.stadtserver.model.Umfrage;
 
 public class MqttDemoMain {
-    public static void main(String[] args) throws Exception {
+    public void mqttAnwendung() throws Exception {
 
         //Topic und Nachrichten von Backend zum empfangen
         String topicBackendVeranstaltung = "backend/veranstaltung";
