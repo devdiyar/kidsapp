@@ -1,6 +1,6 @@
 package de.fhdortmund.kidsapp.service.Mqtt;
 
-import java.util.Date;
+import java.sql.Date;
 
 import de.fhdortmund.kidsapp.model.Veranstaltung;
 
