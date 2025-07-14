@@ -27,10 +27,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
-
 @Entity
 @Data
-public class Veranstaltung { 
+public class Veranstaltung {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,9 +63,9 @@ public class Veranstaltung {
 
     @ManyToMany
     @JoinTable(
-        name = "registrierter_nutzer_veranstaltung",
-        joinColumns = @JoinColumn(name = "veranstaltung_id"),
-        inverseJoinColumns = @JoinColumn(name = "registrierter_nutzer_id")
+            name = "registrierter_nutzer_veranstaltung",
+            joinColumns = @JoinColumn(name = "veranstaltung_id"),
+            inverseJoinColumns = @JoinColumn(name = "registrierter_nutzer_id")
     )
     private List<RegistrierterNutzer> teilnehmer = new ArrayList<>();
 
@@ -109,12 +109,15 @@ public class Veranstaltung {
     public void erstelltSetzen() {
         aktuellerstatus.erstelltSetzen();
     }
+
     public void stattfindendSetzen() {
         aktuellerstatus.stattfindendSetzen();
     }
+
     public void ausstehendSetzen() {
         aktuellerstatus.ausstehendSetzen();
     }
+
     public void trendingSetzen() {
         aktuellerstatus.trendingSetzen(this.getTeilnehmeranzahl());
     }
@@ -126,21 +129,27 @@ public class Veranstaltung {
     public void inVorbereitungSetzen() {
         aktuellerstatus.inVorbereitungSetzen();
     }
+
     public void storniertSetzen() {
         aktuellerstatus.storniertSetzen();
     }
+
     public void liveSetzen(Bewertung bewertung) {
         aktuellerstatus.liveSetzen(getTeilnehmeranzahl());
     }
+
     public void abgeschlossenSetzen() {
         aktuellerstatus.abgeschlossenSetzen();
     }
+
     public void bewertungVerfuegbarSetzen() {
         aktuellerstatus.bewertungVerfuegbarSetzen();
     }
+
     public void umfrageVerfuegbarSetzen() {
         aktuellerstatus.umfrageVerfuegbarSetzen();
     }
+
     public void geloeschtSetzen() {
         aktuellerstatus.geloeschtSetzen();
     }

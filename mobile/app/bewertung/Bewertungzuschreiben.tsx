@@ -4,7 +4,15 @@ import StarRating from 'react-native-star-rating-widget';
 import Toast from 'react-native-toast-message';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
-export function BewertungModal({ visible, onClose }: { visible: boolean, onClose: () => void }) {
+export function BewertungModal({ 
+  visible, 
+  onClose, 
+  veranstaltungId 
+}: { 
+  visible: boolean, 
+  onClose: () => void,
+  veranstaltungId: string
+}) {
   const [bewertungText, setBewertungText] = useState('');
   const [bewertungStars, setBewertungStars] = useState(0);
 
@@ -17,6 +25,10 @@ export function BewertungModal({ visible, onClose }: { visible: boolean, onClose
       });
       return;
     }
+    
+    // TODO: Implementiere API-Aufruf für Bewertung
+    // bewertungService.createBewertung(veranstaltungId, bewertungStars, bewertungText);
+    
     onClose();
     setBewertungText('');
     setBewertungStars(0);

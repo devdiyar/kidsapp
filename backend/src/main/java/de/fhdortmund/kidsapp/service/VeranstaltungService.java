@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 import de.fhdortmund.kidsapp.model.Fabrik.Bewertung;
 import de.fhdortmund.kidsapp.model.Fabrik.RegistrierterNutzer;
 import de.fhdortmund.kidsapp.model.Veranstaltung;
-import de.fhdortmund.kidsapp.model.Zustaende.Ausstehend;
+import de.fhdortmund.kidsapp.model.Zustaende.Erstellt;
 import de.fhdortmund.kidsapp.repository.VeranstaltungRepository;
 
 @Service
 public class VeranstaltungService {
+
     @Autowired
     private VeranstaltungRepository veranstaltungRepository;
 
@@ -41,14 +42,6 @@ public class VeranstaltungService {
         return veranstaltungRepository.findByAktuellerstatusClass(statusClass);
     }
 
-    public List<Veranstaltung> getVeranstaltungenByMaxPreis(double maxPreis) {
-        return veranstaltungRepository.findByPreisLessThanEqual(maxPreis);
-    }
-
-    public List<Veranstaltung> getVeranstaltungenByVeranstalter(String veranstalter) {
-        return veranstaltungRepository.findByVeranstalter(veranstalter);
-    }
-
     public List<Veranstaltung> sucheVeranstaltungen(String suchbegriff) {
         return veranstaltungRepository.findByTitelContainingIgnoreCase(suchbegriff);
     }
@@ -57,28 +50,17 @@ public class VeranstaltungService {
         return veranstaltungRepository.findByTerminDatumBetween(start, end);
     }
 
-    public Veranstaltung saveVeranstaltung(Veranstaltung veranstaltung) {
-        if (veranstaltung.getAktuellerstatus() == null) {
-            veranstaltung.setAktuellerstatus(new Ausstehend(veranstaltung));
-        }
-        return veranstaltungRepository.save(veranstaltung);
-    }
-
-    public Veranstaltung updateVeranstaltung(Long id, Veranstaltung veranstaltung) {
-        Veranstaltung existingVeranstaltung = getVeranstaltungById(id);
-        veranstaltung.setId(id);
-        veranstaltung.setAktuellerstatus(existingVeranstaltung.getAktuellerstatus());
-        return veranstaltungRepository.save(veranstaltung);
-    }
-
-    public void deleteVeranstaltung(Long id) {
-        veranstaltungRepository.deleteById(id);
-    }
-
     public Bewertung addBewertung(Long veranstaltungId, int sternanzahl, String kommentar, RegistrierterNutzer bewerter) {
         Veranstaltung veranstaltung = getVeranstaltungById(veranstaltungId);
         Bewertung bewertung = veranstaltung.bewertungErstellen(sternanzahl, kommentar, bewerter);
         veranstaltungRepository.save(veranstaltung);
         return bewertung;
+    }
+
+    public Veranstaltung saveVeranstaltung(Veranstaltung veranstaltung) {
+        if (veranstaltung.getAktuellerstatus() == null) {
+            veranstaltung.setAktuellerstatus(new Erstellt(veranstaltung));
+        }
+        return veranstaltungRepository.save(veranstaltung);
     }
 }
