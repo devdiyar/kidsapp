@@ -13,12 +13,12 @@ export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const { state } = useAuth();
 
-  // Auth Guard: Redirect to login if not authenticated
-  useEffect(() => {
-    if (!state.isLoading && !state.isAuthenticated) {
-      router.replace('/(auth)/login');
-    }
-  }, [state.isAuthenticated, state.isLoading]);
+  // // Auth Guard: Redirect to login if not authenticated
+  // useEffect(() => {
+  //   if (!state.isLoading && !state.isAuthenticated) {
+  //     router.replace('/(auth)/login');
+  //   }
+  // }, [state.isAuthenticated, state.isLoading]);
 
   return (
     <Tabs
