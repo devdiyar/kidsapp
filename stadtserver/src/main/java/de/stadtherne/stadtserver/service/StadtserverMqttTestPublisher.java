@@ -137,7 +137,7 @@ public class StadtserverMqttTestPublisher {
         umfrage.setTitel("Was können wir verbessern?");
         umfrage.setBeschreibung("Mehrfachauswahl möglich - helfen Sie uns besser zu werden!");
         umfrage.setAntwort(Arrays.asList(
-                "Mehr Aktivitäten",
+                "Mehr Veranstaltungen",
                 "Bessere Organisation",
                 "Längere Dauer",
                 "Günstigere Preise",

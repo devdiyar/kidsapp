@@ -2,18 +2,18 @@ import React, { createContext, useContext, useState } from 'react';
 import { Share } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-type ActivityContextType = {
-  currentActivityId: string | null;
+type VeranstaltungContextType = {
+  currentVeranstaltungId: string | null;
   isFavorite: boolean;
-  setCurrentActivityId: (id: string | null) => void;
+  setCurrentVeranstaltungId: (id: string | null) => void;
   toggleFavorite: () => void;
   handleShare: () => Promise<void>;
 };
 
-const ActivityContext = createContext<ActivityContextType | undefined>(undefined);
+const VeranstaltungContext = createContext<VeranstaltungContextType | undefined>(undefined);
 
-export function ActivityProvider({ children }: { children: React.ReactNode }) {
-  const [currentActivityId, setCurrentActivityId] = useState<string | null>(null);
+export function VeranstaltungProvider({ children }: { children: React.ReactNode }) {
+  const [currentVeranstaltungId, setCurrentVeranstaltungId] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleFavorite = () => {
@@ -49,24 +49,24 @@ export function ActivityProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ActivityContext.Provider 
+    <VeranstaltungContext.Provider 
       value={{
-        currentActivityId,
+        currentVeranstaltungId,
         isFavorite,
-        setCurrentActivityId,
+        setCurrentVeranstaltungId,
         toggleFavorite,
         handleShare,
       }}
     >
       {children}
-    </ActivityContext.Provider>
+    </VeranstaltungContext.Provider>
   );
 }
 
-export function useActivity() {
-  const context = useContext(ActivityContext);
+export function useVeranstaltung() {
+  const context = useContext(VeranstaltungContext);
   if (context === undefined) {
-    throw new Error('useActivity must be used within an ActivityProvider');
+    throw new Error('useVeranstaltung must be used within a VeranstaltungProvider');
   }
   return context;
 }

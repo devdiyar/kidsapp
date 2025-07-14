@@ -77,96 +77,96 @@ const InteractiveMap = () => {
 
         <Marker
           coordinate={{ latitude: 51.5366, longitude: 7.2006 }}
-          title={"Aktivität 1"}
+          title={"Veranstaltung 1"}
         >
-          <View style={styles.activityMarker}>
+          <View style={styles.veranstaltungMarker}>
             <Image
               source={require("@/assets/images/icons/activityMap/trend.png")}
               style={styles.trendIcon}
             />
-            <Text style={styles.activityText}>8</Text>
+            <Text style={styles.veranstaltungText}>8</Text>
           </View>
         </Marker>
         <Marker
           coordinate={{ latitude: 51.5356, longitude: 7.2056 }}
-          title={"Aktivität 2"}
+          title={"Veranstaltung 2"}
         >
-          <View style={styles.activityMarker}>
-            <Text style={styles.activityText}>3</Text>
+          <View style={styles.veranstaltungMarker}>
+            <Text style={styles.veranstaltungText}>3</Text>
           </View>
         </Marker>
         <Marker
           coordinate={{ latitude: 51.5376, longitude: 7.2106 }}
-          title={"Aktivität 3"}
+          title={"Veranstaltung 3"}
         >
-          <View style={styles.activityMarker}>
-            <Text style={styles.activityText}>5</Text>
+          <View style={styles.veranstaltungMarker}>
+            <Text style={styles.veranstaltungText}>5</Text>
           </View>
         </Marker>
 
         <Marker
           coordinate={{ latitude: 51.5396, longitude: 7.2156 }}
-          title={"Aktivität 4"}
+          title={"Veranstaltung 4"}
         >
-          <View style={styles.activityMarker}>
+          <View style={styles.veranstaltungMarker}>
             <Image
               source={require("@/assets/images/testimages/actvity1.png")}
-              style={styles.activityImage}
+              style={styles.veranstaltungImage}
             />
             <Image
               source={require("@/assets/images/icons/activityMap/trend.png")}
               style={styles.trendIcon}
             />
-            <View style={styles.activityMarkerTriangle} />
+            <View style={styles.veranstaltungMarkerTriangle} />
           </View>
         </Marker>
 
         <Marker
           coordinate={{ latitude: 51.5386, longitude: 7.2206 }}
-          title={"Aktivität 5"}
+          title={"Veranstaltung 5"}
         >
-          <View style={styles.activityMarker}>
+          <View style={styles.veranstaltungMarker}>
             <Image
               source={require("@/assets/images/testimages/actvity2.png")}
-              style={styles.activityImage}
+              style={styles.veranstaltungImage}
             />
             <Image
               source={require("@/assets/images/icons/activityMap/trend.png")}
               style={styles.trendIcon}
             />
-            <View style={styles.activityMarkerTriangle} />
+            <View style={styles.veranstaltungMarkerTriangle} />
           </View>
         </Marker>
 
         <Marker
           coordinate={{ latitude: 51.5406, longitude: 7.2256 }}
-          title={"Aktivität 6"}
+          title={"Veranstaltung 6"}
         >
-          <View style={styles.activityMarker}>
+          <View style={styles.veranstaltungMarker}>
             <Image
               source={require("@/assets/images/testimages/actvity3.png")}
-              style={styles.activityImage}
+              style={styles.veranstaltungImage}
             />
             <Image
               source={require("@/assets/images/icons/activityMap/trend.png")}
             />
-            <View style={styles.activityMarkerTriangle} />
+            <View style={styles.veranstaltungMarkerTriangle} />
           </View>
         </Marker>
 
         <Marker
           coordinate={{ latitude: 51.5416, longitude: 7.2306 }}
-          title={"Aktivität 7"}
+          title={"Veranstaltung 7"}
         >
-          <View style={styles.activityMarker}>
+          <View style={styles.veranstaltungMarker}>
             <Image
               source={require("@/assets/images/testimages/actvity4.png")}
-              style={styles.activityImage}
+              style={styles.veranstaltungImage}
             />
             <Image
               source={require("@/assets/images/icons/activityMap/trend.png")}
             />
-            <View style={styles.activityMarkerTriangle} />
+            <View style={styles.veranstaltungMarkerTriangle} />
           </View>
         </Marker>
       </MapView>
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "white",
   },
-  activityMarker: {
+  veranstaltungMarker: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     position: "relative",
   },
-  activityMarkerTriangle: {
+  veranstaltungMarkerTriangle: {
     position: "absolute",
     bottom: -10,
     width: 0,
@@ -298,12 +298,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 3,
   },
-  activityText: {
+  veranstaltungText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#333",
   },
-  activityImage: {
+  veranstaltungImage: {
     width: 40,
     height: 40,
     borderRadius: 20,
