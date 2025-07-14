@@ -1,18 +1,5 @@
 version: '3.8'
-
 services:
-  frontend:
-    build:
-      context: ./mobile
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - ./mobile:/app
-      - /app/node_modules
-
   backend:
     build:
       context: ./backend
@@ -27,7 +14,7 @@ services:
   stadtserver:
     build:
       context: ./stadtserver
-      dockerfile: Dockerfile #
+      dockerfile: Dockerfile
     ports:
       - "8082:8080"
     environment:
