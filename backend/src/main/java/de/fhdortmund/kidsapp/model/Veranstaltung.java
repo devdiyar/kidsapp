@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import de.fhdortmund.kidsapp.model.Fabrik.Bewertung;
 import de.fhdortmund.kidsapp.model.Fabrik.RegistrierterNutzer;
 import de.fhdortmund.kidsapp.model.Kompositum.Umfrage;
-import de.fhdortmund.kidsapp.model.Zustaende.Ausstehend;
+import de.fhdortmund.kidsapp.model.Zustaende.Erstellt;
 import de.fhdortmund.kidsapp.model.Zustaende.Status;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,7 +23,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -45,8 +44,6 @@ public class Veranstaltung {
     @Column(nullable = false)
     private AnschriftT anschrift;
     @Column(nullable = false)
-    private String kategorie;
-    @Column(nullable = false)
     private String bildUrl;
 
     @Enumerated(EnumType.STRING)
@@ -62,15 +59,7 @@ public class Veranstaltung {
     @Column(nullable = false)
     private String veranstalterEmail;
     @Column(nullable = false)
-    private String veranstalterTelefon;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hauptveranstaltung_id")
-    private Veranstaltung hauptveranstaltung;
-
-    @OneToMany(mappedBy = "hauptveranstaltung", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Veranstaltung> weitereVeranstaltungen = new ArrayList<>();
+    private long veranstalterTelefon;
 
     @ManyToMany
     @JoinTable(
@@ -99,7 +88,7 @@ public class Veranstaltung {
 
     public Veranstaltung() {
         bewertungen = new ArrayList<>();
-        setAktuellerstatus(new Ausstehend(this));
+        setAktuellerstatus(new Erstellt(this));
     }
 
     public Bewertung bewertungErstellen(int steranzahl, String kommentar, RegistrierterNutzer bewerter) {

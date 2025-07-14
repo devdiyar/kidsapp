@@ -9,6 +9,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import de.stadtherne.stadtserver.bean.UmfrageBean;
+import de.stadtherne.stadtserver.bean.VeranstaltungBean;
+
 public class MqttPublisher {
     private final String brokerUrl = "tcp://localhost:1883";
     private final IMqttClient client;

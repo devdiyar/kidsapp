@@ -12,7 +12,6 @@ import de.fhdortmund.kidsapp.model.Veranstaltung;
 public interface VeranstaltungRepository extends JpaRepository<Veranstaltung, Long> {
     List<Veranstaltung> findByTeilnehmerId(Long teilnehmerId);
     List<Veranstaltung> findByAktuellerstatusClass(Class<?> statusClass);
-    List<Veranstaltung> findByKategorie(String kategorie);
     List<Veranstaltung> findByPreisLessThanEqual(double preis);
     List<Veranstaltung> findByVeranstalter(String veranstalter);
     List<Veranstaltung> findByTitelContainingIgnoreCase(String suchbegriff);

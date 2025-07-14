@@ -1,7 +1,7 @@
 package de.fhdortmund.kidsapp.model;
 
 import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalTime;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -11,6 +11,6 @@ import lombok.Data;
 @Data
 public class TerminT {
     private Date datum;
-    private Time uhrzeitVon;
-    private Time uhrzeitBis;
+    private LocalTime uhrzeitVon;
+    private LocalTime uhrzeitBis;
 }

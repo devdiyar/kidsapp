@@ -69,7 +69,13 @@
             <artifactId>ojdbc11</artifactId>
             <scope>runtime</scope>
         </dependency>
-	</dependencies>
+        <dependency>
+            <groupId>de.fhdortmund</groupId>
+            <artifactId>kidsapp</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -54,11 +54,6 @@ public class VeranstaltungController {
         return veranstaltungService.getVeranstaltungenByStatus(statusType);
     }
 
-    @GetMapping("/kategorie/{kategorie}")
-    public List<Veranstaltung> getByKategorie(@PathVariable String kategorie) {
-        return veranstaltungService.getVeranstaltungenByKategorie(kategorie);
-    }
-
     @GetMapping("/preis")
     public List<Veranstaltung> getByMaxPreis(@RequestParam double maxPreis) {
         return veranstaltungService.getVeranstaltungenByMaxPreis(maxPreis);

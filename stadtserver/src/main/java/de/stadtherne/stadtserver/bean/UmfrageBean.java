@@ -1,5 +1,4 @@
-package de.fhdortmund.kidsapp.service.Mqtt;
-
+package de.stadtherne.stadtserver.bean;
 
 import lombok.Data;
 

@@ -41,10 +41,6 @@ public class VeranstaltungService {
         return veranstaltungRepository.findByAktuellerstatusClass(statusClass);
     }
 
-    public List<Veranstaltung> getVeranstaltungenByKategorie(String kategorie) {
-        return veranstaltungRepository.findByKategorie(kategorie);
-    }
-
     public List<Veranstaltung> getVeranstaltungenByMaxPreis(double maxPreis) {
         return veranstaltungRepository.findByPreisLessThanEqual(maxPreis);
     }
