@@ -10,19 +10,9 @@ import de.stadtherne.stadtserver.model.Umfrage;
 public class MqttDemoMain {
     public void mqttAnwendung() throws Exception {
 
-        //Topic und Nachrichten von Backend zum empfangen
-        String topicBackendVeranstaltung = "backend/veranstaltung";
-        String topicBackendUmfrage = "backend/umfrage";
-
         //Topic und Nachrichten von Stadtserver zum senden
         String topicStadtserverVeranstaltung = "stadtserver/veranstaltung";
         String topicStadtserverUmfrage = "stadtserver/umfrage";
-        String nachrichtStadtserverUmfrage = "Testdaten für Umfrage";
-
-        // Subscriber starten und Topic setzen
-        MqttSubscriber subscriberStadtserver = new MqttSubscriber("subscriberClientStadtserver");
-        subscriberStadtserver.subscribe(topicBackendVeranstaltung);
-        subscriberStadtserver.subscribe(topicBackendUmfrage);
 
         // Publisher starten
         MqttPublisher publisherStadtserver = new MqttPublisher("publisherClientStadtserver");
@@ -102,7 +92,6 @@ public class MqttDemoMain {
             }
         }
         publisherStadtserver.disconnect();
-        subscriberStadtserver.disconnect();
         System.exit(0);
     }
 }
