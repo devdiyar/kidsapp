@@ -12,8 +12,8 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ActivityProvider, useActivity } from "../src/context/ActivityContext";
-import { AuthProvider } from "../src/context/authContext";
+import { VeranstaltungProvider, useVeranstaltung } from "@/src/context/VeranstaltungContext";
+import { AuthProvider } from "@/src/context/authContext";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -21,7 +21,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 SplashScreen.preventAutoHideAsync();
 
 function NavigationContent() {
-  const { isFavorite, toggleFavorite, handleShare } = useActivity();
+  const { isFavorite, toggleFavorite, handleShare } = useVeranstaltung();
   
   return (
     <Stack>
@@ -82,11 +82,11 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DefaultTheme}>
       <AuthProvider>
-        <ActivityProvider>
+        <VeranstaltungProvider>
           <NavigationContent />
           <StatusBar style="auto"/>
           <Toast />
-        </ActivityProvider>
+        </VeranstaltungProvider>
       </AuthProvider>
     </ThemeProvider>
   );

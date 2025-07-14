@@ -1,21 +1,22 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import { useEffect, useState } from 'react';
-import { ACTIVITIES_DATA, Activity } from '../../src/data/activities';
-import { REVIEWS_DATA } from '../../src/data/reviews';
+import { Veranstaltung, Bewertung } from '../../src/types/veranstaltung';
+import { veranstaltungService } from '../../src/services/veranstaltungService';
 import Toast from 'react-native-toast-message'; //fuer Bestätigungshinweis anzeigen bei Anmeldung
 import { StarRatingDisplay } from 'react-native-star-rating-widget';//fuer Sternebewertung
 import { Ionicons } from '@expo/vector-icons'; //fuer Icons zu favorisieren
 import { Share } from 'react-native';// Share-Funktionalität
 import { BewertungModal } from '../bewertung/Bewertungzuschreiben';
 import { BewertungenView } from '../bewertung/BewertungenView';
-import { useActivity } from '../../src/context/ActivityContext';
+import { useVeranstaltung } from '../../src/context/VeranstaltungContext';
 
 export default function ActivityDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { setCurrentActivityId } = useActivity();
-  const [activity, setActivity] = useState<Activity | null>(null);
+  const { setCurrentVeranstaltungId } = useVeranstaltung();
+  const [veranstaltung, setVeranstaltung] = useState<Veranstaltung | null>(null);
+  const [loading, setLoading] = useState(true);
   //"Anmelden" Button ：useState
   const [isRegistered, setIsRegistered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,41 +24,63 @@ export default function ActivityDetailScreen() {
   const [bewertungenVisible, setBewertungenVisible] = useState(false);
   const placeholderImage = require('../../assets/images/placeholder.png'); //placeholder
 
-  
-
   useEffect(() => {
-    const found = ACTIVITIES_DATA.find(item => item.id === String(id));
-    setActivity(found || null);
-    setCurrentActivityId(String(id));
+    const loadVeranstaltung = async () => {
+      setLoading(true);
+      const result = await veranstaltungService.getVeranstaltungById(Number(id));
+      if (result.success && result.data) {
+        setVeranstaltung(result.data);
+        setCurrentVeranstaltungId(String(id));
+      } else {
+        console.error('Fehler beim Laden der Veranstaltung:', result.error);
+      }
+      setLoading(false);
+    };
+
+    if (id) {
+      loadVeranstaltung();
+    }
 
     return () => {
-      setCurrentActivityId(null);
+      setCurrentVeranstaltungId(null);
     };
   }, [id]);
 
-  if (!activity) {
+  if (loading) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Aktivität nicht gefunden</Text>
+        <Text style={styles.title}>Lädt...</Text>
       </View>
     );
   }
 
+  if (!veranstaltung) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Veranstaltung nicht gefunden</Text>
+      </View>
+    );
+  }
 
-  const reviewsForActivity = REVIEWS_DATA.filter(r => r.activityId === String(id));
+  // Berechne Durchschnittsbewertung und Anzahl der Bewertungen
+  const bewertungen = veranstaltung.bewertungen || [];
+  const avgRating = bewertungen.length > 0 
+    ? bewertungen.reduce((sum, b) => sum + b.sternanzahl, 0) / bewertungen.length 
+    : 0;
+  const ratingCount = bewertungen.length;
 
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container}>
         <Image
-          source={activity.imageUrl ? activity.imageUrl : placeholderImage}
+          source={veranstaltung.bildUrl ? { uri: veranstaltung.bildUrl } : placeholderImage}
           style={styles.image}
         />
         <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'}}>
-            <Text style={styles.title}>{activity.title}</Text>
-            <Text style={styles.text} >📍 {activity.location}</Text>
-             <Text style={styles.text}>🕒 {activity.date}</Text>
-            <Text style={styles.text}>💶 {activity.price}</Text>
+            <Text style={styles.title}>{veranstaltung.titel}</Text>
+            <Text style={styles.text}>📍 {veranstaltung.anschrift.strasse} {veranstaltung.anschrift.hausnummer}, {veranstaltung.anschrift.plz} {veranstaltung.anschrift.ort}</Text>
+            <Text style={styles.text}>🕒 {veranstaltung.termin.datum} {veranstaltung.termin.uhrzeitVon} - {veranstaltung.termin.uhrzeitBis}</Text>
+            <Text style={styles.text}>💶 {veranstaltung.preis > 0 ? `${veranstaltung.preis.toFixed(2)} €` : 'Kostenlos'}</Text>
         </View>
 
         {/* "Anmelden" Button */}
@@ -73,8 +96,8 @@ export default function ActivityDetailScreen() {
                 ? 'Erfolgreich angemeldet!'
                 : 'Erfolgreich storniert!',
               text2: newState
-                ? `Wir freuen uns, dich beim Event '${activity.title}' am ${activity.date} begrüßen zu dürfen. Viel Spaß beim Event!`
-                : `Deine Anmeldung zum Event '${activity.title}' am ${activity.date} wurde storniert. Wir hoffen, dich bald bei einem anderen Event wiederzusehen!`,
+                ? `Wir freuen uns, dich beim Event '${veranstaltung.titel}' am ${veranstaltung.termin.datum} begrüßen zu dürfen. Viel Spaß beim Event!`
+                : `Deine Anmeldung zum Event '${veranstaltung.titel}' am ${veranstaltung.termin.datum} wurde storniert. Wir hoffen, dich bald bei einem anderen Event wiederzusehen!`,
               position: 'top',
             });
           }}
@@ -86,11 +109,11 @@ export default function ActivityDetailScreen() {
 
         <Text style={styles.description}>
           {isExpanded
-            ? activity.description ?? 'Keine Beschreibung verfügbar.'
-            : (activity.description?.slice(0, 50) ?? 'Keine Beschreibung verfügbar.') +
-              (activity.description && activity.description.length > 10 ? '...' : '')}
+            ? veranstaltung.beschreibung ?? 'Keine Beschreibung verfügbar.'
+            : (veranstaltung.beschreibung?.slice(0, 100) ?? 'Keine Beschreibung verfügbar.') +
+              (veranstaltung.beschreibung && veranstaltung.beschreibung.length > 100 ? '...' : '')}
         </Text>
-        {activity.description && activity.description.length > 10 && (
+        {veranstaltung.beschreibung && veranstaltung.beschreibung.length > 100 && (
           <TouchableOpacity
             style={styles.mehr_weniger_Button}
             onPress={() => setIsExpanded(prev => !prev)}
@@ -100,34 +123,30 @@ export default function ActivityDetailScreen() {
             </Text>
           </TouchableOpacity>
         )}
-    <View style={{ marginTop: 16, marginBottom: 16}}>
-        <Text style={styles.sectionTitle}>Veranstalter:</Text>
-        <View>
-               <Text style={styles.description}>
-                  {isExpanded
-                    ? activity.description ?? 'Keine Beschreibung verfügbar.'
-                    : (activity.description?.slice(0, 50) ?? 'Keine Beschreibung verfügbar.') +
-                      (activity.description && activity.description.length > 10 ? '...' : '')}
-                </Text>
+
+        <View style={{ marginTop: 16, marginBottom: 16}}>
+          <Text style={styles.sectionTitle}>Veranstalter:</Text>
+          <Text style={styles.description}>{veranstaltung.veranstalter}</Text>
+          <Text style={styles.text}>📧 {veranstaltung.veranstalterEmail}</Text>
+          <Text style={styles.text}>📞 {veranstaltung.veranstalterTelefon}</Text>
         </View>
-    </View>
 
         <Text style={styles.sectionTitle}>Bewertungen:</Text>
         <View style={styles.ratingRow}>
-          <StarRatingDisplay rating={activity.rating} starSize={20} color="#f1c40f" />
+          <StarRatingDisplay rating={avgRating} starSize={20} color="#f1c40f" />
           <Text style={styles.ratingText}>
-            {activity.rating.toFixed(1)} | {activity.ratingCount} Bewertungen
+            {avgRating.toFixed(1)} | {ratingCount} Bewertungen
           </Text>
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {reviewsForActivity.slice(0, 3).map((review) => (
-            <View key={review.id} style={styles.reviewCard}>
+          {bewertungen.slice(0, 3).map((bewertung) => (
+            <View key={bewertung.id} style={styles.reviewCard}>
               <View style={styles.reviewHeader}>
-                <Text style={styles.reviewName}>{review.name}</Text>
-                <StarRatingDisplay rating={review.rating} starSize={14} color="#f1c40f" />
+                <Text style={styles.reviewName}>{bewertung.bewerter.benutzername}</Text>
+                <StarRatingDisplay rating={bewertung.sternanzahl} starSize={14} color="#f1c40f" />
               </View>
-              <Text style={styles.reviewText}>{review.comment}</Text>
+              <Text style={styles.reviewText}>{bewertung.kommentar}</Text>
             </View>
           ))}
         </ScrollView>
@@ -139,27 +158,21 @@ export default function ActivityDetailScreen() {
         <Text style={styles.sectionTitle}>Weitere Veranstaltungen:</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {ACTIVITIES_DATA.filter(item => item.id !== activity.id).map(item => (
-        <TouchableOpacity
-          key={item.id}
-          style={styles.relatedCard}
-          onPress={() => router.push(`/details/${item.id}`)}
-        >
-          <Image
-            source={item.imageUrl ? item.imageUrl : placeholderImage}
-            style={styles.relatedImage}
-          />
-          <Text style={styles.relatedTitle}>{item.title}</Text>
-          <View style={styles.relatedInfoRow}>
-          <Text style={styles.relatedDate}>{item.date}</Text>
-          <Text style={styles.relatedPrice}>{item.price}</Text>
-
+          {/* Placeholder für weitere Veranstaltungen - würde normalerweise aus der API geladen */}
+          <View style={styles.relatedCard}>
+            <Image
+              source={placeholderImage}
+              style={styles.relatedImage}
+            />
+            <Text style={styles.relatedTitle}>Weitere Veranstaltungen</Text>
+            <View style={styles.relatedInfoRow}>
+              <Text style={styles.relatedDate}>Laden...</Text>
+              <Text style={styles.relatedPrice}>...</Text>
+            </View>
           </View>
-        </TouchableOpacity>
-         ))}
         </ScrollView>
       </ScrollView>
-       </View>
+    </View>
   );
 }
 
@@ -172,21 +185,24 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 200,
+    borderRadius: 8,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 8,
+    textAlign: 'center',
   },
   sectionTitle: {
-  fontSize: 24,
-  fontWeight: 'bold',
-  marginTop: 24,
-  marginBottom: 8,
-},
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 24,
+    marginBottom: 8,
+  },
   text: {
     fontSize: 16,
     marginBottom: 4,
+    textAlign: 'center',
   },
   description: {
     marginTop: 8,
@@ -214,13 +230,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   anmelde_button: {
-  marginTop: 16,
-  marginBottom: 16,
-  borderRadius: 10,
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: 50,
-},
+    marginTop: 16,
+    marginBottom: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+  },
   registerButton: {
     backgroundColor: '#f6471c',  
   },
@@ -236,66 +252,59 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-   mehr_weniger_Button: {
-   alignItems: 'center',
+  mehr_weniger_Button: {
+    alignItems: 'center',
   },
   mehr_weniger_Button_Text: {
     color: '#f6471c',
   },
- ratingRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 12,
-},
-
-ratingText: {
-  marginLeft: 8,
-  fontSize: 14,
-  color: '#666',
-},
-
-reviewCard: {
-  width: 250,
-  height: 115,
-  backgroundColor: '#fff',
-  borderRadius: 10,
-  padding: 12,
-  marginRight: 12,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.1,
-  shadowRadius: 3,
-  elevation: 2,
-  borderColor: '#ddd',
-  borderWidth: 1,
-},
-
-reviewHeader: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginBottom: 6,
-},
-
-reviewName: {
-  fontWeight: 'bold',
-  fontSize: 14,
-},
-
-reviewText: {
-  fontSize: 13,
-  color: '#333',
-  lineHeight: 18,
-},
-
-allReviewsButton: {
-  marginTop: 8,
-  marginBottom: 24,
-},
-
-allReviewsText: {
-  color: '#e74c3c',
-  fontWeight: 'bold',
-},
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  ratingText: {
+    marginLeft: 8,
+    fontSize: 14,
+    color: '#666',
+  },
+  reviewCard: {
+    width: 250,
+    height: 115,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 12,
+    marginRight: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  reviewHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  reviewName: {
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  reviewText: {
+    fontSize: 13,
+    color: '#333',
+    lineHeight: 18,
+  },
+  allReviewsButton: {
+    marginTop: 8,
+    marginBottom: 24,
+  },
+  allReviewsText: {
+    color: '#e74c3c',
+    fontWeight: 'bold',
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -303,48 +312,50 @@ allReviewsText: {
     paddingBottom: 24,
     backgroundColor: '#fff',
   },
-relatedCard: {
-  width: 160,
-  marginRight: 12,
-  backgroundColor: '#fff',
-  borderRadius: 8,
-  overflow: 'hidden',
-  borderWidth: 1,
-  borderColor: '#eee',
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.1,
-  shadowRadius: 3,
-  elevation: 2,
-},
-relatedImage: {
-  width: '100%',
-  height: 80,
-},
-relatedTitle: {
-  fontSize: 14,
-  fontWeight: 'bold',
-  padding: 8,
-},
-relatedInfoRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-relatedDate: {
-  fontSize: 12,
-  color: '#888',
-  marginRight: 4,
-},
-relatedPrice: {
-  fontSize: 12,
-  color: '#27ae60',
-},
-header: {
-  flexDirection: 'row',
-  justifyContent: 'flex-end',
-  alignItems: 'center',
-  paddingHorizontal: 20,
-  paddingTop: 20,
-  marginBottom: 8,
-},
+  relatedCard: {
+    width: 160,
+    marginRight: 12,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#eee',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  relatedImage: {
+    width: '100%',
+    height: 80,
+  },
+  relatedTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    padding: 8,
+  },
+  relatedInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingBottom: 8,
+  },
+  relatedDate: {
+    fontSize: 12,
+    color: '#888',
+    marginRight: 4,
+  },
+  relatedPrice: {
+    fontSize: 12,
+    color: '#27ae60',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    marginBottom: 8,
+  },
 });

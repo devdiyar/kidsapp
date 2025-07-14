@@ -1,21 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, ImageSourcePropType, TouchableOpacity, ScrollView, TextInput, RefreshControl, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
-
-const ACTIVITIES_DATA = [
-  {
-    id: '1',
-    title: 'Adventsgrabung',
-    location: 'VK Stadium',
-    date: '28.03 20:00',
-    price: '5€',
-    imageUrl: require('../../assets/images/Adventsgrabung.jpg'),
-    status: null,
-  }
-];
+import { useVeranstaltungen } from '@/src/hooks/useVeranstaltungen';
+import { Veranstaltung } from '@/src/types/veranstaltung';
 
 const FILTERS = [
   { id: 'date', label: 'Datum' },
@@ -23,12 +13,13 @@ const FILTERS = [
   { id: 'address', label: 'Adresse' },
 ];
 
-type ActivityItemProps = {
+type VeranstaltungItemProps = {
+  id: number;
   title: string;
   location: string;
   date: string;
   price: string;
-  imageUrl: ImageSourcePropType;
+  imageUrl: string;
   status?: string | null;
   onPress?: () => void;
 };
@@ -61,10 +52,16 @@ const parsePriceString = (priceStr: string): number => {
 };
 
 
-const ActivityItem: React.FC<ActivityItemProps> = ({ title, location, date, price, imageUrl, status, onPress }) => (
+const VeranstaltungItem: React.FC<VeranstaltungItemProps> = ({ title, location, date, price, imageUrl, status, onPress }) => (
   <Pressable onPress={onPress}>
     <View style={styles.itemContainer}>
-      <Image source={imageUrl} style={styles.image} />
+      {imageUrl ? (
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+      ) : (
+        <View style={[styles.image, styles.placeholderImage]}>
+          <Text style={styles.placeholderText}>Kein Bild</Text>
+        </View>
+      )}
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.location}>{location}</Text>
@@ -86,6 +83,9 @@ export default function SearchScreen() {
   const [searchText, setSearchText] = useState<string>('');
 
   const router = useRouter();
+  
+  // Hook für Veranstaltungen verwenden
+  const { veranstaltungen, loading, error, refreshing, refreshVeranstaltungen } = useVeranstaltungen();
 
   const handleFilterPress = (filterId: string) => {
     setActiveFilter(prevFilter => (prevFilter === filterId ? null : filterId));
@@ -95,16 +95,38 @@ export default function SearchScreen() {
     setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
   };
 
-  const displayedActivities = useMemo(() => {
+  // Hilfsfunktion um Veranstaltung zu Veranstaltung format zu konvertieren
+  const veranstaltungToVeranstaltung = (veranstaltung: Veranstaltung) => {
+    // Verwende termin.datum für Start- und Endzeit
+    const startDate = new Date(veranstaltung.termin?.datum || veranstaltung.startZeit || new Date());
+    const dateStr = `${startDate.getDate().toString().padStart(2, '0')}.${(startDate.getMonth() + 1).toString().padStart(2, '0')} ${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
+    const priceStr = veranstaltung.preis === 0 ? 'Gratis' : `${veranstaltung.preis}€`;
+    const locationStr = `${veranstaltung.anschrift?.ort || 'Unbekannt'}`;
+
+    return {
+      id: veranstaltung.id,
+      title: veranstaltung.titel,
+      location: locationStr,
+      date: dateStr,
+      price: priceStr,
+      imageUrl: veranstaltung.bildUrl,
+      status: null, // Status für jetzt vereinfacht
+    };
+  };
+
+  const displayedVeranstaltungen = useMemo(() => {
+    // Konvertiere Veranstaltungen zu Veranstaltungen
+    let processedVeranstaltungen = veranstaltungen.map(veranstaltungToVeranstaltung);
+
     // Zuerst nach Suchtext filtern
-    let processedActivities = [...ACTIVITIES_DATA].filter(activity => 
-      activity.title.toLowerCase().includes(searchText.toLowerCase())
+    processedVeranstaltungen = processedVeranstaltungen.filter(veranstaltung => 
+      veranstaltung.title.toLowerCase().includes(searchText.toLowerCase())
     );
 
     // Sortierung basierend auf dem activeFilter und sortOrder
     switch (activeFilter) {
       case 'date':
-        processedActivities.sort((a, b) => {
+        processedVeranstaltungen.sort((a, b) => {
           const dateA = parseDateString(a.date);
           const dateB = parseDateString(b.date);
           if (!dateA || !dateB) return 0; // Behandelt ungültige Daten, um Abstürze zu vermeiden
@@ -113,27 +135,38 @@ export default function SearchScreen() {
         });
         break;
       case 'payment':
-        processedActivities.sort((a, b) => {
+        processedVeranstaltungen.sort((a, b) => {
           const priceA = parsePriceString(a.price);
           const priceB = parsePriceString(b.price);
           return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
         });
         break;
       case 'address':
-        processedActivities.sort((a, b) => {
+        processedVeranstaltungen.sort((a, b) => {
           return sortOrder === 'asc' ? a.location.localeCompare(b.location) : b.location.localeCompare(a.location);
         });
         break;
       default:
         // Standard-Sortierung nach Titel, wenn kein Filter aktiv ist
-        processedActivities.sort((a, b) => {
+        processedVeranstaltungen.sort((a, b) => {
           return sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
         });
         break;
     }
 
-    return processedActivities;
-  }, [activeFilter, sortOrder, searchText]);
+    return processedVeranstaltungen;
+  }, [veranstaltungen, activeFilter, sortOrder, searchText]);
+
+  if (loading && veranstaltungen.length === 0) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#007AFF" />
+          <Text style={styles.loadingText}>Veranstaltungen werden geladen...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -173,14 +206,27 @@ export default function SearchScreen() {
         </TouchableOpacity>
       </View>
 
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      )}
+
       <FlatList
-        data={displayedActivities}
-        renderItem={({ item }) => <ActivityItem {...item} 
-        onPress={() => router.push({ pathname: '/details/[id]', params: { id: item.id } })}
+        data={displayedVeranstaltungen}
+        renderItem={({ item }) => <VeranstaltungItem {...item} 
+        onPress={() => router.push({ pathname: '/details/[id]', params: { id: item.id.toString() } })}
         />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         contentContainerStyle={styles.listContentContainer}
-        ListEmptyComponent={<Text style={styles.emptyListText}>Keine Aktivitäten gefunden.</Text>}
+        ListEmptyComponent={<Text style={styles.emptyListText}>Keine Veranstaltungen gefunden.</Text>}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => refreshVeranstaltungen()}
+            colors={['#007AFF']}
+          />
+        }
       />
     </SafeAreaView>
   );
@@ -319,5 +365,40 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#e0e0e0',
+  },
+  // Neue Styles hinzufügen
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#666',
+  },
+  errorContainer: {
+    backgroundColor: '#fee',
+    padding: 12,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#f44',
+  },
+  errorText: {
+    color: '#c44',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  placeholderImage: {
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    color: '#888',
+    fontSize: 12,
   },
 });
