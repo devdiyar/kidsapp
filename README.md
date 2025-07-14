@@ -4,7 +4,7 @@
 
 Ziel dieses Projektes ist die Erstellung einer Anwendung für Kinder und Jugendliche in der Stadt Herne.
 Mit Hilfe einer interaktiven Karte ermöglicht diese Anwendung ihnen den Zugang zu Angeboten in ihrer Umgebung.
-Außerdem können sie Aktivitäten filtern, ihre Präferenzen speichern, die Angebote bewerten und nach ihnen suchen.
+Außerdem können sie Veranstaltungen filtern, ihre Präferenzen speichern, die Angebote bewerten und nach ihnen suchen.
 
 ## Team
 
