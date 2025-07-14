@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useRouter } from 'expo-router';
 import { 
   View, 
   Text, 
@@ -13,7 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ReviewButton from '@/components/ui/ReviewButton';
 import SurveyButton from '@/components/ui/SurveyButton';
-
+import { BewertungModal } from '../bewertung/Bewertungzuschreiben';
 
 type BesuchteVeranstaltung = {
   id: string;
@@ -130,17 +131,21 @@ function holePreisAlsZahl(preisText: string) {
 
 function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: VeranstaltungKarteProps) {
   
+  const router = useRouter();
+
   // passiert wenn jemand eine Bewertung abgibt
+  const [modalVisible, setModalVisible] = useState(false);
   const bewertungAbgeben = () => {
-    Alert.alert('Bewertung', `Bewertung für "${veranstaltung.titel}" abgeben`);
+    setModalVisible(true);
   };
 
   // passiert wenn jemand eine Umfrage ausfüllt
   const umfrageAusfuellen = () => {
-    Alert.alert('Umfrage', `Umfrage für "${veranstaltung.titel}" ausfüllen`);
+    router.push(`/umfrage/survey?id=${veranstaltung.id}&title=${encodeURIComponent(veranstaltung.titel)}`);
   };
 
   return (
+     <>
     <TouchableOpacity 
       style={styles.veranstaltungKarte}
       onPress={() => onKarteAntippen(veranstaltung.id)}
@@ -181,6 +186,12 @@ function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: 
         </View>
       )}
     </TouchableOpacity>
+    {/* Modal muss auf gleicher Ebene sein */}
+    <BewertungModal
+      visible={modalVisible}
+      onClose={() => setModalVisible(false)}
+    />
+  </>
   );
 }
 
