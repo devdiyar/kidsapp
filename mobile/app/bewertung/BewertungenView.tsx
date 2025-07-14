@@ -135,3 +135,5 @@ const styles = StyleSheet.create({
 	maxHeight: 350,
   },
 });
+
+export default BewertungenView;

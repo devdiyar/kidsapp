@@ -11,6 +11,7 @@ import {
   TextInput 
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 
 type Veranstaltung = {
   id: string;
@@ -119,12 +120,11 @@ function holePreisAlsZahl(preisText: string) {
 function VeranstaltungKarte({ veranstaltung, istAufgeklappt, onKarteAntippen }: VeranstaltungKarteProps) {
   
   // passiert wenn jemand Details sehen will
+  const router = useRouter();
+
   const zeigeVeranstaltungsdetails = () => {
-    Alert.alert(
-      'Veranstaltungsdetails', 
-      `Details für "${veranstaltung.titel}" werden angezeigt`
-    );
-  };
+  router.push(`/details/${veranstaltung.id}?title=${encodeURIComponent(veranstaltung.titel)}`);
+};
 
   return (
     <TouchableOpacity 

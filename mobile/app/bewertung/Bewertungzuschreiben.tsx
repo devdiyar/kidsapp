@@ -2,12 +2,21 @@ import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
 import StarRating from 'react-native-star-rating-widget';
 import Toast from 'react-native-toast-message';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 
 export function BewertungModal({ visible, onClose }: { visible: boolean, onClose: () => void }) {
   const [bewertungText, setBewertungText] = useState('');
   const [bewertungStars, setBewertungStars] = useState(0);
 
   const handleBewertungAbsenden = () => {
+    if (bewertungStars === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Bitte Sterne vergeben!',
+        position: 'top',
+      });
+      return;
+    }
     onClose();
     setBewertungText('');
     setBewertungStars(0);
@@ -101,3 +110,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default BewertungModal;
