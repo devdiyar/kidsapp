@@ -1,0 +1,70 @@
+# Java/Maven (for backend and stadtserver)
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+application.properties
+
+
+### VS Code ###
+.vscode/
+
+# React Native/Expo (for mobile)
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+web-build/
+expo-env.d.ts
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# Example app
+app-example
+backend/.gitignore
+mobile/.gitignore
+stadtserver/.gitignore
+
+
+mobile/src/config/api.ts

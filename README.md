@@ -1,88 +1,102 @@
-# Template repository for the Software Engineering lecture
+# Repository für die Software-Engineering-Vorlesung
 
-> [!IMPORTANT]
-> Replace this README with a detailed description of your project, your team, and instructions on how to run it.
+## Beschreibung des Projekts
 
-> [!IMPORTANT]
-> If you choose to keep your repository private, make sure to invite all your team members and teaching staff. Ask for their usernames if needed.
-
-Provide a general introduction to your project. Describe the purpose, goals, and the technologies used. Explain the value your project offers.
+Ziel dieses Projektes ist die Erstellung einer Anwendung für Kinder und Jugendliche in der Stadt Herne.
+Mit Hilfe einer interaktiven Karte ermöglicht diese Anwendung ihnen den Zugang zu Angeboten in ihrer Umgebung.
+Außerdem können sie Veranstaltungen filtern, ihre Präferenzen speichern, die Angebote bewerten und nach ihnen suchen.
 
 ## Team
-List the team members involved in the project:
 
-Team Leader: [Name]
+Teamleiter: Diyar Hasan
 
-Members: [Name1], [Name2], [Name3]
-(Expand this list as necessary)
+Mitglieder: Valentin Stein, Niklas Prinz, Abdul Balhas, Baturalp Kalabalik, Shengliang Wang
 
 
+## Schnellstart
 
-## Quickstart
+Der einfachste Weg, die gesamte Anwendung zu starten, ist mit Docker Compose. Stellen Sie sicher, dass Docker auf Ihrem System installiert ist.
 
-This section outlines the steps required to get your project up and running quickly:
-
-```bash,ignore
-# Example: Start a PostgreSQL database using Docker
-$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-
-# Example: Start the project (e.g., using Spring Boot)
-$ ./mvnw spring-boot:ru
+```bash
+# Startet alle Dienste (Frontend, Backend, Stadtserver) im Hintergrund
+$ docker-compose up -d
 ```
 
-## Prerequisites
+## Voraussetzungen
 
-Detail all the necessary prerequisites for running your project, such as:
+Stellen Sie sicher, dass die folgende Software auf Ihrem System installiert ist:
 
-Operating System: (e.g., Linux, macOS, Windows)
+*   **Betriebssystem:** Linux, macOS oder Windows
+*   **Software:**
+    *   Docker & Docker Compose
+    *   Java 17+
+    *   Maven
+    *   Node.js & npm (für die Frontend-Entwicklung)
+    *   Um die Dienste manuell zu starten, benötigen sie Oracle XE. Oracle XE ist leider nur für Windows und Linux verfügbar.
 
-Software: Docker, Java, Maven
+## Installation und Einrichtung
 
-Ports: (e.g., port 8080, if applicable)
+Geben Sie eine Schritt-für-Schritt-Anleitung, wie Sie das Repository klonen, das Projekt installieren und konfigurieren:
 
-## Installation and Setup
+1.  Klonen Sie das Repository:
+    ```bash
+    $ git clone https://github.com/devdiyar/kidsapp.git
+    ```
 
-Provide step-by-step instructions on how to clone the repository, install the project, and configure it:
+2.  Navigieren Sie in das Projektverzeichnis:
+    ```bash
+    $ cd kidsapp
+    ```
 
-1. Clone the repository:
-```bash,ignore
-$ git clone https://github.com/YourRepository.git
+3.  Konfiguration (optional):
+
+    Die Standardkonfigurationen für die Entwicklung sind in den jeweiligen `application.properties` der Backend-Dienste (`backend`, `stadtserver`) und in der `docker-compose.yml` hinterlegt. Passen Sie diese bei Bedarf an.
+
+## Ausführen des Projekts
+
+Sie können das Projekt mit Docker Compose (empfohlen) oder die Dienste manuell starten.
+
+### Mit Docker Compose (Empfohlen)
+
+```bash
+# Startet alle Dienste im Vordergrund, um Logs zu sehen
+$ docker-compose up
+
+# Stoppt und entfernt die Container
+$ docker-compose down
 ```
 
-2. Navigate to the project directory:
-```bash,ignore
-$ cd ProjectName
+### Manuelles Starten der Dienste
+
+Falls Sie die Dienste einzeln ohne Docker ausführen möchten:
+
+1.  **Stadtserver starten:**
+    ```bash
+    $ cd stadtserver
+    $ ./mvnw spring-boot:run
+    ```
+
+2.  **Backend starten:**
+    ```bash
+    $ cd backend
+    $ ./mvnw spring-boot:run
+    ```
+
+3.  **Mobile App (Frontend) starten:**
+    ```bash
+    $ cd mobile
+    $ npm install
+    $ npm start
+    ```
+
+## Projektstruktur
+Das Repository ist in drei Hauptkomponenten unterteilt:
+
 ```
-
-3. Adjust configuration files:
-
-Modify configuration files (e.g., `.env`, `application.properties`) as required.
-
-
-## Running the Project
-
-Explain in detail how to run the project, including:
-
-Starting the database
-
-Initializing data (if needed, via scripts)
-
-Starting the server
-
-```bash,ignore
-# Example: Initialize the database
-$ ./init-db.sh
-
-# Start the project
-$ ./mvnw spring-boot:run
-```
-
-## Project structure
-Provide an overview of the directory structure to help contributors navigate the project:
-```bash,ignore
-ProjectName/
-├── project_one/        # Description of this subproject
-├── docs/               # Documentation
-├── tests/              # Test cases
-└── README.md           # This file
+kidsapp/
+├── backend/         # Haupt-Backend-Service (Spring Boot)
+├── mobile/          # Mobile Anwendung (React Native / Expo)
+├── stadtserver/     # Stadtserver Backend-Service (Spring Boot)
+├── docker-compose.yml # Definiert und konfiguriert alle Dienste für Docker
+└── README.md        # Diese Datei
 ```
