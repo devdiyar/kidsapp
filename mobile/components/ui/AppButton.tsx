@@ -9,19 +9,25 @@ interface AppButtonProps {
   disabled?: boolean;
 }
 
-export default function AppButton({ title, onPress, variant = "orange", disabled = false }: AppButtonProps) {
+export default function AppButton({
+  title,
+  onPress,
+  variant = "orange",
+  disabled = false,
+}: AppButtonProps) {
   return (
     <TouchableOpacity
       onPress={disabled ? undefined : onPress}
       style={[
         styles.button,
         variant === "black" ? styles.black : styles.orange,
-        disabled && styles.disabled
+        disabled && styles.disabled,
       ]}
       disabled={disabled}
     >
-      <Text style={[styles.text, disabled && styles.disabledText]}>{title}</Text>
-
+      <Text style={[styles.text, disabled && styles.disabledText]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -32,7 +38,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     alignItems: "center",
     marginVertical: 6,
-    width: "100%"
+    width: "100%",
   },
   orange: {
     backgroundColor: Colors.tabIconSelectedBg,
@@ -52,5 +58,4 @@ const styles = StyleSheet.create({
   disabledText: {
     color: "#888",
   },
-
 });

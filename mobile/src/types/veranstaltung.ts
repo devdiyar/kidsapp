@@ -11,7 +11,6 @@ export interface Veranstaltung {
   zahlungsmoeglichkeit: "BAR" | "KREDITKARTE" | "PAYPAL" | "UEBERWEISUNG";
   termin: Termin;
   teilnehmer?: any[];
-  bewertungen?: Bewertung[];
   aktuellerstatus?: any;
   startZeit: string;
   endZeit: string;
@@ -32,29 +31,10 @@ export interface Termin {
   uhrzeitBis: string;
 }
 
-export interface Bewertung {
-  id: number;
-  sternanzahl: number;
-  kommentar: string;
-  bewerter: {
-    id: number;
-    benutzername: string;
-  };
-  erstellungsdatum: string;
-}
-
 export interface VeranstaltungResult<T = Veranstaltung[]> {
   success: boolean;
   data?: T;
   error?: string;
-}
-
-export interface VeranstaltungFilter {
-  maxPreis?: number;
-  startDatum?: string;
-  endDatum?: string;
-  veranstalter?: string;
-  suchbegriff?: string;
 }
 
 export interface VeranstaltungAnmeldungResult {

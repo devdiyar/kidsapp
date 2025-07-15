@@ -1,7 +1,7 @@
 export const AppColors = {
   primary: "#FF6243",
   buttonPrimary: "#261e27",
-  // Text 
+  // Text
   textPrimary: "#000000",
   textSecondary: "#666666",
   // Background
