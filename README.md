@@ -13,30 +13,19 @@ Teamleiter: Diyar Hasan
 Mitglieder: Valentin Stein, Niklas Prinz, Abdul Balhas, Baturalp Kalabalik, Shengliang Wang
 
 
-## Schnellstart
-
-Der einfachste Weg, die gesamte Anwendung zu starten, ist mit Docker Compose. Stellen Sie sicher, dass Docker auf Ihrem System installiert ist.
-
-```bash
-# Startet alle Dienste (Frontend, Backend, Stadtserver) im Hintergrund
-$ docker-compose up -d
-```
-
 ## Voraussetzungen
 
 Stellen Sie sicher, dass die folgende Software auf Ihrem System installiert ist:
 
-*   **Betriebssystem:** Linux, macOS oder Windows
+*   **Betriebssystem:** Linux oder Windows
 *   **Software:**
-    *   Docker & Docker Compose
     *   Java 17+
     *   Maven
     *   Node.js & npm (für die Frontend-Entwicklung)
-    *   Um die Dienste manuell zu starten, benötigen sie Oracle XE. Oracle XE ist leider nur für Windows und Linux verfügbar.
+    *   Oracle XE
+    *   SQL Developer (optional, für die Datenbankverwaltung)
 
 ## Installation und Einrichtung
-
-Geben Sie eine Schritt-für-Schritt-Anleitung, wie Sie das Repository klonen, das Projekt installieren und konfigurieren:
 
 1.  Klonen Sie das Repository:
     ```bash
@@ -50,25 +39,14 @@ Geben Sie eine Schritt-für-Schritt-Anleitung, wie Sie das Repository klonen, da
 
 3.  Konfiguration (optional):
 
-    Die Standardkonfigurationen für die Entwicklung sind in den jeweiligen `application.properties` der Backend-Dienste (`backend`, `stadtserver`) und in der `docker-compose.yml` hinterlegt. Passen Sie diese bei Bedarf an.
+    Die Standardkonfigurationen für die Entwicklung sind in den jeweiligen `application.properties` der Backend-Dienste (`backend`, `stadtserver`) hinterlegt. Passen Sie diese bei Bedarf an.
 
 ## Ausführen des Projekts
 
-Sie können das Projekt mit Docker Compose (empfohlen) oder die Dienste manuell starten.
-
-### Mit Docker Compose (Empfohlen)
-
-```bash
-# Startet alle Dienste im Vordergrund, um Logs zu sehen
-$ docker-compose up
-
-# Stoppt und entfernt die Container
-$ docker-compose down
-```
+Sie müssen die Dienste manuell starten.
 
 ### Manuelles Starten der Dienste
 
-Falls Sie die Dienste einzeln ohne Docker ausführen möchten:
 
 1.  **Stadtserver starten:**
     ```bash
@@ -97,6 +75,5 @@ kidsapp/
 ├── backend/         # Haupt-Backend-Service (Spring Boot)
 ├── mobile/          # Mobile Anwendung (React Native / Expo)
 ├── stadtserver/     # Stadtserver Backend-Service (Spring Boot)
-├── docker-compose.yml # Definiert und konfiguriert alle Dienste für Docker
 └── README.md        # Diese Datei
 ```
