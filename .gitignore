@@ -19,7 +19,6 @@ target/
 *.iws
 *.iml
 *.ipr
-application.properties
 
 
 ### VS Code ###
@@ -66,5 +65,3 @@ backend/.gitignore
 mobile/.gitignore
 stadtserver/.gitignore
 
-
-mobile/src/config/api.ts
