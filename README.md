@@ -1,4 +1,5 @@
 # Repository für die Software-Engineering-Vorlesung
+<img width="1716" height="1200" alt="Thumbnail" src="https://github.com/user-attachments/assets/86747021-3dab-406a-8a6b-db2af740c31e" />
 
 ## Beschreibung des Projekts
 
