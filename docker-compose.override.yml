@@ -1,0 +1,26 @@
+services:
+  backend:
+    volumes:
+      - ./backend/src:/app/src
+    environment:
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+    
+  stadtserver:
+    volumes:
+      - ./stadtserver/src:/app/src
+    environment:
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+      - SPRING_DEVTOOLS_LIVERELOAD_ENABLED=true
+
+  mobile:
+    volumes:
+      - ./mobile:/app
+      - /app/node_modules
+      - /app/.expo
+    ports:
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    environment:
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
