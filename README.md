@@ -20,11 +20,13 @@ Stellen Sie sicher, dass die folgende Software auf Ihrem System installiert ist:
 
 *   **Betriebssystem:** Linux oder Windows
 *   **Software:**
-    *   Java 17+
-    *   Maven
-    *   Node.js & npm (für die Frontend-Entwicklung)
-    *   Oracle XE
-    *   SQL Developer (optional, für die Datenbankverwaltung)
+    *   Docker & Docker Compose (empfohlen)
+    *   ODER manuell:
+        *   Java 17+
+        *   Maven
+        *   Node.js & npm (für die Frontend-Entwicklung)
+        *   Oracle XE oder PostgreSQL
+        *   SQL Developer (optional, für die Datenbankverwaltung)
 
 ## Installation und Einrichtung
 
@@ -44,7 +46,34 @@ Stellen Sie sicher, dass die folgende Software auf Ihrem System installiert ist:
 
 ## Ausführen des Projekts
 
-Sie müssen die Dienste manuell starten.
+### Mit Docker (empfohlen)
+
+1.  **Umgebungsvariablen konfigurieren:**
+    ```bash
+    $ cp .env.example .env
+    ```
+    Passen Sie die Werte in `.env` bei Bedarf an.
+
+2.  **Alle Dienste mit Docker Compose starten:**
+    ```bash
+    $ docker compose up --build
+    ```
+    
+    Oder im Hintergrund:
+    ```bash
+    $ docker compose up -d --build
+    ```
+
+3.  **Dienste wieder stoppen:**
+    ```bash
+    $ docker compose down
+    ```
+
+Die Anwendung ist dann verfügbar unter:
+- Backend: http://localhost:8080
+- Stadtserver: http://localhost:8082
+- Mobile App: http://localhost:19000 (Expo DevTools)
+- PostgreSQL Datenbank: localhost:5432
 
 ### Manuelles Starten der Dienste
 
@@ -73,8 +102,49 @@ Das Repository ist in drei Hauptkomponenten unterteilt:
 
 ```
 kidsapp/
-├── backend/         # Haupt-Backend-Service (Spring Boot)
-├── mobile/          # Mobile Anwendung (React Native / Expo)
-├── stadtserver/     # Stadtserver Backend-Service (Spring Boot)
-└── README.md        # Diese Datei
+├── backend/               # Haupt-Backend-Service (Spring Boot)
+├── mobile/                # Mobile Anwendung (React Native / Expo)
+├── stadtserver/           # Stadtserver Backend-Service (Spring Boot)
+├── docker-compose.yml     # Docker Compose Konfiguration
+├── docker-compose.override.yml  # Entwicklungs-Overrides
+├── .env.example          # Beispiel Umgebungsvariablen
+└── README.md             # Diese Datei
+```
+
+## Docker Services
+
+Das Docker Setup beinhaltet folgende Services:
+
+- **db**: PostgreSQL Datenbank für die Entwicklung
+- **stadtserver**: Spring Boot Service auf Port 8082
+- **backend**: Haupt-Backend Service auf Port 8080
+- **mobile**: React Native/Expo App auf Port 19000
+
+Alle Services sind mit Health Checks konfiguriert und starten in der richtigen Reihenfolge.
+
+## Entwicklung
+
+Für die Entwicklung werden automatisch Volume Mounts konfiguriert, sodass Änderungen am Code direkt in die Container übernommen werden:
+
+- Hot Reload für Spring Boot Services aktiviert
+- Live Reload für die Mobile App
+- Persistente PostgreSQL Daten
+
+## Troubleshooting
+
+**Ports bereits belegt:**
+```bash
+$ docker compose down
+$ docker system prune -f
+```
+
+**Container neu erstellen:**
+```bash
+$ docker compose down
+$ docker compose up --build --force-recreate
+```
+
+**Logs anzeigen:**
+```bash
+$ docker compose logs [service_name]
 ```
